@@ -15,12 +15,19 @@ const main = scriptMatch[1];
 if (/^\s*import\s/m.test(main)) throw new Error('Deployed JavaScript contains an unbundled import.');
 
 const app = { innerHTML: '' };
+const body = { dataset: {} };
 const context = {
   document: {
-  querySelector: selector => selector === '#app' ? app : null,
-  querySelectorAll: () => []
+    body,
+    querySelector: selector => selector === '#app' ? app : null,
+    querySelectorAll: () => []
   },
-  window: { scrollTo() {} }
+  window: { scrollTo() {} },
+  localStorage: {
+    getItem() { return null; },
+    setItem() {},
+    removeItem() {}
+  }
 };
 
 vm.createContext(context);
