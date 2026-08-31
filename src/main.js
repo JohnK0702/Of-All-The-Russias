@@ -275,7 +275,7 @@ function render() {
           <h1>OF ALL THE RUSSIAS</h1>
           <p class="motto">Mene, Mene, Tekel, Upharsin</p>
         </div>
-        <div class="year"><b>${year}</b><span>—</span><small>1914</small></div>
+        <div class="year"><b>${year}</b><span>—</span><small>1914</small><button class="restart-campaign" data-restart-campaign title="Restart the campaign from January 1905">↺ RESTART</button></div>
       </header>
       <nav class="chronology" aria-label="Story progress">
         ${OATR_ERAS.map((e,i)=>`<span class="${e.id===era.id?'active':''}">${e.name}</span>${i<OATR_ERAS.length-1?'<i></i>':''}`).join('')}
@@ -315,6 +315,8 @@ function render() {
   document.querySelectorAll('[data-choice]').forEach(button => button.onclick = () => apply(Number(button.dataset.choice)));
   const continueButton = document.querySelector('[data-continue]');
   if (continueButton) continueButton.onclick = continueFromAdvisor;
+  const restartButton = document.querySelector('[data-restart-campaign]');
+  if (restartButton) restartButton.onclick = resetCampaign;
 }
 
 function renderAdvisor(question) {
