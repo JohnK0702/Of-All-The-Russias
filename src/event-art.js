@@ -64,8 +64,9 @@ function oatrArtForQuestion(id){ return oatrAssetUrl(OATR_QUESTION_ART[id] || 'w
 
 function oatrRefreshArtwork(){
   const qNumber = Number(document.querySelector('.folio strong')?.textContent || 0);
-  if (qNumber) document.documentElement.style.setProperty('--event-art', `url("${oatrArtForQuestion(qNumber)}")`);
+  if (qNumber && document.documentElement?.style?.setProperty) document.documentElement.style.setProperty('--event-art', `url("${oatrArtForQuestion(qNumber)}")`);
   const advisorName = document.querySelector('#advisor-name')?.textContent?.trim();
+  if (!document.documentElement?.style?.setProperty) return;
   if (advisorName && OATR_ADVISOR_ART[advisorName]) {
     document.documentElement.style.setProperty('--advisor-art', `url("${oatrAssetUrl(OATR_ADVISOR_ART[advisorName])}")`);
   } else {
@@ -73,5 +74,9 @@ function oatrRefreshArtwork(){
   }
 }
 
-new MutationObserver(oatrRefreshArtwork).observe(document.documentElement,{subtree:true,childList:true});
-window.addEventListener('DOMContentLoaded',oatrRefreshArtwork);
+if (typeof MutationObserver !== 'undefined' && document?.documentElement) {
+  new MutationObserver(oatrRefreshArtwork).observe(document.documentElement,{subtree:true,childList:true});
+}
+if (typeof window !== 'undefined' && typeof window.addEventListener === 'function') {
+  window.addEventListener('DOMContentLoaded',oatrRefreshArtwork);
+}
