@@ -20,9 +20,11 @@ const sergeiHorror = await readFile(new URL('src/sergei-horror.js', root), 'utf8
 const failRoutes = await readFile(new URL('src/fail-routes.js', root), 'utf8');
 const canonPassion = await readFile(new URL('src/canon-passion.js', root), 'utf8');
 const canonPassionVoice = await readFile(new URL('src/canon-passion-voice.js', root), 'utf8');
+const endingEpilogues = await readFile(new URL('src/ending-epilogues.js', root), 'utf8');
+const endingEpiloguesExtra = await readFile(new URL('src/ending-epilogues-extra.js', root), 'utf8');
 const eventArt = await readFile(new URL('src/event-art.js', root), 'utf8');
 const css = `${baseCss}\n\n${darkGuiCss}\n\n${skeletonUiCss}\n\n${sergeiCss}\n\n${assetPlaceholderCss}\n\n${eventArtCss}\n\n${failRoutesCss}`;
-const javascript = `${gameData}\n\n${branching}\n\n${detailedEvents}\n\n${engine}\n\n${endingPaths}\n\n${detailedAdvisors}\n\n${politicalHorror}\n\n${sergeiHorror}\n\n${failRoutes}\n\n${canonPassion}\n\n${canonPassionVoice}\n\n${eventArt}`;
+const javascript = `${gameData}\n\n${branching}\n\n${detailedEvents}\n\n${engine}\n\n${endingPaths}\n\n${detailedAdvisors}\n\n${politicalHorror}\n\n${sergeiHorror}\n\n${failRoutes}\n\n${canonPassion}\n\n${canonPassionVoice}\n\n${endingEpilogues}\n\n${endingEpiloguesExtra}\n\n${eventArt}`;
 
 if (css.includes('</style>') || javascript.includes('</script>')) {
   throw new Error('Inline assets may not contain closing style or script tags.');
