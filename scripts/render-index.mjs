@@ -7,13 +7,15 @@ const darkGuiCss = await readFile(new URL('src/dark-gui.css', root), 'utf8');
 const skeletonUiCss = await readFile(new URL('src/skeleton-ui.css', root), 'utf8');
 const sergeiCss = await readFile(new URL('src/sergei-horror.css', root), 'utf8');
 const assetPlaceholderCss = await readFile(new URL('src/asset-placeholders.css', root), 'utf8');
+const eventArtCss = await readFile(new URL('src/event-art.css', root), 'utf8');
 const gameData = await readFile(new URL('src/game-data.js', root), 'utf8');
 const branching = await readFile(new URL('src/branching.js', root), 'utf8');
 const engine = await readFile(new URL('src/main.js', root), 'utf8');
 const sergeiHorror = await readFile(new URL('src/sergei-horror.js', root), 'utf8');
 const endingPaths = await readFile(new URL('src/ending-paths.js', root), 'utf8');
-const css = `${baseCss}\n\n${darkGuiCss}\n\n${skeletonUiCss}\n\n${sergeiCss}\n\n${assetPlaceholderCss}`;
-const javascript = `${gameData}\n\n${branching}\n\n${engine}\n\n${sergeiHorror}\n\n${endingPaths}`;
+const eventArt = await readFile(new URL('src/event-art.js', root), 'utf8');
+const css = `${baseCss}\n\n${darkGuiCss}\n\n${skeletonUiCss}\n\n${sergeiCss}\n\n${assetPlaceholderCss}\n\n${eventArtCss}`;
+const javascript = `${gameData}\n\n${branching}\n\n${engine}\n\n${sergeiHorror}\n\n${endingPaths}\n\n${eventArt}`;
 
 if (css.includes('</style>') || javascript.includes('</script>')) {
   throw new Error('Inline assets may not contain closing style or script tags.');
