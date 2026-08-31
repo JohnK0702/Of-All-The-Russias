@@ -1,0 +1,12 @@
+{
+  "name": "1905-third-rome",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "python3 -m http.server 4173",
+    "embed": "node scripts/render-index.mjs",
+    "build": "node scripts/build-static.mjs",
+    "preview": "python3 -m http.server 4173 --directory dist",
+    "test": "npm run build && node scripts/test-static.mjs"
+  }
+}
