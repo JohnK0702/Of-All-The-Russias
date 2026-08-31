@@ -17,3 +17,21 @@ Open <http://localhost:4173>. Choices are applied immediately; complete all four
 ```bash
 npm run build
 ```
+
+The build command assembles a deployment-ready copy in `dist/`. All browser entry
+paths are relative, so the result works at a domain root or beneath a repository
+subpath such as `https://example.github.io/Of-All-The-Russias/`.
+
+Preview the exact production artifact locally with:
+
+```bash
+npm run preview
+```
+
+## GitHub Pages deployment
+
+The included Pages workflow builds and publishes `dist/` after a push to `work`
+or `main`. It can also be started manually from the **Actions** tab. In the
+repository settings, set **Pages → Build and deployment → Source** to
+**GitHub Actions**; no package installation, secrets, or custom base path is
+required.
