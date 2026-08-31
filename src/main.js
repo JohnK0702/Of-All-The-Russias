@@ -1,5 +1,5 @@
 const SCORE_KEYS = ['autocracy','legitimacy','reform','land','blood','empire','veil','door','britain','military','economy','faith'];
-const SAVE_KEY = 'oatr-campaign-v2';
+const SAVE_KEY = 'oatr-campaign-v3';
 
 const freshState = () => ({
   index: 0,
@@ -30,11 +30,35 @@ function loadState() {
   } catch { return null; }
 }
 
+function branchContext() {
+  return {
+    flag: name => state.flags.has(name),
+    score: key => state.scores[key] || 0,
+    answered: id => state.history.some(h => h.id === id),
+    chose: (id, fragment) => state.history.some(h => h.id === id && h.label.includes(fragment)),
+    history: state.history,
+    scores: state.scores,
+    flags: state.flags
+  };
+}
+
 function eraFor(questionNumber) {
   return OATR_ERAS.find(era => questionNumber >= era.start && questionNumber <= era.end) || OATR_ERAS.at(-1);
 }
 
+function questionAvailable(q) {
+  const rule = OATR_BRANCHING?.questionRules?.[q.id];
+  return rule ? Boolean(rule(branchContext())) : true;
+}
+
+function nextAvailableIndex(startIndex) {
+  let i = Math.max(0, startIndex);
+  while (i < OATR_SKELETONS.length && !questionAvailable(OATR_SKELETONS[i])) i += 1;
+  return i;
+}
+
 function currentQuestion() {
+  state.index = nextAvailableIndex(state.index);
   return OATR_SKELETONS[state.index];
 }
 
@@ -58,17 +82,23 @@ function questionText(q) {
   return { body, quote, speaker };
 }
 
-function choicesFor(q) {
-  if (q.id === 35 && !state.flags.has('stolypinProtected')) {
-    return [
-      ['Stolypin is dead. Preserve his program even without the man.', { reform: 2, land: 2, legitimacy: 1, flags: ['stolypinDead'] }],
-      ['Appoint a safer successor and lower the temperature.', { door: 1, legitimacy: 1, flags: ['stolypinDead'] }],
-      ['The murder proves reform only feeds instability. Reverse course.', { autocracy: 2, reform: -2, land: -2, blood: 1, flags: ['stolypinDead'] }],
-      ['Say nothing publicly beyond the funeral proclamation.', { door: 2, veil: 1, flags: ['stolypinDead'] }]
-    ];
+function baseChoicesFor(q) {
+  const override = OATR_BRANCHING?.choiceOverrides?.[q.id];
+  if (override) {
+    const overridden = override(branchContext());
+    if (overridden) return overridden;
   }
   if (OATR_SPECIAL_CHOICES[q.id]) return OATR_SPECIAL_CHOICES[q.id];
   return OATR_CHOICE_SETS[q.set];
+}
+
+function choicesFor(q) {
+  const choices = baseChoicesFor(q);
+  const gates = OATR_BRANCHING?.choiceRules?.[q.id];
+  if (!gates) return choices;
+  const ctx = branchContext();
+  const filtered = choices.filter((choice, index) => !gates[index] || gates[index](ctx));
+  return filtered.length ? filtered : choices;
 }
 
 function apply(choiceIndex) {
@@ -88,7 +118,7 @@ function apply(choiceIndex) {
 
 function continueFromAdvisor() {
   state.pending = null;
-  state.index += 1;
+  state.index = nextAvailableIndex(state.index + 1);
   saveState();
   render();
   window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -179,7 +209,7 @@ function renderEnding() {
         <button class="restart" data-restart>BEGIN AGAIN</button>
         <button class="restart" data-review>REVIEW THE REIGN</button>
       </div>
-      <p class="fineprint">70 questions · 1905–1914 · Ending: ${ending.id}</p>
+      <p class="fineprint">${state.history.length} decisions survived the branch tree · 1905–1914 · Ending: ${ending.id}</p>
     </main>`;
   document.querySelector('[data-restart]').onclick = resetCampaign;
   document.querySelector('[data-review]').onclick = renderReview;
@@ -207,14 +237,15 @@ function resetCampaign() {
 }
 
 function render() {
-  if (state.index >= OATR_SKELETONS.length) return renderEnding();
   const q = currentQuestion();
+  if (!q || state.index >= OATR_SKELETONS.length) return renderEnding();
   const era = eraFor(q.id);
   const copy = questionText(q);
   const choices = choicesFor(q);
   const year = yearFromDate(q.date);
   const condition = imperialCondition().map(([k,v]) => `<li><span>${k}</span><b>${v}</b></li>`).join('');
   const progress = Math.round((q.id - 1) / 69 * 100);
+  const playNumber = state.history.length + 1;
 
   document.body.dataset.era = era.id;
   document.body.dataset.year = year;
@@ -238,7 +269,7 @@ function render() {
       <div class="campaign-progress"><span style="width:${progress}%"></span></div>
       <main>
         <aside class="folio">
-          <p>QUESTION</p><strong>${String(q.id).padStart(2, '0')}</strong><span>OF 70</span>
+          <p>QUESTION</p><strong>${String(playNumber).padStart(2, '0')}</strong><span>FILE ${String(q.id).padStart(2,'0')} / 70</span>
           <div class="vertical-rule"></div>
           <p class="nine-years">YEARS TO<br><b>${yearsRemaining(q.date)}</b><br>MIDNIGHT</p>
         </aside>
