@@ -1,5 +1,5 @@
-const SCORE_KEYS = ['autocracy','legitimacy','reform','land','blood','empire','veil','door','britain','military','economy','faith'];
-const SAVE_KEY = 'oatr-campaign-v3';
+const SCORE_KEYS = ['autocracy','legitimacy','reform','land','blood','empire','veil','door','britain','military','economy','faith','pressure','leverage'];
+const SAVE_KEY = 'oatr-campaign-v4';
 
 const freshState = () => ({
   index: 0,
@@ -46,20 +46,29 @@ function eraFor(questionNumber) {
   return OATR_ERAS.find(era => questionNumber >= era.start && questionNumber <= era.end) || OATR_ERAS.at(-1);
 }
 
-function questionAvailable(q) {
-  const rule = OATR_BRANCHING?.questionRules?.[q.id];
-  return rule ? Boolean(rule(branchContext())) : true;
+function currentBaseQuestion() {
+  return OATR_SKELETONS[state.index];
 }
 
-function nextAvailableIndex(startIndex) {
-  let i = Math.max(0, startIndex);
-  while (i < OATR_SKELETONS.length && !questionAvailable(OATR_SKELETONS[i])) i += 1;
-  return i;
+function resolvedQuestion(base) {
+  if (!base) return null;
+  const variants = OATR_BRANCHING?.questionVariants?.[base.id] || [];
+  const ctx = branchContext();
+  const variant = variants.find(v => !v.when || v.when(ctx));
+  if (!variant) return { ...base };
+  return {
+    ...base,
+    ...(variant.date ? { date: variant.date } : {}),
+    ...(variant.place ? { place: variant.place } : {}),
+    ...(variant.title ? { title: variant.title } : {}),
+    ...(variant.set ? { set: variant.set } : {}),
+    branchText: variant.text || null,
+    branchId: variant.id || null
+  };
 }
 
 function currentQuestion() {
-  state.index = nextAvailableIndex(state.index);
-  return OATR_SKELETONS[state.index];
+  return resolvedQuestion(currentBaseQuestion());
 }
 
 function yearFromDate(date) {
@@ -72,6 +81,7 @@ function yearsRemaining(date) {
 }
 
 function questionText(q) {
+  if (q.branchText) return q.branchText;
   const key = OATR_KEY_TEXT[q.id];
   if (key) return key;
   const [quote, speaker] = OATR_GENERIC_QUOTES[q.set];
@@ -79,6 +89,8 @@ function questionText(q) {
   if (state.scores.blood >= 16) body.push('Violence now carries memory from one crisis into the next. Every order arrives with ghosts attached.');
   if (state.scores.door >= 14) body.push('Your ministers have become skilled at converting silence into instructions.');
   if (state.scores.veil >= 14) body.push('<em>Somewhere in the palace, a bell sounds once. Nobody else appears to hear it.</em>');
+  if (state.scores.pressure >= 10) body.push('The ministries are no longer debating whether something must be done. They are debating which institution will be blamed for doing it.');
+  if (state.scores.leverage <= -5 && state.scores.reform >= 4) body.push('Reform has acquired arguments but very little leverage. Men who agree with the diagnosis still ask why anything must be changed today.');
   return { body, quote, speaker };
 }
 
@@ -109,7 +121,7 @@ function apply(choiceIndex) {
     if (key === 'flags') value.forEach(flag => state.flags.add(flag));
     else if (SCORE_KEYS.includes(key)) state.scores[key] += value;
   });
-  state.history.push({ id: q.id, choiceIndex, label });
+  state.history.push({ id: q.id, date: q.date, title: q.title, choiceIndex, label });
   state.pending = { choiceIndex, label, effects, advisor: chooseAdvisor(q) };
   saveState();
   render();
@@ -118,7 +130,7 @@ function apply(choiceIndex) {
 
 function continueFromAdvisor() {
   state.pending = null;
-  state.index = nextAvailableIndex(state.index + 1);
+  state.index += 1;
   saveState();
   render();
   window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -129,7 +141,7 @@ function chooseAdvisor(q) {
   if (q.id === 1) return OATR_ADVISORS.sergei;
   if (q.id >= 56) return s.veil >= 14 ? OATR_ADVISORS.rasputin : (q.set === 'military' ? OATR_ADVISORS.nicholas : OATR_ADVISORS.sazonov);
   if (q.id >= 32 && s.veil >= 9) return OATR_ADVISORS.rasputin;
-  if (q.id >= 19 && q.id <= 35 && !state.flags.has('stolypinDead')) return OATR_ADVISORS.stolypin;
+  if (q.id >= 17 && q.id <= 36 && !state.flags.has('stolypinDead') && !state.flags.has('stolypinRetires')) return OATR_ADVISORS.stolypin;
   if (s.britain >= 8) return OATR_ADVISORS.lamsdorff;
   if (s.door + s.veil >= 18) return OATR_ADVISORS.alexandra;
   if (s.blood + s.autocracy >= 22) return OATR_ADVISORS.trepov;
@@ -151,6 +163,10 @@ function consequenceText(effects, advisor) {
   if ((effects.door || 0) >= 2) o.push('your silence is already being interpreted as policy');
   if ((effects.britain || 0) >= 2) o.push('the Foreign Ministry is relieved to possess an explanation involving London');
   if ((effects.veil || 0) >= 2) o.push('the palace feels a little less separable from prophecy');
+  if ((effects.pressure || 0) >= 2) o.push('the state now feels the crisis more urgently');
+  if ((effects.pressure || 0) <= -2) o.push('the immediate crisis has eased');
+  if ((effects.leverage || 0) >= 2) o.push('reformers have gained leverage because the old answer looks less defensible');
+  if ((effects.leverage || 0) <= -2) o.push('the palace has gained confidence that survival itself vindicates the existing order');
   const lead = o.length ? `${o.join('; ')}.` : 'The order is entered into the record.';
   return `${lead} ${advisor.tone}`;
 }
@@ -179,6 +195,8 @@ function imperialCondition() {
 
 function routeWhisper() {
   const s = state.scores;
+  if (state.flags.has('earlyPeace1905') && s.leverage <= -3) return 'Peace has made the empire safer and reform less necessary in the eyes of the men who matter.';
+  if (state.flags.has('stolypinMadeLeverage')) return 'Stolypin has the leverage history did not give him. It came from you.';
   if (s.veil >= 18) return 'The bells have begun appearing in dreams.';
   if (s.blood >= 22) return 'Every solution now arrives carrying rifles.';
   if (s.door >= 18) return 'The ministries have learned to govern your silences.';
@@ -209,7 +227,7 @@ function renderEnding() {
         <button class="restart" data-restart>BEGIN AGAIN</button>
         <button class="restart" data-review>REVIEW THE REIGN</button>
       </div>
-      <p class="fineprint">${state.history.length} decisions survived the branch tree · 1905–1914 · Ending: ${ending.id}</p>
+      <p class="fineprint">${state.history.length} decisions · 1905–1914 · Ending: ${ending.id}</p>
     </main>`;
   document.querySelector('[data-restart]').onclick = resetCampaign;
   document.querySelector('[data-review]').onclick = renderReview;
@@ -217,10 +235,7 @@ function renderEnding() {
 
 function renderReview() {
   const ending = pickEnding();
-  const rows = state.history.map((h, i) => {
-    const q = OATR_SKELETONS.find(x => x.id === h.id);
-    return `<li><span>${String(i+1).padStart(2,'0')}</span><div><b>${q.date} · ${q.title}</b><p>${h.label}</p></div></li>`;
-  }).join('');
+  const rows = state.history.map((h, i) => `<li><span>${String(i+1).padStart(2,'0')}</span><div><b>${h.date} · ${h.title}</b><p>${h.label}</p></div></li>`).join('');
   document.querySelector('#app').innerHTML = `
     <main class="review-page">
       <header class="review-header"><div><p>THE IMPERIAL RECORD</p><h1>${ending.title}</h1></div><button data-back>RETURN TO ENDING</button></header>
@@ -245,7 +260,6 @@ function render() {
   const year = yearFromDate(q.date);
   const condition = imperialCondition().map(([k,v]) => `<li><span>${k}</span><b>${v}</b></li>`).join('');
   const progress = Math.round((q.id - 1) / 69 * 100);
-  const playNumber = state.history.length + 1;
 
   document.body.dataset.era = era.id;
   document.body.dataset.year = year;
@@ -269,7 +283,7 @@ function render() {
       <div class="campaign-progress"><span style="width:${progress}%"></span></div>
       <main>
         <aside class="folio">
-          <p>QUESTION</p><strong>${String(playNumber).padStart(2, '0')}</strong><span>FILE ${String(q.id).padStart(2,'0')} / 70</span>
+          <p>QUESTION</p><strong>${String(q.id).padStart(2, '0')}</strong><span>OF 70</span>
           <div class="vertical-rule"></div>
           <p class="nine-years">YEARS TO<br><b>${yearsRemaining(q.date)}</b><br>MIDNIGHT</p>
         </aside>
