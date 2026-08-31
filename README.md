@@ -18,12 +18,14 @@ Open <http://localhost:4173>. Choices are applied immediately; complete all four
 npm run build
 ```
 
-The build command assembles a deployment-ready copy in `dist/`. All browser entry
-paths are relative, so the result works at a domain root or beneath a repository
-subpath such as `https://example.github.io/Of-All-The-Russias/`.
+The build command generates a self-contained `index.html` and places a deployment-
+ready copy in `dist/`. CSS and JavaScript are embedded directly, so the page works
+at a domain root, beneath a repository subpath, or when Pages is configured to
+publish the repository root instead of the Actions artifact.
 
-The site uses browser-native JavaScript and a normal stylesheet link; it does not
-depend on a bundler to transform JavaScript imports before deployment.
+The site uses browser-native JavaScript and does not require a bundler or runtime
+asset requests. After editing files in `src/`, regenerate the committed standalone
+page with `npm run embed`.
 
 Preview the exact production artifact locally with:
 

@@ -2,14 +2,15 @@ import { access, readFile } from 'node:fs/promises';
 
 const output = new URL('../dist/', import.meta.url);
 const html = await readFile(new URL('index.html', output), 'utf8');
-const main = await readFile(new URL('src/main.js', output), 'utf8');
+await access(new URL('.nojekyll', output));
 
-for (const file of ['.nojekyll', 'src/main.js', 'src/style.css']) {
-  await access(new URL(file, output));
-}
+if (!html.includes('<style data-static-bundle>')) throw new Error('The deployed page has no inline stylesheet.');
+if (!html.includes('<script data-static-bundle>')) throw new Error('The deployed page has no inline script.');
+if (/\b(?:src|href)=["']\.\/src\//.test(html)) throw new Error('The deployed page still relies on a source asset URL.');
 
-if (!html.includes('href="./src/style.css"')) throw new Error('The deployed page does not load its stylesheet.');
-if (!html.includes('src="./src/main.js"')) throw new Error('The deployed page does not load its script.');
+const scriptMatch = html.match(/<script data-static-bundle>([\s\S]*?)<\/script>/);
+if (!scriptMatch) throw new Error('Could not read the inline application script.');
+const main = scriptMatch[1];
 if (/^\s*import\s/m.test(main)) throw new Error('Deployed JavaScript contains an unbundled import.');
 
 const app = { innerHTML: '' };
@@ -19,7 +20,7 @@ globalThis.document = {
 };
 globalThis.window = { scrollTo() {} };
 
-await import(new URL(`src/main.js?smoke=${Date.now()}`, output));
+await import(`data:text/javascript;charset=utf-8,${encodeURIComponent(main)}`);
 if (!app.innerHTML.includes('THE THIRD ROME') || !app.innerHTML.includes('WHAT DO YOU DO?')) {
   throw new Error('The application did not render its opening question.');
 }
