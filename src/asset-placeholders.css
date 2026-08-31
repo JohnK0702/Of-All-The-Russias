@@ -8,7 +8,7 @@
   border: 0 !important;
   border-radius: 0 !important;
   background:
-    url("../asset/imperial-seal.svg") center / contain no-repeat !important;
+    url("./asset/imperial-seal.svg") center / contain no-repeat !important;
   -webkit-mask: none !important;
   mask: none !important;
   filter:
