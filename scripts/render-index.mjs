@@ -6,9 +6,10 @@ const baseCss = await readFile(new URL('src/style.css', root), 'utf8');
 const darkGuiCss = await readFile(new URL('src/dark-gui.css', root), 'utf8');
 const skeletonUiCss = await readFile(new URL('src/skeleton-ui.css', root), 'utf8');
 const gameData = await readFile(new URL('src/game-data.js', root), 'utf8');
+const branching = await readFile(new URL('src/branching.js', root), 'utf8');
 const engine = await readFile(new URL('src/main.js', root), 'utf8');
 const css = `${baseCss}\n\n${darkGuiCss}\n\n${skeletonUiCss}`;
-const javascript = `${gameData}\n\n${engine}`;
+const javascript = `${gameData}\n\n${branching}\n\n${engine}`;
 
 if (css.includes('</style>') || javascript.includes('</script>')) {
   throw new Error('Inline assets may not contain closing style or script tags.');
