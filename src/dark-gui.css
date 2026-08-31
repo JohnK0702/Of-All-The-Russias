@@ -1,0 +1,167 @@
+/* Dark historical GUI pass — designed to sit after style.css. */
+:root {
+  color: #cbbf9f;
+  background: #050405;
+}
+
+html { background: #050405; }
+body {
+  color: #c8bfa7;
+  background:
+    linear-gradient(rgba(5,4,5,.82), rgba(5,4,5,.9)),
+    url("https://commons.wikimedia.org/wiki/Special:Redirect/file/1904-1905peterhof.jpg") center 18% / cover fixed,
+    #060405;
+}
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9;
+  background:
+    radial-gradient(circle at 50% 35%, transparent 0 38%, rgba(0,0,0,.44) 78%, rgba(0,0,0,.78) 100%),
+    linear-gradient(180deg, rgba(88,0,4,.10), transparent 28%, rgba(0,0,0,.28));
+}
+
+.page-shell {
+  background:
+    linear-gradient(rgba(24,21,18,.91), rgba(17,15,14,.95)),
+    radial-gradient(circle at 40% 10%, #4d4437, #191613 72%);
+  color: #c9c0a9;
+  border-color: #5e4d32;
+  outline-color: #342819;
+  box-shadow: 0 30px 120px #000, inset 0 0 90px rgba(0,0,0,.42);
+}
+
+header {
+  background: linear-gradient(180deg, rgba(16,14,13,.86), rgba(20,17,15,.62));
+  border-bottom-color: #451416;
+}
+.masthead h1 { color: #d6ccb4; text-shadow: 0 2px 2px #000; }
+.russian-title, .year, .cross, .kicker, .question, footer { color: #8b3132; }
+.motto, .dateline, blockquote, .dossier small, .advisor-role { color: #968971; }
+.year span, .question::after, .vertical-rule { background: #554a38; }
+
+.chronology {
+  background: #09090a;
+  color: #a89568;
+  border-top: 1px solid #302718;
+  border-bottom: 1px solid #261e15;
+  box-shadow: inset 0 -10px 20px rgba(0,0,0,.3);
+}
+.chronology i { background: #51452e; }
+
+main { position: relative; }
+main::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: .08;
+  background: repeating-linear-gradient(0deg, rgba(255,255,255,.12) 0 1px, transparent 1px 5px);
+}
+
+.folio { color: #913638; border-right-color: #514735; }
+.vertical-rule::before { background: #171513; color: #7c2a2d; }
+article { position: relative; z-index: 1; }
+article h2 { color: #ded4bc; text-shadow: 0 1px 0 #000; }
+.dispatch { color: #c5bda8; }
+.dispatch p:first-child::first-letter { color: #8a3031; }
+.dispatch em { color: #a54a4b; }
+blockquote { border-left-color: #651f22; color: #a89d86; }
+
+.choices button {
+  color: #c6bca4;
+  border-color: #514936;
+  background: linear-gradient(90deg, rgba(22,20,18,.95), rgba(33,29,25,.82));
+  box-shadow: inset 0 1px rgba(255,255,255,.025);
+}
+.choices button span { border-right-color: #514936; color: #973b3e; background: rgba(0,0,0,.18); }
+.choices b { color: #71654d; }
+.choices button:hover {
+  color: #eee4c9;
+  background: linear-gradient(90deg, #3d0d10, #62181b);
+  border-color: #7d292d;
+  box-shadow: 0 0 22px rgba(95,18,22,.25), inset 0 0 24px rgba(0,0,0,.2);
+}
+
+.dossier { border-left-color: #514735; position: relative; z-index: 1; }
+.portrait {
+  background-image:
+    linear-gradient(rgba(14,10,9,.15), rgba(9,7,7,.62)),
+    url("https://commons.wikimedia.org/wiki/Special:Redirect/file/Nicholas_II_by_Boissonnas_%26_Eggler_c1909.jpg");
+  background-size: cover;
+  background-position: center 18%;
+  border-color: #171211;
+  outline-color: #55452d;
+  filter: grayscale(.72) sepia(.28) contrast(1.12) brightness(.66);
+  box-shadow: inset 0 0 38px rgba(0,0,0,.7), 0 8px 30px rgba(0,0,0,.35);
+}
+.portrait-glow, .silhouette, .crown { display: none; }
+.portrait::after {
+  background:
+    linear-gradient(90deg, rgba(57,0,5,.10), transparent 45%),
+    repeating-linear-gradient(0deg, transparent 0 3px, rgba(0,0,0,.16) 4px);
+}
+.hand { color: #8d3639; text-shadow: 0 1px #000; }
+.dossier h3 { color: #d0c5ac; }
+.dossier > p:not(.hand) { color: #9d927b; }
+.stamp { color: #7e292c; border-color: #7e292c; opacity: .85; }
+
+footer {
+  background: #0b0a0a;
+  border-top-color: #401214;
+  box-shadow: inset 0 8px 28px rgba(0,0,0,.48);
+}
+
+.advisor-scrim {
+  background: rgba(2,2,3,.94);
+  backdrop-filter: blur(7px) grayscale(.3);
+}
+.advisor-card {
+  color: #c8bfa7;
+  background:
+    linear-gradient(rgba(23,20,18,.96), rgba(13,12,11,.98));
+  border-color: #5b482d;
+  outline-color: #281d12;
+  box-shadow: 0 30px 120px #000, inset 0 0 70px rgba(0,0,0,.35);
+}
+.advisor-card::before { color: rgba(114,28,31,.18); }
+.advisor-label { color: #8f3639; border-bottom-color: #4e4331; }
+.advisor-portrait {
+  border-color: #171211;
+  outline-color: #51442e;
+  background:
+    linear-gradient(rgba(6,5,5,.25), rgba(6,5,5,.7)),
+    url("https://commons.wikimedia.org/wiki/Special:Redirect/file/CHRIST_PANTOCRATOR-SINAI(6th_Century).jpg") center 18% / cover;
+  filter: grayscale(.75) sepia(.35) brightness(.48) contrast(1.2);
+}
+.advisor-portrait span {
+  color: #a58b5e;
+  background: rgba(0,0,0,.46);
+  border-color: #675435;
+  text-shadow: 0 2px 5px #000;
+}
+.handwritten { color: #943b3e; }
+.advisor-copy h2 { color: #ded3b9; }
+.advisor-copy blockquote { color: #b9af99; }
+.decision-echo { border-top-color: #4d4332; color: #8f846f; }
+.fate-note { color: #aa4c4f; border-color: #654035; background: rgba(72,17,20,.12); }
+.advisor-copy button { background: #4b1013; color: #d9ceb4; border: 1px solid #712126; }
+.advisor-copy button:hover { background: #71191d; }
+
+.ending-page {
+  background:
+    radial-gradient(circle at 50% 38%, rgba(71,14,17,.45), transparent 32%),
+    linear-gradient(rgba(4,3,4,.88), rgba(4,3,4,.96)),
+    url("https://commons.wikimedia.org/wiki/Special:Redirect/file/Vladimir_Makovsky_%E2%80%94_A_sketch_for_The_9th_of_January_1905_on_Vasilievsky_Island_%E2%80%94_Bloody_Sunday_(1905).webp") center / cover;
+  color: #c8b88f;
+}
+.ending-page h1 { color: #d8cbaa; }
+.ending-copy { color: #b8ad91; }
+.restart { color: #cdbd98; border-color: #68462e; background: rgba(0,0,0,.25); }
+
+@media (max-width: 650px) {
+  body { background-attachment: scroll; }
+  .page-shell { background: linear-gradient(rgba(22,19,17,.97), rgba(12,11,10,.98)); }
+}
