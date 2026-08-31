@@ -1,0 +1,62 @@
+/* Failure cascades become progressively less stable as the ten-question chain advances. */
+body[data-fail-depth] .fail-route-shell {
+  position: relative;
+  overflow: hidden;
+}
+
+body[data-fail-depth] .fail-route-shell::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 50;
+  background:
+    repeating-linear-gradient(0deg, rgba(255,255,255,.012) 0 1px, transparent 1px 4px),
+    radial-gradient(circle at 50% 20%, transparent 0 36%, rgba(0,0,0,.16) 72%, rgba(0,0,0,.42) 100%);
+  opacity: calc(var(--fail-depth, 1) * .035);
+}
+
+body[data-fail-depth='1'],body[data-fail-depth='2']{--fail-depth:2}
+body[data-fail-depth='3'],body[data-fail-depth='4']{--fail-depth:4}
+body[data-fail-depth='5'],body[data-fail-depth='6']{--fail-depth:6}
+body[data-fail-depth='7'],body[data-fail-depth='8']{--fail-depth:8}
+body[data-fail-depth='9'],body[data-fail-depth='10']{--fail-depth:10}
+
+.fail-route-shell .campaign-progress span {
+  box-shadow: 0 0 10px rgba(207,172,91,.35);
+}
+
+.fail-route-shell .folio strong,
+.fail-route-shell .kicker,
+.fail-route-shell .stamp b {
+  color: #d8b767;
+}
+
+.fail-route-shell .dossier small {
+  font-style: italic;
+  line-height: 1.45;
+}
+
+body[data-fail-depth='7'] .fail-route-shell article,
+body[data-fail-depth='8'] .fail-route-shell article {
+  filter: contrast(1.03) saturate(.92);
+}
+
+body[data-fail-depth='9'] .fail-route-shell,
+body[data-fail-depth='10'] .fail-route-shell {
+  filter: contrast(1.06) saturate(.82);
+}
+
+body[data-fail-depth='9'] .fail-route-shell .dateline,
+body[data-fail-depth='10'] .fail-route-shell .dateline {
+  letter-spacing: .08em;
+}
+
+body[data-fail-depth='10'] .fail-route-shell .campaign-progress span {
+  box-shadow: 0 0 18px rgba(207,172,91,.55);
+}
+
+.fail-route-ending .ending-copy {
+  max-width: 780px;
+  margin-inline: auto;
+}
