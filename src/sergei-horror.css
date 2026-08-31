@@ -1,20 +1,20 @@
 .sergei-scrim {
   background:
-    radial-gradient(circle at 50% 34%, rgba(84, 10, 14, .22), transparent 30%),
-    rgba(0, 0, 0, .965);
+    radial-gradient(circle at 50% 34%, rgba(78, 96, 54, .18), transparent 31%),
+    rgba(2, 5, 3, .97);
 }
 
 .sergei-card {
   width: min(980px, 100%);
   background:
-    linear-gradient(rgba(12, 10, 9, .96), rgba(5, 5, 5, .99)),
-    repeating-linear-gradient(90deg, rgba(255,255,255,.018) 0 1px, transparent 1px 7px);
-  border-color: #3b2920;
-  outline-color: #190d0d;
-  box-shadow: 0 30px 130px #000, inset 0 0 90px rgba(64, 0, 6, .14);
+    linear-gradient(rgba(13, 18, 13, .96), rgba(5, 8, 6, .99)),
+    repeating-linear-gradient(90deg, rgba(255,255,255,.016) 0 1px, transparent 1px 7px);
+  border-color: #49513a;
+  outline-color: #141a12;
+  box-shadow: 0 30px 130px #000, inset 0 0 90px rgba(59, 74, 43, .12);
 }
 
-.sergei-card::before { content: '☦'; color: rgba(111, 18, 23, .15); }
+.sergei-card::before { content: '☦'; color: rgba(122, 136, 88, .14); }
 .sergei-layout { display: grid; grid-template-columns: 260px 1fr; gap: 34px; align-items: start; }
 
 .sergei-icon {
@@ -26,14 +26,13 @@
   align-items: center;
   justify-content: flex-end;
   padding: 22px;
-  color: #91774d;
-  border: 7px solid #170d09;
-  outline: 1px solid #5a4229;
+  color: #aaa274;
+  border: 7px solid #10150f;
+  outline: 1px solid #626847;
   background:
-    radial-gradient(circle at 50% 31%, rgba(117,85,40,.5) 0 22%, transparent 23%),
-    radial-gradient(circle at 50% 31%, #5b3e22 0 30%, #25150f 31% 51%, #100b09 72%),
-    repeating-linear-gradient(7deg, rgba(229,190,101,.035) 0 2px, transparent 2px 9px);
-  filter: sepia(.25) contrast(1.18) brightness(.72);
+    linear-gradient(rgba(8,13,9,.18), rgba(4,7,5,.76)),
+    url("https://commons.wikimedia.org/wiki/Special:Redirect/file/Grand_Duke_Sergei_Alexandrovich_of_Russia_1857-1905.jpg") center 16% / cover;
+  filter: grayscale(.72) sepia(.18) hue-rotate(24deg) contrast(1.24) brightness(.62);
 }
 
 .sergei-icon::before {
@@ -42,43 +41,33 @@
   inset: -20%;
   background:
     linear-gradient(72deg, transparent 44%, rgba(0,0,0,.92) 45% 47%, transparent 48%),
-    linear-gradient(109deg, transparent 53%, rgba(0,0,0,.8) 54% 56%, transparent 57%),
-    radial-gradient(circle at 68% 44%, rgba(50,0,4,.58) 0 5%, transparent 6%);
-  opacity: .85;
+    linear-gradient(109deg, transparent 53%, rgba(0,0,0,.82) 54% 56%, transparent 57%),
+    radial-gradient(circle at 68% 44%, rgba(42,52,31,.62) 0 5%, transparent 6%);
+  opacity: .88;
 }
 
-.sergei-halo {
+.sergei-icon::after {
+  content: '☦';
   position: absolute;
-  top: 38px;
-  width: 160px;
-  height: 160px;
+  top: 34px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 168px;
+  height: 168px;
+  border: 2px solid rgba(170,158,101,.36);
   border-radius: 50%;
   display: grid;
-  place-items: center;
-  font-size: 28px;
-  letter-spacing: .18em;
-  border: 2px solid rgba(157,122,64,.45);
-  box-shadow: inset 0 0 30px rgba(0,0,0,.66);
+  place-items: start center;
+  padding-top: 13px;
+  color: rgba(177,168,113,.55);
+  font-size: 24px;
+  box-shadow: inset 0 0 32px rgba(0,0,0,.72);
 }
 
-.sergei-face {
-  position: absolute;
-  top: 96px;
-  width: 105px;
-  height: 145px;
-  border-radius: 48% 48% 42% 42%;
-  background: linear-gradient(90deg, #5f4631, #86613f 47%, #3b281e 51%, #1e1311);
-  box-shadow: inset -20px -12px 35px rgba(0,0,0,.8);
-}
-.sergei-face::before,
-.sergei-face::after { content: ''; position: absolute; top: 52px; width: 15px; height: 7px; background: #080707; border-radius: 50%; }
-.sergei-face::before { left: 22px; }
-.sergei-face::after { right: 23px; transform: rotate(-14deg); }
-.sergei-face span { position:absolute; left:49px; top:58px; width:8px; height:32px; border-left:2px solid rgba(20,10,8,.75); transform:rotate(8deg); }
-.sergei-face i { position:absolute; left:32px; top:101px; width:45px; height:18px; border-bottom:7px solid #140908; border-radius:50%; transform:rotate(-7deg); }
-.sergei-face b { position:absolute; right:-8px; top:28px; width:48px; height:88px; background:#10090a; clip-path:polygon(35% 0,100% 9%,77% 35%,100% 54%,72% 67%,95% 100%,0 91%,18% 62%,0 41%); opacity:.88; }
+.sergei-halo,
+.sergei-face { display: none; }
 
-.icon-wound { position:absolute; background:rgba(37,0,3,.8); box-shadow:0 0 14px rgba(80,0,5,.3); }
+.icon-wound { position:absolute; background:rgba(18,24,16,.92); box-shadow:0 0 14px rgba(59,73,42,.32); z-index:1; }
 .icon-wound.one { width:210px; height:8px; top:152px; left:18px; transform:rotate(21deg); }
 .icon-wound.two { width:170px; height:5px; top:230px; right:4px; transform:rotate(-34deg); }
 .icon-wound.three { width:8px; height:280px; top:36px; left:123px; transform:rotate(8deg); }
@@ -90,31 +79,31 @@
   margin: 0;
   padding-top: 16px;
   text-align: center;
-  border-top: 1px solid rgba(145,119,77,.34);
+  border-top: 1px solid rgba(156,153,105,.34);
   letter-spacing: .2em;
   font-size: 12px;
   text-shadow: 0 2px 3px #000;
 }
 
-.sergei-copy h2 { color: #b79f72; letter-spacing: .16em; }
-.sergei-copy .advisor-role { color: #6f5142; }
+.sergei-copy h2 { color: #c4bc8a; letter-spacing: .16em; }
+.sergei-copy .advisor-role { color: #7f8566; }
 .sergei-voice {
   max-height: 340px;
   overflow: auto;
   margin: 20px 0;
   padding: 16px 18px;
-  border-left: 2px solid #5e171a;
+  border-left: 2px solid #62704a;
   background: rgba(0,0,0,.2);
-  color: #c1b59c;
+  color: #c2bca4;
 }
 .sergei-voice p { margin: 0 0 11px; font-size: 17px; line-height: 1.48; }
 .sergei-voice p:first-child,
-.sergei-voice p:last-child { color: #a74a4d; }
-.sergei-verse { color: #766d60; font-style: italic; line-height: 1.5; }
-.sergei-verse small { color: #5d4c3d; letter-spacing: .16em; font-style: normal; }
+.sergei-voice p:last-child { color: #aeb779; }
+.sergei-verse { color: #817f69; font-style: italic; line-height: 1.5; }
+.sergei-verse small { color: #676b57; letter-spacing: .16em; font-style: normal; }
 
 @media (max-width: 760px) {
   .sergei-layout { grid-template-columns: 1fr; }
-  .sergei-icon { min-height: 330px; }
+  .sergei-icon { min-height: 330px; background-position: center 12%; }
   .sergei-voice { max-height: none; }
 }
