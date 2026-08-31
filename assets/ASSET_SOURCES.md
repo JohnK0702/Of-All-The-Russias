@@ -1,8 +1,6 @@
 # Historical GUI asset sources
 
-This file records the first-pass visual sources used by the dark GUI layer in `src/dark-gui.css`.
-
-All four sources are hosted on Wikimedia Commons. The intent is to replace remote references with repository-local optimized copies once the visual direction is locked.
+This file records historical visual sources used by the GUI layers. The current build references Wikimedia Commons through `Special:Redirect/file/...` URLs; once the visual direction is locked, these should be replaced with repository-local optimized copies.
 
 ## Nicholas II portrait
 
@@ -21,6 +19,29 @@ All four sources are hosted on Wikimedia Commons. The intent is to replace remot
 **Author:** Boasson and Eggler  
 **Use:** Subdued full-page photographic texture behind the dossier  
 **Rights:** Public domain.
+
+## Winter Palace photograph
+
+**File:** `WinterPalace.jpg`  
+**Source:** https://commons.wikimedia.org/wiki/File:WinterPalace.jpg  
+**Use:** Header architectural texture  
+**Rights:** Released to the public domain by the photographer.
+
+## Winter Palace, Library of Congress print
+
+**File:** `Winter Palace, St. Petersburg, Russia LCCN2014646333.jpg`  
+**Source:** https://commons.wikimedia.org/wiki/File:Winter_Palace,_St._Petersburg,_Russia_LCCN2014646333.jpg  
+**Date:** acquired 1905  
+**Use:** Chronology-strip photographic texture  
+**Rights:** Public domain.
+
+## Grand Duke Sergei Alexandrovich portrait
+
+**File:** `Grand Duke Sergei Alexandrovich of Russia 1857-1905.jpg`  
+**Source:** https://commons.wikimedia.org/wiki/File:Grand_Duke_Sergei_Alexandrovich_of_Russia_1857-1905.jpg  
+**Date:** late 19th century  
+**Use:** Sergei assassination apparition / damaged devotional portrait  
+**Rights:** Public domain; photographer died in 1898 and the work is public domain in the United States.
 
 ## Christ Pantocrator, Sinai
 
@@ -41,4 +62,4 @@ All four sources are hosted on Wikimedia Commons. The intent is to replace remot
 
 ## Visual treatment
 
-The images are intentionally not presented as clean museum reproductions. The GUI applies grayscale, sepia, low brightness, high contrast, vignette, scanline, and translucent black/red overlays to integrate them with the political-horror dossier aesthetic.
+The current palette is intentionally **imperial forest green / olive drab / tarnished brass**, rather than horror-red. Photographs are treated as damaged archival objects: low brightness, grayscale/sepia, green cast, high contrast, vignette, scanline and translucent black overlays. Red is reserved for future moments where blood or warning genuinely needs to interrupt the visual language rather than being the default UI color.
