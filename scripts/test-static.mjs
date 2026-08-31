@@ -3,11 +3,14 @@ import vm from 'node:vm';
 
 const output = new URL('../dist/', import.meta.url);
 const html = await readFile(new URL('index.html', output), 'utf8');
+const imperialSeal = await readFile(new URL('asset/imperial-seal.svg', output), 'utf8');
 await access(new URL('.nojekyll', output));
 
 if (!html.includes('<style data-static-bundle>')) throw new Error('The deployed page has no inline stylesheet.');
 if (!html.includes('<script data-static-bundle>')) throw new Error('The deployed page has no inline script.');
 if (/\b(?:src|href)=["']\.\/src\//.test(html)) throw new Error('The deployed page still relies on a source asset URL.');
+if (!html.includes('url("./asset/imperial-seal.svg")')) throw new Error('The deployed page does not reference the imperial seal.');
+if (!imperialSeal.includes('<svg') || !imperialSeal.includes('</svg>')) throw new Error('The deployed imperial seal is not a complete SVG.');
 
 const scriptMatch = html.match(/<script data-static-bundle>([\s\S]*?)<\/script>/);
 if (!scriptMatch) throw new Error('Could not read the inline application script.');
