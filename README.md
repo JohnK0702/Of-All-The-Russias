@@ -1,4 +1,6 @@
-# 1905: Третий Рим
+# Of All The Russias
+
+*Mene, Mene, Tekel, Upharsin*
 
 A playable static prologue for a long-form **The Campaign Trail**-style political-horror concept set in Imperial Russia between 1905 and 1914.
 

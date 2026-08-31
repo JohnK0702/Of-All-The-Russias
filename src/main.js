@@ -83,13 +83,83 @@ const chapters = [
   }
 ];
 
-const state = { index: 0, history: [], scores: { autocracy: 0, legitimacy: 0, reform: 0, land: 0, blood: 0, empire: 0, veil: 0, door: 0, britain: 0 } };
+const state = { index: 0, history: [], pending: null, scores: { autocracy: 0, legitimacy: 0, reform: 0, land: 0, blood: 0, empire: 0, veil: 0, door: 0, britain: 0 } };
+
+const advisors = {
+  sergei: {
+    name: 'GRAND DUKE SERGEI ALEXANDROVICH',
+    role: 'Your uncle · Former Governor-General of Moscow',
+    mark: 'С.А.',
+    tone: 'Order is not cruelty, Nicky. Indecision is cruelty distributed among subordinates.'
+  },
+  witte: {
+    name: 'COUNT SERGEI WITTE',
+    role: 'Chairman of the Council of Ministers',
+    mark: 'С.Ю.',
+    tone: 'A state may bend in public or break in private. The ministries prefer the latter because it requires less paperwork.'
+  },
+  alexandra: {
+    name: 'ALEXANDRA FEODOROVNA',
+    role: 'Empress of All the Russias',
+    mark: 'А.Ф.',
+    tone: 'They call your constancy weakness because they cannot understand what God has placed upon you.'
+  },
+  trepov: {
+    name: 'GENERAL DMITRI TREPOV',
+    role: 'Commandant of the Imperial Palace',
+    mark: 'Д.Т.',
+    tone: 'The state has spoken clearly. It will now be necessary to ensure nobody mistakes clarity for permission to answer.'
+  },
+  lamsdorff: {
+    name: 'COUNT VLADIMIR LAMSDORFF',
+    role: 'Minister of Foreign Affairs',
+    mark: 'В.Л.',
+    tone: 'The British will misunderstand this deliberately. The French will misunderstand it loyally. This is called diplomacy.'
+  },
+  stolypin: {
+    name: 'PYOTR STOLYPIN',
+    role: 'Minister of the Interior',
+    mark: 'П.А.',
+    tone: 'You have purchased time, Majesty. Russia has always mistaken the purchase of time for the solution of a problem.'
+  }
+};
+
+function chooseAdvisor(chapterIndex) {
+  if (chapterIndex === 0) return advisors.sergei;
+  const s = state.scores;
+  if (s.britain >= 3) return advisors.lamsdorff;
+  if (s.door + s.veil >= 5) return advisors.alexandra;
+  if (s.blood + s.autocracy >= 7) return advisors.trepov;
+  if (chapterIndex >= 3 && s.land > 0) return advisors.stolypin;
+  return advisors.witte;
+}
+
+function consequenceText(effects) {
+  const observations = [];
+  if ((effects.legitimacy || 0) > 0) observations.push('For the moment, more of your subjects believe the Crown has heard them');
+  if ((effects.legitimacy || 0) < 0) observations.push('The Crown has retained obedience, but belief in it has thinned');
+  if ((effects.reform || 0) > 0) observations.push('the machinery of reform has acquired another small piece of reality');
+  if ((effects.autocracy || 0) > 0) observations.push('your personal authority is less ambiguous than it was yesterday');
+  if ((effects.autocracy || 0) < 0) observations.push('the ministries have noticed that the sovereign can surrender discretion without surrendering the throne');
+  if ((effects.blood || 0) > 0) observations.push('blood has entered the account, and Russia is very poor at closing accounts');
+  if ((effects.door || 0) > 0) observations.push('your silence has been interpreted as policy by men who profit from interpreting it');
+  if ((effects.britain || 0) > 0) observations.push('the Foreign Ministry is relieved to possess an explanation involving London');
+  if ((effects.veil || 0) > 0) observations.push('Alexandra says the unease in the palace is only a trial of faith');
+  return `${observations.join('; ')}. ${chooseAdvisor(state.index).tone}`;
+}
 
 function apply(choiceIndex) {
   const chapter = chapters[state.index];
   const [, effects] = chapter.choices[choiceIndex];
   Object.entries(effects).forEach(([key, value]) => { state.scores[key] += value; });
   state.history.push(choiceIndex);
+  state.pending = { choiceIndex, effects, advisor: chooseAdvisor(state.index) };
+  render();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function continueFromAdvisor() {
+  state.pending = null;
   state.index += 1;
   render();
   window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -119,7 +189,7 @@ function renderEnding() {
       <p class="fineprint">This prologue contains four of the proposed seventy questions.</p>
     </main>`;
   document.querySelector('.restart').onclick = () => {
-    state.index = 0; state.history = [];
+    state.index = 0; state.history = []; state.pending = null;
     Object.keys(state.scores).forEach(key => { state.scores[key] = 0; });
     render();
   };
@@ -133,9 +203,9 @@ function render() {
       <header>
         <div class="seal" aria-hidden="true"><span>☦</span><b>Н II</b></div>
         <div class="masthead">
-          <p class="russian-title">1905 · ТРЕТИЙ РИМ</p>
-          <h1>THE THIRD ROME</h1>
-          <p class="motto">Two Romes have fallen. The third stands. There shall be no fourth.</p>
+          <p class="russian-title">1905–1914 · A RUSSIAN PASSION</p>
+          <h1>OF ALL THE RUSSIAS</h1>
+          <p class="motto">Mene, Mene, Tekel, Upharsin</p>
         </div>
         <div class="year"><b>1905</b><span>—</span><small>1914</small></div>
       </header>
@@ -171,8 +241,33 @@ function render() {
         </aside>
       </main>
       <footer><span>☦</span><p>ORTHODOXY</p><i>◆</i><p>AUTOCRACY</p><i>◆</i><p>NATIONALITY</p><span>☦</span></footer>
+      ${state.pending ? renderAdvisor(q) : ''}
     </div>`;
   document.querySelectorAll('[data-choice]').forEach(button => button.onclick = () => apply(Number(button.dataset.choice)));
+  const continueButton = document.querySelector('[data-continue]');
+  if (continueButton) continueButton.onclick = continueFromAdvisor;
+}
+
+function renderAdvisor(question) {
+  const { advisor, choiceIndex, effects } = state.pending;
+  const isSergei = advisor === advisors.sergei;
+  return `<div class="advisor-scrim" role="dialog" aria-modal="true" aria-labelledby="advisor-name">
+    <section class="advisor-card">
+      <p class="advisor-label">PRIVATE ADVICE · ${question.date}</p>
+      <div class="advisor-layout">
+        <div class="advisor-portrait"><span>${advisor.mark}</span></div>
+        <div class="advisor-copy">
+          <p class="handwritten">For Nicky’s eyes alone</p>
+          <h2 id="advisor-name">${advisor.name}</h2>
+          <p class="advisor-role">${advisor.role}</p>
+          <blockquote>${consequenceText(effects)}</blockquote>
+          <p class="decision-echo">You ordered: “${question.choices[choiceIndex][0]}”</p>
+          ${isSergei ? '<p class="fate-note">Grand Duke Sergei will be assassinated in Moscow on 17 February 1905. This is the only advice he will give you.</p>' : ''}
+          <button data-continue>SEAL THE MEMORANDUM <span>→</span></button>
+        </div>
+      </div>
+    </section>
+  </div>`;
 }
 
 render();
