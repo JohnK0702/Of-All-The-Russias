@@ -2,6 +2,13 @@
 
 This file records historical visual sources used by the GUI layers. The current build references Wikimedia Commons through `Special:Redirect/file/...` URLs; once the visual direction is locked, these should be replaced with repository-local optimized copies.
 
+## Imperial coat of arms
+
+**File:** `Middle Coat of Arms of the Russian Empire.svg`  
+**Source:** https://commons.wikimedia.org/wiki/File:Middle_Coat_of_Arms_of_the_Russian_Empire.svg  
+**Use:** Top-left imperial achievement, rendered through a CSS mask as simulated raised gilt / metallic relief  
+**Rights:** Heraldic representation based on the public-domain blazon; see the Commons file page for the illustration's licensing notes.
+
 ## Nicholas II portrait
 
 **File:** `Nicholas II by Boissonnas & Eggler c1909.jpg`  
@@ -17,14 +24,30 @@ This file records historical visual sources used by the GUI layers. The current 
 **Source:** https://commons.wikimedia.org/wiki/File:1904-1905peterhof.jpg  
 **Date:** c. 1904  
 **Author:** Boasson and Eggler  
-**Use:** Subdued full-page photographic texture behind the dossier  
+**Use:** Earlier full-page photographic texture  
 **Rights:** Public domain.
 
-## Winter Palace photograph
+## Winter Palace photograph, 1900
 
-**File:** `WinterPalace.jpg`  
-**Source:** https://commons.wikimedia.org/wiki/File:WinterPalace.jpg  
+**File:** `Winter Palace in St petersburg.jpg`  
+**Source:** https://commons.wikimedia.org/wiki/File:Winter_Palace_in_St_petersburg.jpg  
+**Date:** 1900  
 **Use:** Header architectural texture  
+**Rights:** Public domain by age / Public Domain Mark on Commons.
+
+## Winter Palace photograph, 1904
+
+**File:** `Winter Palace in St Petersburg, 1904.jpg`  
+**Source:** https://commons.wikimedia.org/wiki/File:Winter_Palace_in_St_Petersburg,_1904.jpg  
+**Date:** 1904  
+**Use:** Full-page background behind the main dossier  
+**Rights:** Public domain in the United States per Commons.
+
+## Winter Palace dome
+
+**File:** `Dome, Winter Palace.jpg`  
+**Source:** https://commons.wikimedia.org/wiki/File:Dome,_Winter_Palace.jpg  
+**Use:** Chronology strip, footer and advisor-card architectural texture  
 **Rights:** Released to the public domain by the photographer.
 
 ## Winter Palace, Library of Congress print
@@ -32,7 +55,7 @@ This file records historical visual sources used by the GUI layers. The current 
 **File:** `Winter Palace, St. Petersburg, Russia LCCN2014646333.jpg`  
 **Source:** https://commons.wikimedia.org/wiki/File:Winter_Palace,_St._Petersburg,_Russia_LCCN2014646333.jpg  
 **Date:** acquired 1905  
-**Use:** Chronology-strip photographic texture  
+**Use:** Earlier chronology-strip photographic texture  
 **Rights:** Public domain.
 
 ## Grand Duke Sergei Alexandrovich portrait
@@ -62,4 +85,8 @@ This file records historical visual sources used by the GUI layers. The current 
 
 ## Visual treatment
 
-The current palette is intentionally **imperial forest green / olive drab / tarnished brass**, rather than horror-red. Photographs are treated as damaged archival objects: low brightness, grayscale/sepia, green cast, high contrast, vignette, scanline and translucent black overlays. Red is reserved for future moments where blood or warning genuinely needs to interrupt the visual language rather than being the default UI color.
+The current palette is **blackened imperial forest green / olive / antique gilt / tarnished brass**. The interface should feel expensive before it feels frightening: embossed state stationery, lacquered green leather, palace trim and ecclesiastical gold slowly being forced to carry increasingly ugly information.
+
+Gold is now structural rather than incidental: the imperial achievement, inner frame, progress bar, section rules, headings, option numerals, dossier trim, advisor frames and footer all use layered gilt tones. Red is intentionally reserved for later historical rupture, blood, revolutionary imagery or warning states instead of serving as the default UI language.
+
+Photographs are integrated as damaged archival objects: low brightness, desaturation, green cast, vignette, scanline and translucent black overlays. The imperial coat of arms is not displayed as flat heraldic clip-art; CSS uses the SVG as a mask and paints it with highlight/shadow gradients and drop-shadows to simulate raised gold relief.
