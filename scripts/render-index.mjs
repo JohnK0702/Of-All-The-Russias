@@ -15,11 +15,12 @@ const detailedEvents = await readFile(new URL('src/detailed-events.js', root), '
 const engine = await readFile(new URL('src/main.js', root), 'utf8');
 const endingPaths = await readFile(new URL('src/ending-paths.js', root), 'utf8');
 const detailedAdvisors = await readFile(new URL('src/detailed-advisors.js', root), 'utf8');
+const politicalHorror = await readFile(new URL('src/political-horror.js', root), 'utf8');
 const sergeiHorror = await readFile(new URL('src/sergei-horror.js', root), 'utf8');
 const failRoutes = await readFile(new URL('src/fail-routes.js', root), 'utf8');
 const eventArt = await readFile(new URL('src/event-art.js', root), 'utf8');
 const css = `${baseCss}\n\n${darkGuiCss}\n\n${skeletonUiCss}\n\n${sergeiCss}\n\n${assetPlaceholderCss}\n\n${eventArtCss}\n\n${failRoutesCss}`;
-const javascript = `${gameData}\n\n${branching}\n\n${detailedEvents}\n\n${engine}\n\n${endingPaths}\n\n${detailedAdvisors}\n\n${sergeiHorror}\n\n${failRoutes}\n\n${eventArt}`;
+const javascript = `${gameData}\n\n${branching}\n\n${detailedEvents}\n\n${engine}\n\n${endingPaths}\n\n${detailedAdvisors}\n\n${politicalHorror}\n\n${sergeiHorror}\n\n${failRoutes}\n\n${eventArt}`;
 
 if (css.includes('</style>') || javascript.includes('</script>')) {
   throw new Error('Inline assets may not contain closing style or script tags.');
