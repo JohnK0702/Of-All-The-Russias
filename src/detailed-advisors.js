@@ -1,8 +1,27 @@
-/* Replace score-template advisor chatter with event-specific counsel.
+/* Replace score-template advisor chatter and generic campaign fallbacks with event-specific content.
    Loaded after main.js so these assignments override the engine defaults. */
 
 const oatrDefaultChooseAdvisor = chooseAdvisor;
 const oatrDefaultConsequenceText = consequenceText;
+
+questionText = function(q) {
+  if (q.branchText) return q.branchText;
+  if (OATR_KEY_TEXT[q.id]) return OATR_KEY_TEXT[q.id];
+  return {
+    body: ['The imperial record for this date is missing.'],
+    quote: '“No memorandum was filed.”',
+    speaker: 'Imperial Chancellery'
+  };
+};
+
+baseChoicesFor = function(q) {
+  const override = OATR_BRANCHING?.choiceOverrides?.[q.id];
+  if (override) {
+    const overridden = override(branchContext());
+    if (overridden) return overridden;
+  }
+  return OATR_SPECIAL_CHOICES[q.id] || [['Close the file.', { door: 1 }]];
+};
 
 chooseAdvisor = function(q) {
   const key = typeof oatrEventAdvisor === 'function' ? oatrEventAdvisor(q.id) : null;
