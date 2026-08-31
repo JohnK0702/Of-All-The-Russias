@@ -9,7 +9,6 @@ const sergeiCss = await readFile(new URL('src/sergei-horror.css', root), 'utf8')
 const assetPlaceholderCss = await readFile(new URL('src/asset-placeholders.css', root), 'utf8');
 const eventArtCss = await readFile(new URL('src/event-art.css', root), 'utf8');
 const failRoutesCss = await readFile(new URL('src/fail-routes.css', root), 'utf8');
-const canonPassionCss = await readFile(new URL('src/canon-passion.css', root), 'utf8');
 const gameData = await readFile(new URL('src/game-data.js', root), 'utf8');
 const branching = await readFile(new URL('src/branching.js', root), 'utf8');
 const detailedEvents = await readFile(new URL('src/detailed-events.js', root), 'utf8');
@@ -20,9 +19,10 @@ const politicalHorror = await readFile(new URL('src/political-horror.js', root),
 const sergeiHorror = await readFile(new URL('src/sergei-horror.js', root), 'utf8');
 const failRoutes = await readFile(new URL('src/fail-routes.js', root), 'utf8');
 const canonPassion = await readFile(new URL('src/canon-passion.js', root), 'utf8');
+const canonPassionVoice = await readFile(new URL('src/canon-passion-voice.js', root), 'utf8');
 const eventArt = await readFile(new URL('src/event-art.js', root), 'utf8');
-const css = `${baseCss}\n\n${darkGuiCss}\n\n${skeletonUiCss}\n\n${sergeiCss}\n\n${assetPlaceholderCss}\n\n${eventArtCss}\n\n${failRoutesCss}\n\n${canonPassionCss}`;
-const javascript = `${gameData}\n\n${branching}\n\n${detailedEvents}\n\n${engine}\n\n${endingPaths}\n\n${detailedAdvisors}\n\n${politicalHorror}\n\n${sergeiHorror}\n\n${failRoutes}\n\n${canonPassion}\n\n${eventArt}`;
+const css = `${baseCss}\n\n${darkGuiCss}\n\n${skeletonUiCss}\n\n${sergeiCss}\n\n${assetPlaceholderCss}\n\n${eventArtCss}\n\n${failRoutesCss}`;
+const javascript = `${gameData}\n\n${branching}\n\n${detailedEvents}\n\n${engine}\n\n${endingPaths}\n\n${detailedAdvisors}\n\n${politicalHorror}\n\n${sergeiHorror}\n\n${failRoutes}\n\n${canonPassion}\n\n${canonPassionVoice}\n\n${eventArt}`;
 
 if (css.includes('</style>') || javascript.includes('</script>')) {
   throw new Error('Inline assets may not contain closing style or script tags.');
