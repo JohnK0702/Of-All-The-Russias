@@ -2,7 +2,9 @@ import { readFile, writeFile } from 'node:fs/promises';
 
 const root = new URL('../', import.meta.url);
 const template = await readFile(new URL('index.template.html', root), 'utf8');
-const css = await readFile(new URL('src/style.css', root), 'utf8');
+const baseCss = await readFile(new URL('src/style.css', root), 'utf8');
+const darkGuiCss = await readFile(new URL('src/dark-gui.css', root), 'utf8');
+const css = `${baseCss}\n\n${darkGuiCss}`;
 const javascript = await readFile(new URL('src/main.js', root), 'utf8');
 
 if (css.includes('</style>') || javascript.includes('</script>')) {
