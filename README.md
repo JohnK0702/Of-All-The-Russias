@@ -22,10 +22,19 @@ The build command assembles a deployment-ready copy in `dist/`. All browser entr
 paths are relative, so the result works at a domain root or beneath a repository
 subpath such as `https://example.github.io/Of-All-The-Russias/`.
 
+The site uses browser-native JavaScript and a normal stylesheet link; it does not
+depend on a bundler to transform JavaScript imports before deployment.
+
 Preview the exact production artifact locally with:
 
 ```bash
 npm run preview
+```
+
+Run the deployment smoke test with:
+
+```bash
+npm test
 ```
 
 ## GitHub Pages deployment

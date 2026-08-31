@@ -8,8 +8,8 @@ await rm(outputDirectory, { recursive: true, force: true });
 await mkdir(outputDirectory, { recursive: true });
 
 const html = await readFile(sourceEntry, 'utf8');
-if (!html.includes('src="./src/main.js"')) {
-  throw new Error('index.html must use a relative entry path for subdirectory hosting.');
+if (!html.includes('src="./src/main.js"') || !html.includes('href="./src/style.css"')) {
+  throw new Error('index.html must use relative script and stylesheet paths for subdirectory hosting.');
 }
 
 await writeFile(new URL('index.html', outputDirectory), html);
