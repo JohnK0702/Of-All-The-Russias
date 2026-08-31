@@ -1,159 +1,87 @@
-const chapters = [
-  {
-    number: 'I',
-    date: '9 January 1905',
-    place: 'Tsarskoye Selo',
-    kicker: 'THE FIRST CRACK',
-    title: 'Before the bells',
-    body: [
-      'You wake before dawn. Alexandra is sleeping beside you. Somewhere in the palace a clock is ticking.',
-      'You have been Emperor of All the Russias for ten years. Your father once called you weak. Your ministers call you Majesty. Your wife calls you Nicky. One hundred and twenty-five million people call you Tsar.',
-      '<em>God has not called you anything lately.</em>',
-      'Outside Petersburg, a priest named Georgy Gapon is gathering workers beneath icons and portraits of your face. They believe that if only the Little Father knew what was being done to them, everything would be made right.',
-      'The peculiar difficulty is that you do know.'
-    ],
-    quote: '“The procession is peaceful, Majesty. That is not the same thing as harmless.”',
-    speaker: 'Minister of the Interior Sviatopolk-Mirsky',
-    choices: [
-      ['Receive a delegation. They are my subjects, and I should hear them.', { legitimacy: 2, reform: 1, door: -1 }],
-      ['Send word through Father Gapon: I will receive the petition after they disperse.', { legitimacy: 1, autocracy: 1 }],
-      ['The procession cannot approach the palace. Trepov understands what must be done.', { autocracy: 2, blood: 3 }],
-      ['I do not wish to discuss this further.', { door: 3, legitimacy: -2, veil: 1 }]
-    ]
-  },
-  {
-    number: 'II',
-    date: '30 May 1905',
-    place: 'The Alexander Palace',
-    kicker: 'A DISTANT SEA',
-    title: 'The fleet that is no longer there',
-    body: [
-      'A telegram has arrived from the other side of the world. Admiral Rozhestvensky’s fleet found the Japanese in the strait at Tsushima.',
-      'The Baltic Fleet sailed eighteen thousand miles to discover that distance is not a strategy. Ships that survived the guns raised white flags. The empire has lost a fleet in an afternoon.',
-      'The Naval Ministry requests funds for an inquiry. The inquiry will be chaired by the men who built the fleet.'
-    ],
-    quote: '“London sold them coal. London sold us assurances.”',
-    speaker: 'Admiral Alexeyev, helpfully',
-    choices: [
-      ['Accept Roosevelt’s mediation. End the war before defeat becomes revolution.', { legitimacy: 1, reform: 1, autocracy: -1 }],
-      ['Continue the war. Russia does not conclude peace after a single naval reverse.', { blood: 2, autocracy: 1, legitimacy: -2 }],
-      ['Dismiss the naval command and publish the procurement records.', { reform: 2, autocracy: -1, legitimacy: 2 }],
-      ['Ask why Britain has so many coaling stations.', { britain: 2, veil: 1 }]
-    ]
-  },
-  {
-    number: 'III',
-    date: '17 October 1905',
-    place: 'Peterhof',
-    kicker: 'THE CLOSED DOOR',
-    title: 'A constitution that may not exist',
-    body: [
-      'The railways are still. Moscow is dark. Witte has placed a document on your desk which promises civil liberties and an elected legislature.',
-      'The ink would not end autocracy tonight. It would, however, admit that Russia contains people other than its sovereign.',
-      'Alexandra calls the paper cowardice. Witte calls it the last available instrument of government. Beyond the windows, the gulf is the color of iron.'
-    ],
-    quote: '“Majesty may preserve every word of the autocracy, or preserve the autocracy. I no longer believe both are possible.”',
-    speaker: 'Sergei Witte',
-    choices: [
-      ['Sign—and mean it. The Duma must become part of the state, not its decoration.', { reform: 3, legitimacy: 3, autocracy: -2, door: -1 }],
-      ['Sign. We may revisit the precise meaning when order returns.', { reform: 1, legitimacy: -1, autocracy: 1, door: 1 }],
-      ['Refuse. Disorder cannot be rewarded with a constitution.', { autocracy: 3, blood: 3, legitimacy: -3 }],
-      ['Create a commission to examine the legal character of future commissions.', { door: 2, legitimacy: -1, britain: 1 }]
-    ]
-  },
-  {
-    number: 'IV',
-    date: '6 May 1906',
-    place: 'The Winter Palace',
-    kicker: 'THE FIRST DUMA',
-    title: 'The sound of another voice',
-    body: [
-      'For the first time, elected deputies stand before the throne. Many have arrived from villages whose names the ministries have never learned to spell.',
-      'They ask for land, responsible government, amnesty, and an end to arbitrary power. They ask all of this at once, as though nine months of legality have made up for centuries without it.',
-      'You notice how few of them bow correctly.'
-    ],
-    quote: '“The constitution does not diminish the Crown unless the Crown proves unable to share a room with it.”',
-    speaker: 'Count Witte, no longer prime minister',
-    choices: [
-      ['Invite the Duma leaders to form a ministry. Let responsibility teach restraint.', { reform: 4, legitimacy: 3, autocracy: -3, land: 1 }],
-      ['Work with moderates, but reserve the ministries of war and the interior.', { reform: 2, legitimacy: 2, autocracy: 1 }],
-      ['Dissolve it. Russia cannot be governed by speeches.', { autocracy: 3, legitimacy: -3, blood: 1 }],
-      ['End the audience early. Alexei is unwell.', { door: 3, veil: 1 }]
-    ]
-  }
-];
+const SCORE_KEYS = ['autocracy','legitimacy','reform','land','blood','empire','veil','door','britain','military','economy','faith'];
+const SAVE_KEY = 'oatr-campaign-v2';
 
-const state = { index: 0, history: [], pending: null, scores: { autocracy: 0, legitimacy: 0, reform: 0, land: 0, blood: 0, empire: 0, veil: 0, door: 0, britain: 0 } };
+const freshState = () => ({
+  index: 0,
+  history: [],
+  pending: null,
+  scores: Object.fromEntries(SCORE_KEYS.map(k => [k, 0])),
+  flags: new Set(),
+  startedAt: Date.now()
+});
 
-const advisors = {
-  sergei: {
-    name: 'GRAND DUKE SERGEI ALEXANDROVICH',
-    role: 'Your uncle · Former Governor-General of Moscow',
-    mark: 'С.А.',
-    tone: 'Order is not cruelty, Nicky. Indecision is cruelty distributed among subordinates.'
-  },
-  witte: {
-    name: 'COUNT SERGEI WITTE',
-    role: 'Chairman of the Council of Ministers',
-    mark: 'С.Ю.',
-    tone: 'A state may bend in public or break in private. The ministries prefer the latter because it requires less paperwork.'
-  },
-  alexandra: {
-    name: 'ALEXANDRA FEODOROVNA',
-    role: 'Empress of All the Russias',
-    mark: 'А.Ф.',
-    tone: 'They call your constancy weakness because they cannot understand what God has placed upon you.'
-  },
-  trepov: {
-    name: 'GENERAL DMITRI TREPOV',
-    role: 'Commandant of the Imperial Palace',
-    mark: 'Д.Т.',
-    tone: 'The state has spoken clearly. It will now be necessary to ensure nobody mistakes clarity for permission to answer.'
-  },
-  lamsdorff: {
-    name: 'COUNT VLADIMIR LAMSDORFF',
-    role: 'Minister of Foreign Affairs',
-    mark: 'В.Л.',
-    tone: 'The British will misunderstand this deliberately. The French will misunderstand it loyally. This is called diplomacy.'
-  },
-  stolypin: {
-    name: 'PYOTR STOLYPIN',
-    role: 'Minister of the Interior',
-    mark: 'П.А.',
-    tone: 'You have purchased time, Majesty. Russia has always mistaken the purchase of time for the solution of a problem.'
-  }
-};
+let state = loadState() || freshState();
 
-function chooseAdvisor(chapterIndex) {
-  if (chapterIndex === 0) return advisors.sergei;
-  const s = state.scores;
-  if (s.britain >= 3) return advisors.lamsdorff;
-  if (s.door + s.veil >= 5) return advisors.alexandra;
-  if (s.blood + s.autocracy >= 7) return advisors.trepov;
-  if (chapterIndex >= 3 && s.land > 0) return advisors.stolypin;
-  return advisors.witte;
+function saveState() {
+  const payload = { ...state, flags: [...state.flags], pending: null };
+  localStorage.setItem(SAVE_KEY, JSON.stringify(payload));
 }
 
-function consequenceText(effects) {
-  const observations = [];
-  if ((effects.legitimacy || 0) > 0) observations.push('For the moment, more of your subjects believe the Crown has heard them');
-  if ((effects.legitimacy || 0) < 0) observations.push('The Crown has retained obedience, but belief in it has thinned');
-  if ((effects.reform || 0) > 0) observations.push('the machinery of reform has acquired another small piece of reality');
-  if ((effects.autocracy || 0) > 0) observations.push('your personal authority is less ambiguous than it was yesterday');
-  if ((effects.autocracy || 0) < 0) observations.push('the ministries have noticed that the sovereign can surrender discretion without surrendering the throne');
-  if ((effects.blood || 0) > 0) observations.push('blood has entered the account, and Russia is very poor at closing accounts');
-  if ((effects.door || 0) > 0) observations.push('your silence has been interpreted as policy by men who profit from interpreting it');
-  if ((effects.britain || 0) > 0) observations.push('the Foreign Ministry is relieved to possess an explanation involving London');
-  if ((effects.veil || 0) > 0) observations.push('Alexandra says the unease in the palace is only a trial of faith');
-  return `${observations.join('; ')}. ${chooseAdvisor(state.index).tone}`;
+function loadState() {
+  try {
+    const raw = localStorage.getItem(SAVE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    if (!parsed || !parsed.scores || !Array.isArray(parsed.history)) return null;
+    parsed.flags = new Set(parsed.flags || []);
+    parsed.pending = null;
+    SCORE_KEYS.forEach(k => { if (typeof parsed.scores[k] !== 'number') parsed.scores[k] = 0; });
+    return parsed;
+  } catch { return null; }
+}
+
+function eraFor(questionNumber) {
+  return OATR_ERAS.find(era => questionNumber >= era.start && questionNumber <= era.end) || OATR_ERAS.at(-1);
+}
+
+function currentQuestion() {
+  return OATR_SKELETONS[state.index];
+}
+
+function yearFromDate(date) {
+  const match = date.match(/(19\d{2})/);
+  return match ? Number(match[1]) : 1905;
+}
+
+function yearsRemaining(date) {
+  return Math.max(0, 1914 - yearFromDate(date));
+}
+
+function questionText(q) {
+  const key = OATR_KEY_TEXT[q.id];
+  if (key) return key;
+  const [quote, speaker] = OATR_GENERIC_QUOTES[q.set];
+  const body = [...OATR_GENERIC_TEXT[q.set]];
+  if (state.scores.blood >= 16) body.push('Violence now carries memory from one crisis into the next. Every order arrives with ghosts attached.');
+  if (state.scores.door >= 14) body.push('Your ministers have become skilled at converting silence into instructions.');
+  if (state.scores.veil >= 14) body.push('<em>Somewhere in the palace, a bell sounds once. Nobody else appears to hear it.</em>');
+  return { body, quote, speaker };
+}
+
+function choicesFor(q) {
+  if (q.id === 35 && !state.flags.has('stolypinProtected')) {
+    return [
+      ['Stolypin is dead. Preserve his program even without the man.', { reform: 2, land: 2, legitimacy: 1, flags: ['stolypinDead'] }],
+      ['Appoint a safer successor and lower the temperature.', { door: 1, legitimacy: 1, flags: ['stolypinDead'] }],
+      ['The murder proves reform only feeds instability. Reverse course.', { autocracy: 2, reform: -2, land: -2, blood: 1, flags: ['stolypinDead'] }],
+      ['Say nothing publicly beyond the funeral proclamation.', { door: 2, veil: 1, flags: ['stolypinDead'] }]
+    ];
+  }
+  if (OATR_SPECIAL_CHOICES[q.id]) return OATR_SPECIAL_CHOICES[q.id];
+  return OATR_CHOICE_SETS[q.set];
 }
 
 function apply(choiceIndex) {
-  const chapter = chapters[state.index];
-  const [, effects] = chapter.choices[choiceIndex];
-  Object.entries(effects).forEach(([key, value]) => { state.scores[key] += value; });
-  state.history.push(choiceIndex);
-  state.pending = { choiceIndex, effects, advisor: chooseAdvisor(state.index) };
+  const q = currentQuestion();
+  const choices = choicesFor(q);
+  const [label, effects] = choices[choiceIndex];
+  Object.entries(effects).forEach(([key, value]) => {
+    if (key === 'flags') value.forEach(flag => state.flags.add(flag));
+    else if (SCORE_KEYS.includes(key)) state.scores[key] += value;
+  });
+  state.history.push({ id: q.id, choiceIndex, label });
+  state.pending = { choiceIndex, label, effects, advisor: chooseAdvisor(q) };
+  saveState();
   render();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -161,43 +89,138 @@ function apply(choiceIndex) {
 function continueFromAdvisor() {
   state.pending = null;
   state.index += 1;
+  saveState();
   render();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-function ending() {
+function chooseAdvisor(q) {
   const s = state.scores;
-  if (s.britain >= 4) return ['EUROPE FINALLY GETS TO THE BOTTOM OF IT', 'THE ENGLISH DID IT', 'The Foreign Ministry has isolated the source of every Russian misfortune. It is an island in the North Sea. One question remains: if Britain was responsible for everything, what happens now?'];
-  if (s.blood >= 7) return ['THE TREE IS CUT DOWN', 'НЕБУХАДНЕЦАР', 'Authority has survived every concession because none were made. Obedience remains universal in all places where soldiers are present. The underground no longer asks Russia to reform. It asks Russia to answer for the dead.'];
-  if (s.reform >= 8 && s.legitimacy >= 7) return ['THE TSAR WHO BECAME SMALLER', 'THE TWENTY YEARS', 'The throne is no longer the state, and therefore both endure. Russia has not been perfected. It has learned the less glorious art of correction. History waits at the door and, for once, finds it open.'];
-  if (s.door >= 6) return ['NO ANSWER IS ALSO AN ANSWER', 'THE CLOSED DOOR', 'The empire is governed through silences. Every official learns to guess your wishes, and every guess becomes an order carrying your name. You have avoided deciding anything. Everything has been decided.'];
-  return ['A CONSTITUTION WRITTEN IN PENCIL', 'THE BREATHING SPACE', 'The old state and the new Russia regard one another across a desk. Neither has won. Neither has left. Somewhere beyond the palace, Stolypin is asking for twenty years. You have eight.'];
+  if (q.id === 1) return OATR_ADVISORS.sergei;
+  if (q.id >= 56) return s.veil >= 14 ? OATR_ADVISORS.rasputin : (q.set === 'military' ? OATR_ADVISORS.nicholas : OATR_ADVISORS.sazonov);
+  if (q.id >= 32 && s.veil >= 9) return OATR_ADVISORS.rasputin;
+  if (q.id >= 19 && q.id <= 35 && !state.flags.has('stolypinDead')) return OATR_ADVISORS.stolypin;
+  if (s.britain >= 8) return OATR_ADVISORS.lamsdorff;
+  if (s.door + s.veil >= 18) return OATR_ADVISORS.alexandra;
+  if (s.blood + s.autocracy >= 22) return OATR_ADVISORS.trepov;
+  if (q.set === 'military') return OATR_ADVISORS.nicholas;
+  if (q.set === 'bureaucracy' || q.set === 'land') return OATR_ADVISORS.kokovtsov;
+  return OATR_ADVISORS.witte;
+}
+
+function consequenceText(effects, advisor) {
+  const o = [];
+  if ((effects.legitimacy || 0) >= 2) o.push('More of your subjects believe the Crown has heard them');
+  if ((effects.legitimacy || 0) <= -2) o.push('obedience may remain, but belief in the Crown has thinned');
+  if ((effects.reform || 0) >= 2) o.push('an institution outside your person has acquired a little more reality');
+  if ((effects.autocracy || 0) >= 2) o.push('your personal authority is less ambiguous than it was yesterday');
+  if ((effects.autocracy || 0) <= -2) o.push('the ministries have seen that discretion can be surrendered without surrendering the throne');
+  if ((effects.land || 0) >= 2) o.push('the land question has moved from rhetoric into ownership');
+  if ((effects.military || 0) >= 2) o.push('the army has become marginally more capable of surviving its own paperwork');
+  if ((effects.blood || 0) >= 2) o.push('blood has entered the account, and Russia is very poor at closing accounts');
+  if ((effects.door || 0) >= 2) o.push('your silence is already being interpreted as policy');
+  if ((effects.britain || 0) >= 2) o.push('the Foreign Ministry is relieved to possess an explanation involving London');
+  if ((effects.veil || 0) >= 2) o.push('the palace feels a little less separable from prophecy');
+  const lead = o.length ? `${o.join('; ')}.` : 'The order is entered into the record.';
+  return `${lead} ${advisor.tone}`;
+}
+
+function conditionLabel(value, goodHigh = true) {
+  const v = goodHigh ? value : -value;
+  if (v >= 16) return 'ASCENDANT';
+  if (v >= 8) return 'STRONG';
+  if (v >= 2) return 'HOLDING';
+  if (v > -5) return 'UNCERTAIN';
+  if (v > -12) return 'ERODING';
+  return 'CRITICAL';
+}
+
+function imperialCondition() {
+  const s = state.scores;
+  return [
+    ['CROWN', conditionLabel(s.autocracy)],
+    ['BELIEF', conditionLabel(s.legitimacy)],
+    ['REFORM', conditionLabel(s.reform)],
+    ['LAND', conditionLabel(s.land)],
+    ['ORDER', conditionLabel(s.blood, false)],
+    ['VEIL', conditionLabel(s.veil, false)]
+  ];
+}
+
+function routeWhisper() {
+  const s = state.scores;
+  if (s.veil >= 18) return 'The bells have begun appearing in dreams.';
+  if (s.blood >= 22) return 'Every solution now arrives carrying rifles.';
+  if (s.door >= 18) return 'The ministries have learned to govern your silences.';
+  if (s.reform >= 20 && s.legitimacy >= 18) return 'For the first time, the state may be learning how to correct itself.';
+  if (s.britain >= 12) return 'London remains suspiciously involved in geography.';
+  if (s.land >= 14) return 'The village has begun to acquire something worth losing.';
+  return 'Russia is still deciding whether time is a resource or merely an interval.';
+}
+
+function pickEnding() {
+  const snapshot = { ...state.scores, flags: state.flags };
+  return OATR_ENDINGS.find(e => e.test(snapshot));
 }
 
 function renderEnding() {
-  const [kicker, title, text] = ending();
+  const ending = pickEnding();
   document.querySelector('#app').innerHTML = `
-    <main class="ending-page">
+    <main class="ending-page ending-${ending.family.toLowerCase().replace(/[^a-z]+/g,'-')}">
       <div class="ornament">☦</div>
-      <p class="eyebrow">A POSSIBLE RUSSIA · 1906</p>
-      <h1>${title}</h1>
-      <p class="ending-kicker">${kicker}</p>
+      <p class="eyebrow">A POSSIBLE RUSSIA · AFTER 1 AUGUST 1914</p>
+      <h1>${ending.title}</h1>
+      <p class="ending-kicker">${ending.kicker}</p>
       <div class="rule"><span>◆</span></div>
-      <p class="ending-copy">${text}</p>
+      <p class="ending-family">${ending.family}</p>
+      <p class="ending-copy">${ending.text}</p>
       <p class="ending-verse">“Mene, mene, tekel, upharsin.”</p>
-      <button class="restart">BEGIN AGAIN</button>
-      <p class="fineprint">This prologue contains four of the proposed seventy questions.</p>
+      <div class="ending-actions">
+        <button class="restart" data-restart>BEGIN AGAIN</button>
+        <button class="restart" data-review>REVIEW THE REIGN</button>
+      </div>
+      <p class="fineprint">70 questions · 1905–1914 · Ending: ${ending.id}</p>
     </main>`;
-  document.querySelector('.restart').onclick = () => {
-    state.index = 0; state.history = []; state.pending = null;
-    Object.keys(state.scores).forEach(key => { state.scores[key] = 0; });
-    render();
-  };
+  document.querySelector('[data-restart]').onclick = resetCampaign;
+  document.querySelector('[data-review]').onclick = renderReview;
+}
+
+function renderReview() {
+  const ending = pickEnding();
+  const rows = state.history.map((h, i) => {
+    const q = OATR_SKELETONS.find(x => x.id === h.id);
+    return `<li><span>${String(i+1).padStart(2,'0')}</span><div><b>${q.date} · ${q.title}</b><p>${h.label}</p></div></li>`;
+  }).join('');
+  document.querySelector('#app').innerHTML = `
+    <main class="review-page">
+      <header class="review-header"><div><p>THE IMPERIAL RECORD</p><h1>${ending.title}</h1></div><button data-back>RETURN TO ENDING</button></header>
+      <ol class="reign-ledger">${rows}</ol>
+    </main>`;
+  document.querySelector('[data-back]').onclick = renderEnding;
+}
+
+function resetCampaign() {
+  localStorage.removeItem(SAVE_KEY);
+  state = freshState();
+  render();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function render() {
-  if (state.index >= chapters.length) return renderEnding();
-  const q = chapters[state.index];
+  if (state.index >= OATR_SKELETONS.length) return renderEnding();
+  const q = currentQuestion();
+  const era = eraFor(q.id);
+  const copy = questionText(q);
+  const choices = choicesFor(q);
+  const year = yearFromDate(q.date);
+  const condition = imperialCondition().map(([k,v]) => `<li><span>${k}</span><b>${v}</b></li>`).join('');
+  const progress = Math.round((q.id - 1) / 69 * 100);
+
+  document.body.dataset.era = era.id;
+  document.body.dataset.year = year;
+  document.body.dataset.veil = state.scores.veil >= 18 ? 'high' : state.scores.veil >= 10 ? 'rising' : 'low';
+  document.body.dataset.blood = state.scores.blood >= 22 ? 'high' : state.scores.blood >= 12 ? 'rising' : 'low';
+
   document.querySelector('#app').innerHTML = `
     <div class="page-shell">
       <header>
@@ -207,50 +230,52 @@ function render() {
           <h1>OF ALL THE RUSSIAS</h1>
           <p class="motto">Mene, Mene, Tekel, Upharsin</p>
         </div>
-        <div class="year"><b>1905</b><span>—</span><small>1914</small></div>
+        <div class="year"><b>${year}</b><span>—</span><small>1914</small></div>
       </header>
       <nav class="chronology" aria-label="Story progress">
-        <span>THE FIRST CRACK</span><i></i><span>THE BREATHING SPACE</span><i></i><span>THE HOUSE OF CARDS</span><i></i><span>THE LAST SUMMER</span>
+        ${OATR_ERAS.map((e,i)=>`<span class="${e.id===era.id?'active':''}">${e.name}</span>${i<OATR_ERAS.length-1?'<i></i>':''}`).join('')}
       </nav>
+      <div class="campaign-progress"><span style="width:${progress}%"></span></div>
       <main>
         <aside class="folio">
-          <p>QUESTION</p><strong>${String(state.index + 1).padStart(2, '0')}</strong><span>OF 70</span>
+          <p>QUESTION</p><strong>${String(q.id).padStart(2, '0')}</strong><span>OF 70</span>
           <div class="vertical-rule"></div>
-          <p class="nine-years">YOU HAVE<br><b>${9 - state.index}</b><br>YEARS</p>
+          <p class="nine-years">YEARS TO<br><b>${yearsRemaining(q.date)}</b><br>MIDNIGHT</p>
         </aside>
         <article>
           <div class="dateline"><span>${q.date}</span><span class="cross">✣</span><span>${q.place}</span></div>
-          <p class="kicker">${q.kicker} · CHAPTER ${q.number}</p>
+          <p class="kicker">${era.name} · CHAPTER ${era.roman}</p>
           <h2>${q.title}</h2>
-          <section class="dispatch">${q.body.map(p => `<p>${p}</p>`).join('')}</section>
-          <blockquote><p>${q.quote}</p><cite>${q.speaker}</cite></blockquote>
+          <section class="dispatch">${copy.body.map(p => `<p>${p}</p>`).join('')}</section>
+          <blockquote><p>${copy.quote}</p><cite>${copy.speaker}</cite></blockquote>
           <div class="question"><span>WHAT DO YOU DO?</span></div>
           <ol class="choices">
-            ${q.choices.map(([label], i) => `<li><button data-choice="${i}"><span>${String.fromCharCode(65 + i)}</span><p>${label}</p><b>→</b></button></li>`).join('')}
+            ${choices.map(([label], i) => `<li><button data-choice="${i}"><span>${String.fromCharCode(65 + i)}</span><p>${label}</p><b>→</b></button></li>`).join('')}
           </ol>
         </article>
         <aside class="dossier">
-          <div class="portrait" role="img" aria-label="Stylized portrait of Emperor Nicholas II">
-            <div class="portrait-glow"></div><span class="crown">♛</span><div class="silhouette"><i></i></div>
-          </div>
+          <div class="portrait" role="img" aria-label="Portrait of Emperor Nicholas II"><div class="portrait-glow"></div><span class="crown">♛</span><div class="silhouette"><i></i></div></div>
           <p class="hand">Nicky</p>
           <h3>НИКОЛАЙ II<br><span>АЛЕКСАНДРОВИЧ</span></h3>
           <p>Emperor and Autocrat<br>of All the Russias</p>
           <div class="stamp">СОВЕРШЕННО<br><b>СЕКРЕТНО</b></div>
-          <small>“If Russia understood what Russia was, it would terrify her.”</small>
+          <section class="condition-panel"><p>IMPERIAL CONDITION</p><ul>${condition}</ul></section>
+          <small>${routeWhisper()}</small>
         </aside>
       </main>
       <footer><span>☦</span><p>ORTHODOXY</p><i>◆</i><p>AUTOCRACY</p><i>◆</i><p>NATIONALITY</p><span>☦</span></footer>
       ${state.pending ? renderAdvisor(q) : ''}
     </div>`;
+
   document.querySelectorAll('[data-choice]').forEach(button => button.onclick = () => apply(Number(button.dataset.choice)));
   const continueButton = document.querySelector('[data-continue]');
   if (continueButton) continueButton.onclick = continueFromAdvisor;
 }
 
 function renderAdvisor(question) {
-  const { advisor, choiceIndex, effects } = state.pending;
-  const isSergei = advisor === advisors.sergei;
+  const { advisor, label, effects } = state.pending;
+  const isSergei = advisor === OATR_ADVISORS.sergei;
+  const stolypinDeath = question.id === 35 && state.flags.has('stolypinDead');
   return `<div class="advisor-scrim" role="dialog" aria-modal="true" aria-labelledby="advisor-name">
     <section class="advisor-card">
       <p class="advisor-label">PRIVATE ADVICE · ${question.date}</p>
@@ -260,9 +285,10 @@ function renderAdvisor(question) {
           <p class="handwritten">For Nicky’s eyes alone</p>
           <h2 id="advisor-name">${advisor.name}</h2>
           <p class="advisor-role">${advisor.role}</p>
-          <blockquote>${consequenceText(effects)}</blockquote>
-          <p class="decision-echo">You ordered: “${question.choices[choiceIndex][0]}”</p>
+          <blockquote>${consequenceText(effects, advisor)}</blockquote>
+          <p class="decision-echo">You ordered: “${label}”</p>
           ${isSergei ? '<p class="fate-note">Grand Duke Sergei will be assassinated in Moscow on 17 February 1905. This is the only advice he will give you.</p>' : ''}
+          ${stolypinDeath ? '<p class="fate-note">The chair opposite you is empty. The program will now have to survive the man who made it possible.</p>' : ''}
           <button data-continue>SEAL THE MEMORANDUM <span>→</span></button>
         </div>
       </div>
