@@ -1,0 +1,90 @@
+/* Historical art layer. Deliberately ornamental: period images sit behind the dossier as archival evidence. */
+:root{
+  --event-art:none;
+  --advisor-art:none;
+}
+
+article{
+  isolation:isolate;
+}
+article::before{
+  content:'';
+  position:absolute;
+  inset:18px 14px 18px 14px;
+  z-index:-2;
+  background-image:
+    linear-gradient(90deg,rgba(11,18,13,.985) 0%,rgba(11,18,13,.94) 43%,rgba(11,18,13,.75) 72%,rgba(11,18,13,.89) 100%),
+    var(--event-art);
+  background-size:cover;
+  background-position:center;
+  opacity:.58;
+  filter:sepia(.18) saturate(.72) contrast(1.13) brightness(.58);
+  border:1px solid rgba(197,155,64,.18);
+  box-shadow:inset 0 0 75px rgba(0,0,0,.88);
+  pointer-events:none;
+}
+article::after{
+  content:'';
+  position:absolute;
+  top:18px;
+  right:14px;
+  width:34%;
+  height:4px;
+  z-index:-1;
+  background:linear-gradient(90deg,transparent,#b58b3b,#e1c06d,#76531b);
+  opacity:.7;
+  pointer-events:none;
+}
+
+.dispatch,
+article blockquote,
+.question,
+.choices{
+  position:relative;
+  text-shadow:0 1px 2px rgba(0,0,0,.94);
+}
+
+article h2{
+  position:relative;
+}
+article h2::after{
+  content:'';
+  display:block;
+  width:92px;
+  height:1px;
+  margin-top:10px;
+  background:linear-gradient(90deg,#e6c875,#8d6726,transparent);
+  box-shadow:0 1px 0 #000;
+}
+
+.advisor-portrait{
+  background-image:
+    linear-gradient(rgba(4,8,5,.10),rgba(3,6,4,.62)),
+    var(--advisor-art) !important;
+  background-size:cover !important;
+  background-position:center 18% !important;
+  filter:grayscale(.45) sepia(.25) saturate(.74) contrast(1.14) brightness(.67) !important;
+}
+.advisor-card{
+  position:relative;
+  overflow:hidden;
+}
+.advisor-card::after{
+  content:'';
+  position:absolute;
+  inset:10px;
+  pointer-events:none;
+  border:1px solid rgba(217,179,92,.18);
+  box-shadow:inset 0 0 0 1px rgba(69,48,13,.55);
+}
+
+/* Turn the art into a larger focal plate on important historical nodes. */
+body[data-year='1905'] article::before{opacity:.63;}
+body[data-year='1914'] article::before{opacity:.51;filter:sepia(.10) saturate(.55) contrast(1.18) brightness(.48);}
+body[data-veil='high'] article::before{filter:grayscale(.25) sepia(.32) saturate(.48) contrast(1.26) brightness(.42);}
+body[data-blood='high'] article::before{box-shadow:inset 0 0 95px rgba(0,0,0,.94),inset 0 -45px 60px rgba(49,20,13,.18);}
+
+@media(max-width:900px){
+  article::before{inset:10px;opacity:.34;background-position:center;}
+  article::after{display:none;}
+}
