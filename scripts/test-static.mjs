@@ -9,7 +9,12 @@ await access(new URL('.nojekyll', output));
 if (!html.includes('<style data-static-bundle>')) throw new Error('The deployed page has no inline stylesheet.');
 if (!html.includes('<script data-static-bundle>')) throw new Error('The deployed page has no inline script.');
 if (/\b(?:src|href)=["']\.\/src\//.test(html)) throw new Error('The deployed page still relies on a source asset URL.');
-if (!html.includes('url("./asset/imperial-seal.svg")')) throw new Error('The deployed page does not reference the imperial seal.');
+
+// Accept the asset with or without a cache-busting query string.
+// The source stylesheet intentionally versions this URL so browsers do not retain an old replacement.
+if (!/url\(["']\.\/asset\/imperial-seal\.svg(?:\?[^"']*)?["']\)/.test(html)) {
+  throw new Error('The deployed page does not reference the imperial seal.');
+}
 if (!imperialSeal.includes('<svg') || !imperialSeal.includes('</svg>')) throw new Error('The deployed imperial seal is not a complete SVG.');
 
 const scriptMatch = html.match(/<script data-static-bundle>([\s\S]*?)<\/script>/);
