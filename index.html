@@ -1120,6 +1120,41 @@ body[data-era="passion"] .passion-family-rule::after {
   .marginalia-copy strong { font-size: 16px; }
 }
 
+
+/* Legibility pass: no faux-handwriting fonts anywhere in the dossier UI. */
+.hand,
+.handwritten,
+body[data-era="passion"] .passion-window .hand {
+  font-family: 'Old Standard TT', Georgia, 'Times New Roman', serif !important;
+  font-style: italic !important;
+  font-weight: 400 !important;
+  letter-spacing: .025em !important;
+  transform: none !important;
+  text-rendering: optimizeLegibility;
+}
+
+.hand {
+  font-size: 18px !important;
+  line-height: 1.15 !important;
+  margin: 7px 0 3px !important;
+}
+
+.handwritten {
+  font-size: 18px !important;
+  line-height: 1.35 !important;
+  margin: 0 !important;
+}
+
+/* Tooltip notes should read like private archival annotations, not novelty handwriting. */
+.marginalia-copy strong {
+  font-family: 'Old Standard TT', Georgia, 'Times New Roman', serif !important;
+  font-style: italic !important;
+  font-size: 19px !important;
+  font-weight: 400 !important;
+  line-height: 1.22 !important;
+  letter-spacing: .015em !important;
+}
+
 </style>
   </head>
   <body>
