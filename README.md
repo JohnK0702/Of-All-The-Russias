@@ -6,6 +6,6 @@ A playable static prologue for a long-form **The Campaign Trail**-style politica
 
 The prototype contains four interconnected questions, hidden state, and several possible ending cards. It establishes the proposed visual language—an illuminated prayer book crossed with an Okhrana dossier—without requiring a backend or external image assets.
 
-[## PLAY
+## PLAY
 
 https://johnkcabbage.github.io/Of-All-The-Russias/
