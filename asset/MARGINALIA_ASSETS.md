@@ -57,8 +57,8 @@ Runtime still uses Wikimedia Commons `Special:Redirect/file/...` URLs so individ
 - **Cossacks** — `File:Cossacks of the Russian Empire.jpg`.
 - **Peasantry** — `File:Крестьянская-семья Беломорье.jpg`.
 - **Orthodox Church** — `File:Hopewood, Sam - Eine religiöse Prozession auf dem Roten Platz, Moskau (Zeno Fotografie).jpg` — religious procession on Red Square, 1905.
-- **Bureaucracy / ministries** — `File:Ilya repin, seduta cerimoniale del consiglio di stato il 7 maggio 1901, nel centenario della sua fondazione, 1903.JPG` — Repin's monumental State Council.
-- **St Petersburg / Petrograd** — `File:Russischer Photograph um 1900 - Blick auf den Fontanka-Fluss zwischen der Aničkov- und der Semenovskij-Brücke. St. Petersburg (Zeno Fotografie).jpg`.
+- **Bureaucracy / ministries** — `File:Ilya Repin - Ceremonial Sitting of the State Council on 7 May 1901 Marking the Centenary of its Foundation - Google Art Project.jpg` — the painting itself, not a photograph of the work hanging in the museum.
+- **St Petersburg / Petrograd** — `File:Nevskii prospect and Gostinii dvor.jpg` — an affirmative mid-19th-century painted/lithographed view of Nevsky Prospekt and Gostiny Dvor, presenting Petersburg as the imperial capital imagined at its best rather than as a gloomy documentary photograph.
 - **Moscow** — `File:Barricades.jpg` — construction of barricades during the 1905 uprising, replacing the old postcard-pretty Red Square shot.
 - **Constitution** — `File:Opening of Duma.jpg` — the constitutional settlement represented as Nicholas physically facing the parliamentary institution he created and distrusted.
 - **Army** — `File:Grand Duke Nicholas Nikolaevich the Younger (portrait).jpg`.
