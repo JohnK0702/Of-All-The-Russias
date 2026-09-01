@@ -1,0 +1,173 @@
+/* Passion sidebar: Nicholas above Alexandra, both on the right. */
+body[data-era="passion"] .passion-revamp-shell main {
+  display: grid;
+  grid-template-columns: 118px minmax(0, 1fr) 320px;
+  gap: 34px;
+  align-items: start;
+}
+
+body[data-era="passion"] .passion-scripture {
+  max-width: 780px;
+  margin: 8px auto 0;
+  color: #c9bb92;
+  font-size: 15px;
+  line-height: 1.45;
+  text-align: center;
+}
+
+body[data-era="passion"] .passion-scripture em {
+  display: block;
+  font-style: italic;
+}
+
+body[data-era="passion"] .passion-scripture span {
+  display: block;
+  margin-top: 5px;
+  color: #a89668;
+  font-size: 10px;
+  font-style: normal;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+
+body[data-era="passion"] .passion-royal-windows {
+  min-width: 0;
+  padding-left: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  align-self: start;
+  text-align: center;
+}
+
+body[data-era="passion"] .passion-window {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+body[data-era="passion"] .passion-icon {
+  width: 210px;
+  height: 255px;
+  margin: 0 auto 12px;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  border: 1px solid rgba(214,181,107,.62);
+  outline: 1px solid rgba(65,50,17,.92);
+  box-shadow: 0 0 0 4px rgba(0,0,0,.2), inset 0 0 28px rgba(0,0,0,.25);
+}
+
+body[data-era="passion"] .passion-nicholas-icon {
+  background-image:
+    linear-gradient(rgba(7,10,8,.08), rgba(7,10,8,.28)),
+    url("https://www.studiolum.com/wang/russian/apocryph/010.jpg");
+}
+
+body[data-era="passion"] .passion-alexandra-icon {
+  background-image:
+    linear-gradient(rgba(7,10,8,.06), rgba(7,10,8,.18)),
+    url("https://www.orthodoxchristiansupply.com/cdn/shop/products/st-tsarina-alexandra-the-royal-martyr-icons-orthodox-christian-supply_620_403x.jpg?v=1571714875");
+}
+
+body[data-era="passion"] .passion-window-label {
+  margin: 0 0 5px;
+  color: #a99159;
+  font-size: 10px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+}
+
+body[data-era="passion"] .passion-window h3 {
+  margin: 0 0 7px;
+  color: #e0d4b4;
+  font-size: 18px;
+  line-height: 1.05;
+  letter-spacing: .08em;
+}
+
+body[data-era="passion"] .passion-window h3 span {
+  font-size: .9em;
+}
+
+body[data-era="passion"] .passion-identity {
+  margin: 0;
+  color: #bfae83;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+body[data-era="passion"] .passion-identity strong {
+  color: #d6c9a8;
+  font-weight: 400;
+}
+
+body[data-era="passion"] .passion-identity em {
+  color: #a99770;
+}
+
+body[data-era="passion"] .passion-window .hand {
+  margin: -3px 0 3px;
+}
+
+body[data-era="passion"] .passion-window .stamp {
+  margin: 14px auto 10px;
+}
+
+body[data-era="passion"] .passion-window small {
+  display: block;
+  max-width: 245px;
+  margin-top: 7px;
+  color: #aa9a76;
+  font-size: 12px;
+  font-style: italic;
+  line-height: 1.5;
+}
+
+body[data-era="passion"] .passion-family-rule {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #8d7440;
+  font-size: 10px;
+}
+
+body[data-era="passion"] .passion-family-rule::before,
+body[data-era="passion"] .passion-family-rule::after {
+  content: "";
+  height: 1px;
+  flex: 1;
+  background: linear-gradient(90deg, transparent, rgba(180,145,65,.48), transparent);
+}
+
+@media (max-width: 1100px) {
+  body[data-era="passion"] .passion-revamp-shell main {
+    grid-template-columns: 90px minmax(0, 1fr);
+  }
+  body[data-era="passion"] .passion-royal-windows {
+    grid-column: 2;
+    padding: 24px 0 0;
+    border-left: 0;
+    border-top: 1px solid rgba(214,181,107,.28);
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+  }
+  body[data-era="passion"] .passion-family-rule { display: none; }
+}
+
+@media (max-width: 700px) {
+  body[data-era="passion"] .passion-revamp-shell main { display: block; }
+  body[data-era="passion"] .passion-revamp-shell .folio { display: none; }
+  body[data-era="passion"] .passion-royal-windows {
+    display: flex;
+    margin-top: 30px;
+  }
+  body[data-era="passion"] .passion-family-rule { display: flex; }
+  body[data-era="passion"] .passion-icon {
+    width: min(240px, 82vw);
+    height: 290px;
+  }
+}
