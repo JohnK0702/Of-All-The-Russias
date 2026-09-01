@@ -8,4 +8,4 @@ The prototype contains four interconnected questions, hidden state, and several 
 
 ## PLAY
 
-https://johnkcabbage.github.io/Of-All-The-Russias/
+https://johnk0702.github.io/Of-All-The-Russias/
