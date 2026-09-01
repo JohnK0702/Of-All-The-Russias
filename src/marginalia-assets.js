@@ -52,32 +52,41 @@ const OATR_MARGINALIA_ASSETS = {
   peasants: 'Крестьянская-семья Беломорье.jpg',
   church: 'Hopewood, Sam - Eine religiöse Prozession auf dem Roten Platz, Moskau (Zeno Fotografie).jpg',
   bureaucracy: 'Ilya Repin - Ceremonial Sitting of the State Council on 7 May 1901 Marking the Centenary of its Foundation - Google Art Project.jpg',
-  petrograd: 'Nevskii prospect and Gostinii dvor.jpg',
   moscow: 'Barricades.jpg',
   constitution: 'Opening of Duma.jpg',
   army: 'Grand Duke Nicholas Nikolaevich the Younger (portrait).jpg',
   mobilization: 'Русские солдаты перед отправкой на Первую мировую войну.jpg'
 };
 
+const OATR_MARGINALIA_DIRECT_ASSETS = {
+  petrograd: 'https://mf.b37mrtl.ru/rbthmedia/images/web/in-rbth/images/2014-02/big/18/UR00-0539_468.jpg'
+};
+
 function oatrCommonsFile(filename) {
   return `https://commons.wikimedia.org/wiki/Special:Redirect/file/${encodeURIComponent(filename)}`;
+}
+
+function oatrMarginaliaAssetUrl(id) {
+  if (OATR_MARGINALIA_DIRECT_ASSETS[id]) return OATR_MARGINALIA_DIRECT_ASSETS[id];
+  const file = OATR_MARGINALIA_ASSETS[id];
+  return file ? oatrCommonsFile(file) : '';
 }
 
 function oatrInstallMarginaliaAssets() {
   if (typeof OATR_MARGINALIA === 'undefined') return;
   OATR_MARGINALIA.forEach(entry => {
-    const file = OATR_MARGINALIA_ASSETS[entry.id];
-    if (file) entry.image = oatrCommonsFile(file);
+    const src = oatrMarginaliaAssetUrl(entry.id);
+    if (src) entry.image = src;
   });
 
   /* marginalia.js may already have decorated the currently visible question. Refresh those
      images immediately; future questions will use the overridden entry.image automatically. */
   if (typeof document !== 'undefined' && document.querySelectorAll) {
     OATR_MARGINALIA.forEach(entry => {
-      const file = OATR_MARGINALIA_ASSETS[entry.id];
-      if (!file) return;
+      const src = oatrMarginaliaAssetUrl(entry.id);
+      if (!src) return;
       document.querySelectorAll(`.marginalia-${entry.id} .marginalia-tooltip img`).forEach(img => {
-        img.src = oatrCommonsFile(file);
+        img.src = src;
       });
     });
   }
