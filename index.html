@@ -684,6 +684,104 @@ body[data-fail-depth='10'] .fail-route-shell .campaign-progress span {
   margin-inline: auto;
 }
 
+
+/* Passion-only identity windows: Nicholas as penitent, Alexandra as wife.
+   Keep the ordinary game layout; only the two personal windows change. */
+
+body[data-era="passion"] .passion-nicholas-window,
+body[data-era="passion"] .passion-alexandra-window {
+  border-color: rgba(199, 160, 74, .36);
+}
+
+body[data-era="passion"] .passion-nicholas-window {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding-right: 18px;
+  text-align: center;
+}
+
+body[data-era="passion"] .passion-nicholas-window .passion-identity-image,
+body[data-era="passion"] .passion-alexandra-window .passion-identity-image {
+  width: 100%;
+  display: block;
+  object-fit: cover;
+  border: 1px solid rgba(205, 170, 86, .62);
+  outline: 1px solid rgba(72, 54, 20, .9);
+  outline-offset: 3px;
+  box-shadow: inset 0 0 0 1px rgba(244, 225, 169, .08), 0 12px 28px rgba(0,0,0,.45);
+  filter: saturate(.72) contrast(1.06) brightness(.86);
+}
+
+body[data-era="passion"] .passion-nicholas-window .passion-identity-image {
+  aspect-ratio: 3 / 4;
+}
+
+body[data-era="passion"] .passion-alexandra-window .passion-identity-image {
+  aspect-ratio: 4 / 5;
+  margin-bottom: 14px;
+}
+
+body[data-era="passion"] .passion-nicholas-window .passion-role,
+body[data-era="passion"] .passion-alexandra-window .passion-role {
+  margin: 0;
+  color: #c7b37b;
+  font-size: 10px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+}
+
+body[data-era="passion"] .passion-nicholas-window h3 {
+  margin: 0;
+  color: #e4d6aa;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.25;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+body[data-era="passion"] .passion-nicholas-window .passion-sinner {
+  color: #a99a73;
+  font-size: 11px;
+  font-style: italic;
+  line-height: 1.4;
+}
+
+body[data-era="passion"] .passion-nicholas-window .passion-count {
+  margin-top: 4px;
+  color: #d4bc72;
+  font-size: 10px;
+  letter-spacing: .16em;
+}
+
+body[data-era="passion"] .passion-alexandra-window > h3 {
+  margin-top: 0;
+}
+
+body[data-era="passion"] .passion-alexandra-window .passion-wife-name {
+  margin: 0 0 12px;
+  color: #eadcb4;
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+body[data-era="passion"] .passion-alexandra-window .passion-wife-name b {
+  display: block;
+  color: #cfb96f;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 850px) {
+  body[data-era="passion"] .passion-nicholas-window {
+    display: none;
+  }
+}
+
 </style>
   </head>
   <body>
@@ -3964,6 +4062,88 @@ function continueCanonPassion() {
 }
 
 /* canon-passion.js may already have rendered once on load. Re-render with the restored layout. */
+if (state.index >= OATR_SKELETONS.length && (state.canonPassion || oatrCanonEligible())) renderCanonPassion();
+
+
+/* Final Passion UI skin.
+   Keeps the restored original campaign layout while replacing imperial offices with personal identities. */
+
+const OATR_NICHOLAS_PASSION_ICON = 'https://www.studiolum.com/wang/russian/apocryph/010.jpg';
+const OATR_ALEXANDRA_PASSION_ICON = 'https://www.orthodoxchristiansupply.com/cdn/shop/products/st-tsarina-alexandra-the-royal-martyr-icons-orthodox-christian-supply_620_403x.jpg?v=1571714875';
+
+renderCanonPassion = function() {
+  if (!state.canonPassion) state.canonPassion = { index:0, history:[], complete:false, pending:null };
+  const cp = state.canonPassion;
+  if (cp.complete || cp.index >= OATR_CANON_PASSION.length) return renderCanonFinalEnding();
+
+  const e = OATR_CANON_PASSION[cp.index];
+  const year = yearFromDate(e.date);
+  const progress = Math.round(cp.index / OATR_CANON_PASSION.length * 100);
+  const [phase, chapter] = oatrPassionPhase(cp.index);
+  const alexandraNote = OATR_PASSION_ALEXANDRA_NOTES[cp.index] || OATR_PASSION_ALEXANDRA_NOTES.at(-1);
+  const choices = e.choices.map(([label], i) => `<li><button data-canon-choice="${i}"><span>${String.fromCharCode(65+i)}</span><p>${label}</p><b>→</b></button></li>`).join('');
+
+  document.body.dataset.era = 'passion';
+  document.body.dataset.year = year;
+  document.body.dataset.veil = cp.index >= 7 ? 'high' : 'rising';
+
+  document.querySelector('#app').innerHTML = `
+    <div class="page-shell">
+      <header>
+        <div class="seal" aria-hidden="true"></div>
+        <div class="masthead">
+          <p class="russian-title">1917–1918 · THE PASSION</p>
+          <h1>OF ALL THE RUSSIAS</h1>
+          <p class="motto">There shall be no fourth.</p>
+        </div>
+        <div class="year"><b>${year}</b><span>—</span><small>1918</small><button class="restart-campaign" data-restart-campaign title="Restart the campaign from January 1905">↺ RESTART</button></div>
+      </header>
+      <nav class="chronology" aria-label="Passion progress">
+        <span class="${cp.index <= 3 ? 'active' : ''}">FEBRUARY</span><i></i>
+        <span class="${cp.index >= 4 && cp.index <= 6 ? 'active' : ''}">CAPTIVITY</span><i></i>
+        <span class="${cp.index >= 7 ? 'active' : ''}">EKATERINBURG</span>
+      </nav>
+      <div class="campaign-progress"><span style="width:${progress}%"></span></div>
+      <main>
+        <aside class="folio passion-nicholas-window">
+          <img class="passion-identity-image" src="${OATR_NICHOLAS_PASSION_ICON}" alt="Icon of Nicholas Romanov" />
+          <p class="passion-role">THE PRISONER</p>
+          <h3>NICHOLAS ROMANOV</h3>
+          <p class="passion-sinner">A Poor Sinner</p>
+          <span class="passion-count">PASSION ${String(cp.index+1).padStart(2,'0')} OF ${OATR_CANON_PASSION.length}</span>
+          <div class="vertical-rule"></div>
+          <p class="nine-years">THE CROWN<br>IS GONE</p>
+        </aside>
+        <article>
+          <div class="dateline"><span>${e.date}</span><span class="cross">✣</span><span>${e.place}</span></div>
+          <p class="kicker">${phase} · ${chapter}</p>
+          <h2>${e.title}</h2>
+          <section class="dispatch">${e.body.map(p => `<p>${p}</p>`).join('')}</section>
+          <blockquote><p>${e.quote}</p><cite>${e.speaker}</cite></blockquote>
+          <div class="question"><span>WHAT REMAINS TO YOU?</span></div>
+          <ol class="choices">${choices}</ol>
+        </article>
+        <aside class="dossier passion-alexandra-window">
+          <img class="passion-identity-image" src="${OATR_ALEXANDRA_PASSION_ICON}" alt="Tsarina Alexandra, Royal Martyr" />
+          <p class="hand">Nicky</p>
+          <h3>АЛЕКСАНДРА<br><span>ФЕОДОРОВНА</span></h3>
+          <p class="passion-wife-name"><b>Your Wife</b>Alexandra, Daughter of Eve</p>
+          <div class="stamp">ЛИЧНОЕ<br><b>PRIVATE</b></div>
+          <small>${alexandraNote}</small>
+        </aside>
+      </main>
+      <footer><span>☦</span><p>ORTHODOXY</p><i>◆</i><p>PASSION</p><i>◆</i><p>RUSSIA</p><span>☦</span></footer>
+      ${cp.pending ? renderPassionRussiaAdvisor(e, cp.index, cp.pending) : ''}
+    </div>`;
+
+  document.querySelectorAll('[data-canon-choice]').forEach(btn => btn.onclick = () => applyCanonPassion(Number(btn.dataset.canonChoice)));
+  const continueButton = document.querySelector('[data-canon-continue]');
+  if (continueButton) continueButton.onclick = continueCanonPassion;
+  const restartButton = document.querySelector('[data-restart-campaign]');
+  if (restartButton) restartButton.onclick = resetCampaign;
+};
+
+/* canon-passion.js and canon-passion-voice.js may already have rendered during initial load. */
 if (state.index >= OATR_SKELETONS.length && (state.canonPassion || oatrCanonEligible())) renderCanonPassion();
 
 
