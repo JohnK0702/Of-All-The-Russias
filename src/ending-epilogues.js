@@ -112,6 +112,12 @@ function oatrExpandedEndingParagraphs(ending) {
 
 const OATR_RENDER_ENDING_BEFORE_EPILOGUES = renderEnding;
 renderEnding = function() {
+  // The canon endings are not ending cards. They are the doorway into the 1917–1918 Passion.
+  // Preserve the earlier canon-passion renderEnding wrapper instead of swallowing it here.
+  if (state.canonPassion || (typeof oatrCanonEligible === 'function' && oatrCanonEligible())) {
+    return OATR_RENDER_ENDING_BEFORE_EPILOGUES();
+  }
+
   const ending = pickEnding();
   if (!ending) return OATR_RENDER_ENDING_BEFORE_EPILOGUES();
   const paragraphs = oatrExpandedEndingParagraphs(ending);
