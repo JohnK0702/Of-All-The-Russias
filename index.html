@@ -4930,7 +4930,7 @@ const OATR_MARGINALIA = [
     image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/1905%202fnl%20Velikoe%20v%20malom%20i%20antikhrist.jpg',
     eyebrow:'PRIVATE PREJUDICE · N.A.R.',
     note:'The enemy.',
-    caption:'Antisemitic propaganda published in Imperial Russia, 1905.'
+    caption:'Antisemitic propaganda published in Imperial Russia, 1905. The note reflects Nicholas’s prejudice, not the game’s voice.'
   },
   {
     id:'witte', terms:['Sergei Witte','Witte'],
@@ -5005,9 +5005,16 @@ const OATR_MARGINALIA = [
   {
     id:'serbia', terms:['Serbia','Serbian','Belgrade'],
     image:()=>typeof oatrAssetUrl==='function'?oatrAssetUrl('empireMap'):'',
-    eyebrow:'SMALL ACCOUNT · HIGH REACH · N.A.R.',
-    note:'Small account. Catastrophic engagement.',
-    caption:'Serbia and the Balkan question.'
+    eyebrow:'BALKAN CONTENT · N.A.R.',
+    note:'A foreign policy built on regicide, patron saints, and making Austria’s problem everyone else’s.',
+    caption:'The Kingdom of Serbia and the Balkan question.'
+  },
+  {
+    id:'austria', terms:['Austria-Hungary','Austria','Austrian','Vienna','Habsburg'],
+    image:()=>typeof oatrAssetUrl==='function'?oatrAssetUrl('empireMap'):'',
+    eyebrow:'DUAL-MONARCHY POSTING · N.A.R.',
+    note:'Two countries in a trench coat pretending to be a great power.',
+    caption:'Austria-Hungary, Russia’s principal Balkan rival.'
   },
   {
     id:'germany', terms:['Kaiser Wilhelm','Wilhelm II','Germany','German','Willy'],
@@ -5017,11 +5024,32 @@ const OATR_MARGINALIA = [
     caption:'Kaiser Wilhelm II.'
   },
   {
+    id:'france', terms:['France','French','Paris'],
+    image:()=>typeof oatrAssetUrl==='function'?oatrAssetUrl('empireMap'):'',
+    eyebrow:'FINANCIAL RELATIONSHIP · N.A.R.',
+    note:'Friendship, liberty, equality, fraternity, and several billion francs at interest.',
+    caption:'The Franco-Russian alliance.'
+  },
+  {
     id:'britain', terms:['Great Britain','Britain','British','England','English'],
     image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/John%20Bull%20and%20his%20Friends%201900.jpg',
     eyebrow:'THE DEEP STATE, BUT WET · N.A.R.',
     note:'Behind it somehow.',
     caption:'John Bull and his Friends, 1900.'
+  },
+  {
+    id:'japan', terms:['Japan','Japanese','Tokyo'],
+    image:()=>typeof oatrAssetUrl==='function'?oatrAssetUrl('tsushimaWide'):'',
+    eyebrow:'TEMPORARY SETBACK · N.A.R.',
+    note:'Small island nation. Surely scale will sort this out.',
+    caption:'Imperial Japan during the Russo-Japanese War.'
+  },
+  {
+    id:'ottomans', terms:['Ottoman Empire','Ottomans','Ottoman','Turkey','Turkish','Constantinople'],
+    image:()=>typeof oatrAssetUrl==='function'?oatrAssetUrl('empireMap'):'',
+    eyebrow:'UNFINISHED BUSINESS · N.A.R.',
+    note:'The Straits. Obviously the Straits. Stop asking why.',
+    caption:'The Ottoman Empire and the Straits question.'
   },
   {
     id:'cossacks', terms:['the Cossacks','Cossacks','Cossack'],
@@ -5036,6 +5064,13 @@ const OATR_MARGINALIA = [
     eyebrow:'TRUST & SAFETY · N.A.R.',
     note:'Trust & Safety. They know everything except what is true.',
     caption:'The imperial political police.'
+  },
+  {
+    id:'black-hundreds', terms:['Black Hundreds','Black Hundred','Black Hundredists'],
+    image:()=>typeof oatrAssetUrl==='function'?oatrAssetUrl('stateCouncilRepin'):'',
+    eyebrow:'GRASSROOTS · N.A.R.',
+    note:'Grassroots civic participation. Please ignore the police standing behind the grassroots.',
+    caption:'Ultramonarchist mass politics in late Imperial Russia.'
   },
   {
     id:'revolution', terms:['the revolution','revolution','revolutionary'],
@@ -5057,6 +5092,55 @@ const OATR_MARGINALIA = [
     eyebrow:'TERMINALLY ONLINE · N.A.R.',
     note:'People who have read themselves into treason.',
     caption:'The educated opposition and radical intelligentsia.'
+  },
+  {
+    id:'liberals', terms:['liberals','liberal opposition','Kadets','Constitutional Democrats'],
+    image:()=>typeof oatrAssetUrl==='function'?oatrAssetUrl('dumaMembers'):'',
+    eyebrow:'WESTERN VALUES · N.A.R.',
+    note:'Want England with snow. Have apparently not met England.',
+    caption:'Liberal constitutional politics in the empire.'
+  },
+  {
+    id:'zemstvo', terms:['zemstvo','zemstvos','zemstva'],
+    image:()=>typeof oatrAssetUrl==='function'?oatrAssetUrl('stateCouncilRepin'):'',
+    eyebrow:'LOCAL GOVERNMENT · N.A.R.',
+    note:'Dangerous gateway drug to competent administration.',
+    caption:'Local self-government institutions created under Alexander II.'
+  },
+  {
+    id:'church', terms:['Holy Synod','Orthodox Church','the Church','Orthodoxy'],
+    image:()=>typeof oatrAssetUrl==='function'?oatrAssetUrl('pantocrator'):'',
+    eyebrow:'SPIRITUAL DEPARTMENT · N.A.R.',
+    note:'The Bride of Christ, pending countersignature from the Ministry.',
+    caption:'The Orthodox Church under the imperial synodal system.'
+  },
+  {
+    id:'bureaucracy', terms:['bureaucracy','bureaucrats','ministries','ministry'],
+    image:()=>typeof oatrAssetUrl==='function'?oatrAssetUrl('stateCouncilRepin'):'',
+    eyebrow:'THE PERMANENT STATE · N.A.R.',
+    note:'Nobody is responsible. This is why everyone is indispensable.',
+    caption:'The imperial administrative state.'
+  },
+  {
+    id:'petrograd', terms:['St. Petersburg','Saint Petersburg','Petersburg','Petrograd'],
+    image:()=>typeof oatrAssetUrl==='function'?oatrAssetUrl('winterPalace1900'):'',
+    eyebrow:'CAPITAL · N.A.R.',
+    note:'A European city built to administer people who resent Europe.',
+    caption:'The imperial capital.'
+  },
+  {
+    id:'moscow', terms:['Moscow'],
+    image:()=>typeof oatrAssetUrl==='function'?oatrAssetUrl('empireMap'):'',
+    eyebrow:'THE OTHER CAPITAL · N.A.R.',
+    note:'Thinks Petersburg is fake. Petersburg thinks Moscow is furniture.',
+    caption:'Moscow, ceremonial and historical heart of Russia.'
+  },
+  {
+    id:'balkans', terms:['Balkans','Balkan'],
+    image:()=>typeof oatrAssetUrl==='function'?oatrAssetUrl('empireMap'):'',
+    eyebrow:'DO NOT TOUCH · N.A.R.',
+    note:'A collection of local disputes patiently waiting to become our problem.',
+    caption:'The Balkans.'
   },
   {
     id:'strikes', terms:['general strike','the strike','strike','strikers'],
@@ -5087,6 +5171,13 @@ const OATR_MARGINALIA = [
     caption:'The empire repeatedly negotiated—and resisted—local self-government.'
   },
   {
+    id:'constitution', terms:['constitution','constitutional','constitutionalism'],
+    image:()=>typeof oatrAssetUrl==='function'?oatrAssetUrl('dumaDiagram'):'',
+    eyebrow:'TERMS OF SERVICE · N.A.R.',
+    note:'Terms of service for the autocracy. Unclear why the autocracy needs terms of service.',
+    caption:'The constitutional question after 1905.'
+  },
+  {
     id:'russification', terms:['Russification','Russify','russify'],
     image:()=>typeof oatrAssetUrl==='function'?oatrAssetUrl('empireMap'):'',
     eyebrow:'ADMINISTRATIVE CONSISTENCY · N.A.R.',
@@ -5099,6 +5190,13 @@ const OATR_MARGINALIA = [
     eyebrow:'THE ADULTS IN THE ROOM · N.A.R.',
     note:'The only serious men. Concerning how often they mention this.',
     caption:'The Imperial Russian Army and General Staff.'
+  },
+  {
+    id:'mobilization', terms:['mobilization','mobilise','mobilize','mobilized','mobilised'],
+    image:()=>typeof oatrAssetUrl==='function'?oatrAssetUrl('grandDukeNicholas'):'',
+    eyebrow:'JUST A PRECAUTION · N.A.R.',
+    note:'Purely defensive. Everyone else is expected to understand this without asking.',
+    caption:'Russian mobilization planning before the Great War.'
   }
 ];
 
