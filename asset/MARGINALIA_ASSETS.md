@@ -1,69 +1,89 @@
 # Marginalia Tooltip Asset Scrape
 
-This is the source ledger for `src/marginalia-assets.js`. The tooltip system prefers period photographs, paintings, newspapers, propaganda, maps and other archival material from Wikimedia Commons. Runtime uses `Special:Redirect/file/...` URLs so individual images can be swapped without editing event prose.
+This is the source ledger for `src/marginalia-assets.js`.
 
-The goal is that a hover feels like Nicholas has pulled a clipping, photograph, police file or postcard from the imperial archive rather than receiving a generic encyclopedia card.
+The tooltip art rule is now stricter: **prefer an object that says something about the subject** — caricature, propaganda, riot photography, painting, state ceremony, political cartoon, petition delegation, newspaper or period map — rather than merely dropping in a generic portrait.
+
+Runtime still uses Wikimedia Commons `Special:Redirect/file/...` URLs so individual images can be swapped without touching event prose. Most selections are public-domain works by age / Imperial Russian publication status, or Commons-hosted archival reproductions. Before vendoring any file locally, re-check the file page's current license.
 
 ## Current tooltip set
 
-- **Jews / Nicholas's antisemitic prejudice** — `File:1905 2fnl Velikoe v malom i antikhrist.jpg` — Imperial Russian antisemitic publication, 1905.
-- **Sergei Witte** — `File:Sergey Yulievich Vitte.jpg` — 1905–06 portrait, public domain.
-- **Pyotr Stolypin** — `File:Stolypin by Repin.jpg` — Repin portrait.
-- **Grigori Rasputin** — `File:Grigori Rasputin 1916.jpg`.
-- **Alexandra Feodorovna** — `File:Alexandra Fyodorovna LOC 01137u.jpg`.
+### People
+
+- **Sergei Witte** — `File:Sergei Witte (cartoon).jpg` — Boris Kustodiev caricature, 1905. Better fit for Nicholas's bitchy private note than a formal portrait.
+- **Pyotr Stolypin** — `File:Stolypin by Repin.jpg` — Ilya Repin portrait.
+- **Grigori Rasputin** — `File:Grigory Rasputin with his followers.jpg` — Rasputin in his social/religious milieu rather than an isolated headshot.
+- **Alexandra Feodorovna** — `File:Family in 1913.jpg` — Alexandra inside the Romanov family rather than as a public imperial portrait.
+
+### Prejudice, police and reaction
+
+- **Jews / Nicholas's antisemitic prejudice** — `File:1905 2fnl Velikoe v malom i antikhrist.jpg` — Sergei Nilus's 1905 antisemitic publication in which the *Protocols* appeared as an appendix. Kept because it is an actual artifact of the ideological world represented by the note, not a modern illustration.
+- **Pogroms** — `File:1904 Russian Tsar-Stop your cruel oppression of the Jews-LOC hh0145s.jpg` — contemporary American political cartoon explicitly attacking Nicholas over pogroms and persecution.
+- **Black Hundreds** — `File:Postcard Medal “honoring” the Black Hundred, ca. 1905.jpg` — period Russian satire connected directly to the Black Hundreds and anti-Jewish violence.
+- **Okhrana** — `File:Okhranka group photo.jpg` — St Petersburg political police leadership, 1905.
+- **Emergency powers / repression** — `File:Бодянский 1906.jpg` — 1906 Russian cartoon satirizing political repression. This replaces the old generic State Council painting for the emergency-powers tooltip.
+
+### 1905
+
 - **Bloody Sunday** — `File:Shooting of workers on Voskresenskaya street in 1905.jpg` — period depiction of workers being fired upon.
-- **Tsushima** — `File:Battle of Tsushima, 1905 by Tōjō Shōtarō.jpg`.
-- **Potemkin** — `File:Potemkin in Constantza.JPG`.
-- **State Duma** — `File:AperturaDeLaDumaEnLaSalaDelTrono19060510.png` — opening of the First Duma, 1906.
-- **Finland** — `File:Hakaniemen mellakka 1906.jpg` — Helsinki unrest, 1906.
+- **Tsushima** — `File:Battle of Tsushima, 1905 by Tōjō Shōtarō.jpg` — contemporary Japanese battle painting.
+- **Potemkin** — `File:Potemkin mutiny newspaper cartoon japanese militaryman makes jokes on russians fighting each other.jpg` — June–July 1905 newspaper cartoon showing a Japanese military figure laughing at Russians fighting one another. Much more on-tone than the old static battleship photograph.
+- **Duma** — `File:Opening of Duma.jpg` — Nicholas opening the new parliament in the Winter Palace, 1906.
+- **Revolution** — `File:1905Репин.jpg` — Repin's 1905 rally image.
+- **Strikes / workers' politics** — `File:Совет рабочих депутатов Петербурга (1905).jpg` — Petersburg Soviet of Workers' Deputies.
+- **Intelligentsia / students** — `File:Митинг у Петербургского университета (1905).jpg` — rally at St Petersburg University.
+- **Liberals / zemstvos** — `File:Zemskaya deputatsiya.jpg` — zemstvo and city delegates petitioning Nicholas at Peterhof in 1905.
+
+### Borderlands / Russification
+
+- **Finland** — `File:Hyökkäys - Edvard Isto, 1899.jpg` — Edvard Isto's *The Attack*: the Russian double-headed eagle tears the law book from the Finnish Maiden. It became an iconic protest image against Russification.
 - **Poland / Warsaw** — `File:Pochód narodowy w Warszawie dn. 5 listopada 1905 r.jpg` — Warsaw national procession, 1905.
-- **Serbia** — `File:King Peter I of serbia - coronation.jpg` — King Peter I.
-- **Austria-Hungary** — `File:Imperatoru Francisc Joseph.jpg` — Franz Joseph I, 1905.
+- **Autonomy** — also uses *The Attack*. Deliberate: Nicholas's 'autonomy' hover should visually suggest what imperial 'administrative consistency' looks like from the borderland.
+- **Russification** — also uses *The Attack* rather than a generic empire map.
+
+### Foreign policy
+
+- **Serbia** — `File:King Peter I of serbia - coronation.jpg` — King Peter I and the post-1903 Serbian monarchy.
+- **Austria-Hungary** — `File:Le Petit Journal Balkan Crisis (1908).jpg` — contemporary color cartoon of the Bosnian Crisis: Franz Joseph annexes Bosnia while Ferdinand and Abdul Hamid feature alongside him.
 - **Germany / Wilhelm II** — `File:Wilhelm II of Germany - 1907.jpg`.
-- **France / Franco-Russian alliance** — `File:Nicholas II and Émile Loubet meeting (1901).jpg` — Franco-Russian alliance souvenir image.
+- **France / Franco-Russian alliance** — `File:Nicholas II and Émile Loubet meeting (1901).jpg`.
 - **Britain** — `File:John Bull and his Friends 1900.jpg` — contemporary political cartoon.
-- **Japan** — `File:Crowds lining the street as the procession of carriages carrying Admiral Togo, naval officers, and government officials passes through a triumphial arch during Togo's official visit, Oct., LCCN2005678641.jpg` — Tōgō triumphal imagery, 1905.
-- **Ottoman Empire** — `File:Abdul Hamid 2.jpg` — Sultan Abdul Hamid II.
+- **Japan** — `File:Crowds lining the street as the procession of carriages carrying Admiral Togo, naval officers, and government officials passes through a triumphial arch during Togo's official visit, Oct., LCCN2005678641.jpg` — Tōgō triumphal imagery.
+- **Ottoman Empire** — `File:Russian view on the Balkan problem 1908.jpg` — Russian cartoon of the Balkan problem, with Turkey watching while European powers trap the Balkan states.
+- **Balkans** — same 1908 Russian cartoon rather than the old sterile map.
+
+### State / society
+
 - **Cossacks** — `File:Cossacks of the Russian Empire.jpg`.
-- **Okhrana** — `File:Okhranka group photo.jpg` — St Petersburg Okhrana leadership, 1905. Note the filename is *Okhranka*, not the previously used broken `Okhrana group photo.jpg` path.
-- **Black Hundreds** — `File:Chernosotenzy v odessa.jpg` — Black Hundred demonstration in Odessa, 1905.
-- **1905 Revolution** — `File:Revolution of 1905.jpg` — barricades in Moscow University.
-- **Peasantry** — `File:Крестьянская-семья Беломорье.jpg` — Russian peasant family.
-- **Intelligentsia / students** — `File:Митинг у Петербургского университета (1905).jpg` — rally at St Petersburg University, 18 October 1905.
-- **Liberals / zemstvo politics** — `File:Zemskaya deputatsiya.jpg` — zemstvo and city delegates petitioning Nicholas for popular representation at Peterhof, 6 June 1905.
-- **Zemstvos** — `File:Zemskaya deputatsiya.jpg`.
+- **Peasantry** — `File:Крестьянская-семья Беломорье.jpg`.
 - **Orthodox Church** — `File:Hopewood, Sam - Eine religiöse Prozession auf dem Roten Platz, Moskau (Zeno Fotografie).jpg` — religious procession on Red Square, 1905.
-- **Bureaucracy / ministries** — `File:Ilya repin, seduta cerimoniale del consiglio di stato il 7 maggio 1901, nel centenario della sua fondazione, 1903.JPG` — Repin's State Council.
+- **Bureaucracy / ministries** — `File:Ilya repin, seduta cerimoniale del consiglio di stato il 7 maggio 1901, nel centenario della sua fondazione, 1903.JPG` — Repin's monumental State Council.
 - **St Petersburg / Petrograd** — `File:Russischer Photograph um 1900 - Blick auf den Fontanka-Fluss zwischen der Aničkov- und der Semenovskij-Brücke. St. Petersburg (Zeno Fotografie).jpg`.
-- **Moscow** — `File:Krasnaya Ploshad-1900-N.jpg` — Red Square around 1900.
-- **Balkans** — `File:Bałkany 1912.svg` — frontiers immediately before the First Balkan War.
-- **Strikes / workers' politics** — `File:Совет рабочих депутатов Петербурга (1905).jpg` — Petersburg Soviet of Workers' Deputies, 1905.
-- **Pogroms** — `File:Pogrom_of_Jews_in_Kiev_1905.jpg`.
-- **Emergency government / martial law** — Repin State Council image, used deliberately as the respectable face of exceptional rule.
-- **Autonomy / Russification** — `File:Russian Empire 1914, modern borders.svg`.
-- **Constitutional politics** — `File:Russia State Duma 1906.svg`.
+- **Moscow** — `File:Barricades.jpg` — construction of barricades during the 1905 uprising, replacing the old postcard-pretty Red Square shot.
+- **Constitution** — `File:Opening of Duma.jpg` — the constitutional settlement represented as Nicholas physically facing the parliamentary institution he created and distrusted.
 - **Army** — `File:Grand Duke Nicholas Nikolaevich the Younger (portrait).jpg`.
-- **Mobilization** — `File:Русские солдаты перед отправкой на Первую мировую войну.jpg` — Imperial Russian NCOs before deployment, 24 July 1914.
+- **Mobilization** — `File:Русские солдаты перед отправкой на Первую мировую войну.jpg` — Russian soldiers before departure in July 1914.
 
-## Additional scrape candidates
+## Strong reserve assets found in this pass
 
-These were found during the same Commons pass and are good candidates for later tooltip variants, event-specific swaps, or branching-dependent marginalia:
+These are worth using later for branch-specific tooltip variants or event art:
 
-- `File:Postcard Certificate of not belonging to the intelligentsia, early 20th century.jpg` — Black Hundred satire; a mock certificate stating the holder is not a student/intellectual and therefore should not be beaten.
-- `File:Front page of the newspaper “Vittova plyaska” (December 1905).jpg` — Black Hundred political satire/newspaper material.
-- `File:Russkoye Znamya (URP newspaper).jpg` — Union of the Russian People newspaper masthead.
-- `File:Манифестанты на Невском проспекте у здания городской думы (1905).jpg` — demonstrators on Nevsky Prospect, October 1905.
-- `File:Ul. Senatorska, Warszawa 1905.jpg` — Warsaw during the 1905 uprising.
-- `File:Strzaly.jpg` — 1905 Revolution in Poland.
-- `File:Kauppatori Helsinki 1906.jpg` — Helsinki market square, 1906.
-- `File:Aatelissääty1906.jpg` — Finnish estate/political imagery, 1906.
-- `File:Triumfalnaya Square 1900s.jpg` — Moscow street life.
-- `File:Moscow, Kremlin, Voznesenskaya Square, 1900s.jpg` — Kremlin-era Moscow.
-- `File:Triple Entente.jpg` — Russian 1914 propaganda poster personifying France, Russia and Britain.
-- `File:First days of mobilization, examples, 1914.jpg` — Balkan mobilization visual reference.
-- `File:State Duma 1906.svg` and `File:1906 Russian State Duma diagram.svg` — alternative parliamentary diagrams.
-- `File:Plan zala gosdumy-1.jpg` — period plan of the First Duma chamber.
+- `File:Kishineff must be paid for - with interest - Keppler. LCCN2011645734.jpg` — 1905 Puck cartoon connecting Nicholas, Kishinev, war finance and antisemitism.
+- `File:Caricatures of Theodore Roosevelt proclaims to Czar Nicholas II of Russia, Stop your cruel oppression of the Jews - Flohri. LCCN2004671428 (cropped).jpg` — 1904 anti-pogrom cartoon.
+- `File:Kapparot, Nicholas II of Russia as chicken.jpg` — 1907–1910 Jewish-American postcard attacking Nicholas over pogroms and persecution.
+- `File:Le Petit Journal Balkan Crisis (1908).jpg` — featured Commons image and excellent Bosnian Crisis visual.
+- `File:Caricature Bosnia Annexion 1909 Ion Kalem.jpg` — Ottoman satire of Austria-Hungary's annexation of Bosnia.
+- `File:Caricature Karagoz 1908 Mehmed Baha.jpg` — Ottoman cartoon mocking Franz Joseph during the boycott crisis.
+- `File:The army worm. - Luther D. Bradley.jpg` — 1914 cartoon about the Serbia/Austria ultimatum crisis.
+- `File:Potemkin mutiny Odessa le corps du omeltchouk.jpg` — revolutionary meeting around Vakulenchuk's body.
+- `File:Odessa mobs burn the port potemkin mutiny.jpg` — aftermath of the Odessa port fires.
+- `File:Russian Duma Members, 1906.jpg` — enormous First Duma group photograph.
+- `File:Zitting van de eerste Doema duma te Rusland 1906, SFA002001738.jpg` — First Duma in session.
+- `File:The Russian Revolution, 1905 Q81553.jpg` — Moscow Arbat barricades, December 1905.
+- `File:The Russian Revolution, 1905 Q81555.jpg` — Presnya barricades in contemporary artwork.
+- `File:Nicholas II, Alexandra and Alexei during the tercentenary in Moscow.jpg` — useful for Romanov-tercentenary / dynasty-confidence tooltips.
+- `File:Russian Imperial Family 1913.jpg` — high-quality family portrait for later family-specific notes.
 
-## Licensing / runtime notes
+## Runtime note
 
-Most selected material is public domain by age, Imperial Russian publication status, or explicit Commons licensing; several newer maps are CC0/CC-BY-SA. Always preserve the source filename in this ledger before vendoring a local copy. Runtime hotlinks are provisional: once the art direction is locked, optimize and vendor stable local copies in `/asset/` so Commons redirects are no longer a runtime dependency.
+The archive is still hotlinked through Commons redirects. That is useful while art direction is changing quickly, but once the tooltip set is stable the next technical pass should vendor optimized local copies into `/asset/marginalia/` so the game does not depend on dozens of external redirects at runtime.
