@@ -1,25 +1,24 @@
-/* Runtime asset hooks.
-   Replace files in /asset while keeping the same names; the UI updates without touching game code.
-
-   IMPORTANT: this stylesheet lives in /src, so runtime asset URLs must step up one level.
-   The static bundler rewrites ../asset/ to ./asset/ when this CSS is inlined into root index.html. */
+/* Runtime asset hook for the Imperial seal.
+   Replace /asset/imperial-seal.svg while keeping the same filename.
+   The query string is intentionally versioned so GitHub Pages/browser caches do not keep an old replacement. */
 
 .seal {
-  width: 108px;
-  height: 108px;
-  min-width: 108px;
+  width: 118px !important;
+  height: 118px !important;
+  min-width: 118px !important;
   border: 0 !important;
   border-radius: 0 !important;
-  background-image: url("../asset/imperial-seal.svg") !important;
+  background-color: transparent !important;
+  background-image: url("../asset/imperial-seal.svg?v=20260901-2") !important;
   background-position: center !important;
   background-size: contain !important;
   background-repeat: no-repeat !important;
-  background-color: transparent !important;
   -webkit-mask: none !important;
   mask: none !important;
+  box-shadow: none !important;
   filter:
-    drop-shadow(0 1px 0 rgba(255,238,192,.28))
-    drop-shadow(0 7px 16px rgba(0,0,0,.48));
+    drop-shadow(0 1px 0 rgba(255,238,192,.30))
+    drop-shadow(0 8px 18px rgba(0,0,0,.52)) !important;
 }
 
 .seal span,
@@ -29,8 +28,8 @@
 
 @media (max-width: 650px) {
   .seal {
-    width: 82px;
-    height: 82px;
-    min-width: 82px;
+    width: 82px !important;
+    height: 82px !important;
+    min-width: 82px !important;
   }
 }
