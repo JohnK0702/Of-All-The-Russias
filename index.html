@@ -4967,9 +4967,9 @@ if (typeof window !== 'undefined' && typeof window.addEventListener === 'functio
 
 /* Nicholas's private marginalia.
    Selected people, places and events in the question text become handwritten-looking annotations.
-   The notes are character POV, not omniscient narration. They are intentionally anachronistic in places:
-   Nicholas's instincts are allowed to sound like later Russian political language, internet slang and 2020s
-   state-media brain because the joke is that the organism changes vocabulary more readily than reflexes. */
+   The notes are character POV, not omniscient narration. Some borrow later Russian political vocabulary
+   because the joke is that the state changes banners and terminology more readily than reflexes. Keep the
+   irony contemporary where it sharpens that continuity, but avoid app, platform and internet-culture gags. */
 
 const OATR_MARGINALIA = [
   {
@@ -4983,7 +4983,7 @@ const OATR_MARGINALIA = [
     id:'witte', terms:['Sergei Witte','Witte'],
     image:()=>typeof oatrAssetUrl==='function'?oatrAssetUrl('witte'):'',
     eyebrow:'TECHNOCRAT · N.A.R.',
-    note:'Globalist. Knows what a bond yield is. Suspicious.',
+    note:'Clever. Vain. Useful. He always makes surrender sound like administration.',
     caption:'Count Sergei Witte.'
   },
   {
@@ -4996,22 +4996,22 @@ const OATR_MARGINALIA = [
   {
     id:'rasputin', terms:['Grigori Rasputin','Rasputin','Grigori'],
     image:()=>typeof oatrAssetUrl==='function'?oatrAssetUrl('rasputin'):'',
-    eyebrow:'UNVERIFIED SOURCE · N.A.R.',
-    note:'Unverified source. Extremely high engagement. Alix follows him.',
+    eyebrow:'THE EMPRESS TRUSTS HIM · N.A.R.',
+    note:'Impossible man. Alix trusts him. The boy sleeps.',
     caption:'Grigori Rasputin.'
   },
   {
     id:'alexandra', terms:['Alexandra Feodorovna','Alexandra','Alix'],
     image:()=>typeof oatrAssetUrl==='function'?oatrAssetUrl('alexandra1898'):'',
-    eyebrow:'MUTUAL · N.A.R.',
-    note:'Alix. Notifications always on.',
+    eyebrow:'ALIX · N.A.R.',
+    note:'My wife. German by birth; more Russian than half the court.',
     caption:'Alexandra Feodorovna.'
   },
   {
     id:'bloody-sunday', terms:['Bloody Sunday','9 January 1905','January 1905'],
     image:()=>typeof oatrAssetUrl==='function'?oatrAssetUrl('bloodySundayMakovsky'):'',
     eyebrow:'OPTICS · N.A.R.',
-    note:'They brought icons. The police brought optics.',
+    note:'They brought icons. The troops brought rifles.',
     caption:'Vladimir Makovsky, The 9th of January 1905 on Vasilievsky Island.'
   },
   {
@@ -5024,8 +5024,8 @@ const OATR_MARGINALIA = [
   {
     id:'potemkin', terms:['Potemkin'],
     image:()=>typeof oatrAssetUrl==='function'?oatrAssetUrl('potemkinPhoto'):'',
-    eyebrow:'MARITIME CONTENT · N.A.R.',
-    note:'Mutiny, but with excellent branding.',
+    eyebrow:'MUTINY AT SEA · N.A.R.',
+    note:'The fleet has discovered politics.',
     caption:'Battleship Potemkin.'
   },
   {
@@ -5045,29 +5045,29 @@ const OATR_MARGINALIA = [
   {
     id:'poland', terms:['Poland','Polish','Warsaw'],
     image:()=>typeof oatrAssetUrl==='function'?oatrAssetUrl('empireMap'):'',
-    eyebrow:'REPEAT REQUEST · N.A.R.',
-    note:'Has requested sovereignty again. Muted.',
+    eyebrow:'ALWAYS TEMPORARY · N.A.R.',
+    note:'Always a question disguised as a province.',
     caption:'Russian Poland and the western borderlands.'
   },
   {
     id:'serbia', terms:['Serbia','Serbian','Belgrade'],
     image:()=>typeof oatrAssetUrl==='function'?oatrAssetUrl('empireMap'):'',
-    eyebrow:'BALKAN CONTENT · N.A.R.',
+    eyebrow:'THE SERBIAN QUESTION · N.A.R.',
     note:'A foreign policy built on regicide, patron saints, and making Austria’s problem everyone else’s.',
     caption:'The Kingdom of Serbia and the Balkan question.'
   },
   {
     id:'austria', terms:['Austria-Hungary','Austria','Austrian','Vienna','Habsburg'],
     image:()=>typeof oatrAssetUrl==='function'?oatrAssetUrl('empireMap'):'',
-    eyebrow:'DUAL-MONARCHY POSTING · N.A.R.',
+    eyebrow:'DUAL MONARCHY · N.A.R.',
     note:'Two countries in a trench coat pretending to be a great power.',
     caption:'Austria-Hungary, Russia’s principal Balkan rival.'
   },
   {
     id:'germany', terms:['Kaiser Wilhelm','Wilhelm II','Germany','German','Willy'],
     image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Wilhelm%20II%20of%20Germany%20-%201907.jpg',
-    eyebrow:'MUTUALS · N.A.R.',
-    note:'Willy. Mutual. Posts too much.',
+    eyebrow:'DEAR WILLY · N.A.R.',
+    note:'Willy. Exhausting. Dear Willy.',
     caption:'Kaiser Wilhelm II.'
   },
   {
@@ -5080,7 +5080,7 @@ const OATR_MARGINALIA = [
   {
     id:'britain', terms:['Great Britain','Britain','British','England','English'],
     image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/John%20Bull%20and%20his%20Friends%201900.jpg',
-    eyebrow:'THE DEEP STATE, BUT WET · N.A.R.',
+    eyebrow:'THE BRITISH · N.A.R.',
     note:'Behind it somehow.',
     caption:'John Bull and his Friends, 1900.'
   },
@@ -5101,15 +5101,15 @@ const OATR_MARGINALIA = [
   {
     id:'cossacks', terms:['the Cossacks','Cossacks','Cossack'],
     image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Cossacks%20of%20the%20Russian%20Empire.jpg',
-    eyebrow:'COMMUNITY NOTES · N.A.R.',
-    note:'Community Notes, but with sabres.',
+    eyebrow:'THE COSSACKS · N.A.R.',
+    note:'Unpleasant, but necessary. Until they decide otherwise.',
     caption:'Cossacks of the Russian Empire.'
   },
   {
     id:'okhrana', terms:['Okhrana','political police','secret police'],
     image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Okhrana%20group%20photo.jpg',
-    eyebrow:'TRUST & SAFETY · N.A.R.',
-    note:'Trust & Safety. They know everything except what is true.',
+    eyebrow:'POLITICAL POLICE · N.A.R.',
+    note:'They know everything except what is true.',
     caption:'The imperial political police.'
   },
   {
@@ -5129,21 +5129,21 @@ const OATR_MARGINALIA = [
   {
     id:'peasants', terms:['the peasants','peasants','peasant'],
     image:()=>typeof oatrAssetUrl==='function'?oatrAssetUrl('empireMap'):'',
-    eyebrow:'THE BASE · N.A.R.',
-    note:'The base. Very loyal. Please do not ask them directly.',
+    eyebrow:'THE PEASANTS · N.A.R.',
+    note:'They love the Tsar. Their complaints are local.',
     caption:'The peasantry: the overwhelming majority of imperial subjects.'
   },
   {
     id:'intelligentsia', terms:['intelligentsia','intellectuals','students'],
     image:()=>typeof oatrAssetUrl==='function'?oatrAssetUrl('dumaMembers'):'',
-    eyebrow:'TERMINALLY ONLINE · N.A.R.',
+    eyebrow:'INTELLIGENTSIA · N.A.R.',
     note:'People who have read themselves into treason.',
     caption:'The educated opposition and radical intelligentsia.'
   },
   {
     id:'liberals', terms:['liberals','liberal opposition','Kadets','Constitutional Democrats'],
     image:()=>typeof oatrAssetUrl==='function'?oatrAssetUrl('dumaMembers'):'',
-    eyebrow:'WESTERN VALUES · N.A.R.',
+    eyebrow:'CONSTITUTIONALISTS · N.A.R.',
     note:'Want England with snow. Have apparently not met England.',
     caption:'Liberal constitutional politics in the empire.'
   },
@@ -5192,8 +5192,8 @@ const OATR_MARGINALIA = [
   {
     id:'strikes', terms:['general strike','the strike','strike','strikers'],
     image:()=>typeof oatrAssetUrl==='function'?oatrAssetUrl('revolutionBarricade'):'',
-    eyebrow:'COORDINATED INAUTHENTIC BEHAVIOR · N.A.R.',
-    note:'Organic grassroots movement. Coordinated by everyone I dislike.',
+    eyebrow:'POLITICAL THEATER · N.A.R.',
+    note:'A wage dispute until someone prints a leaflet.',
     caption:'Industrial unrest in the Russian Empire.'
   },
   {
@@ -5220,8 +5220,8 @@ const OATR_MARGINALIA = [
   {
     id:'constitution', terms:['constitution','constitutional','constitutionalism'],
     image:()=>typeof oatrAssetUrl==='function'?oatrAssetUrl('dumaDiagram'):'',
-    eyebrow:'TERMS OF SERVICE · N.A.R.',
-    note:'Terms of service for the autocracy. Unclear why the autocracy needs terms of service.',
+    eyebrow:'PAPER LIMITS · N.A.R.',
+    note:'A law explaining what the sovereign may not do. Curious.',
     caption:'The constitutional question after 1905.'
   },
   {
@@ -5234,8 +5234,8 @@ const OATR_MARGINALIA = [
   {
     id:'army', terms:['the army','Russian army','General Staff'],
     image:()=>typeof oatrAssetUrl==='function'?oatrAssetUrl('grandDukeNicholas'):'',
-    eyebrow:'THE ADULTS IN THE ROOM · N.A.R.',
-    note:'The only serious men. Concerning how often they mention this.',
+    eyebrow:'THE ARMY · N.A.R.',
+    note:'The only serious men. They are very serious about saying so.',
     caption:'The Imperial Russian Army and General Staff.'
   },
   {
