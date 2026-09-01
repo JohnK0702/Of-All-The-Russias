@@ -14,6 +14,7 @@ const branching = await readFile(new URL('src/branching.js', root), 'utf8');
 const detailedEvents = await readFile(new URL('src/detailed-events.js', root), 'utf8');
 const engine = await readFile(new URL('src/main.js', root), 'utf8');
 const endingPaths = await readFile(new URL('src/ending-paths.js', root), 'utf8');
+const balancePass = await readFile(new URL('src/balance-pass.js', root), 'utf8');
 const detailedAdvisors = await readFile(new URL('src/detailed-advisors.js', root), 'utf8');
 const politicalHorror = await readFile(new URL('src/political-horror.js', root), 'utf8');
 const sergeiHorror = await readFile(new URL('src/sergei-horror.js', root), 'utf8');
@@ -28,7 +29,7 @@ const eventArt = await readFile(new URL('src/event-art.js', root), 'utf8');
 // those same URLs resolve relative to the page, so normalize repository-local assets here.
 const inlineCss = css => css.replaceAll('../asset/', './asset/');
 const css = `${inlineCss(baseCss)}\n\n${inlineCss(darkGuiCss)}\n\n${inlineCss(skeletonUiCss)}\n\n${inlineCss(sergeiCss)}\n\n${inlineCss(assetPlaceholderCss)}\n\n${inlineCss(eventArtCss)}\n\n${inlineCss(failRoutesCss)}`;
-const javascript = `${gameData}\n\n${branching}\n\n${detailedEvents}\n\n${engine}\n\n${endingPaths}\n\n${detailedAdvisors}\n\n${politicalHorror}\n\n${sergeiHorror}\n\n${failRoutes}\n\n${canonPassion}\n\n${canonPassionVoice}\n\n${endingEpilogues}\n\n${endingEpiloguesExtra}\n\n${eventArt}`;
+const javascript = `${gameData}\n\n${branching}\n\n${detailedEvents}\n\n${engine}\n\n${endingPaths}\n\n${balancePass}\n\n${detailedAdvisors}\n\n${politicalHorror}\n\n${sergeiHorror}\n\n${failRoutes}\n\n${canonPassion}\n\n${canonPassionVoice}\n\n${endingEpilogues}\n\n${endingEpiloguesExtra}\n\n${eventArt}`;
 
 if (css.includes('</style>') || javascript.includes('</script>')) {
   throw new Error('Inline assets may not contain closing style or script tags.');
