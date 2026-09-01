@@ -782,6 +782,181 @@ body[data-era="passion"] .passion-alexandra-window .passion-wife-name b {
   }
 }
 
+
+/* Passion sidebar: Nicholas above Alexandra, both on the right. */
+body[data-era="passion"] .passion-revamp-shell main {
+  display: grid;
+  grid-template-columns: 118px minmax(0, 1fr) 320px;
+  gap: 34px;
+  align-items: start;
+}
+
+body[data-era="passion"] .passion-scripture {
+  max-width: 780px;
+  margin: 8px auto 0;
+  color: #c9bb92;
+  font-size: 15px;
+  line-height: 1.45;
+  text-align: center;
+}
+
+body[data-era="passion"] .passion-scripture em {
+  display: block;
+  font-style: italic;
+}
+
+body[data-era="passion"] .passion-scripture span {
+  display: block;
+  margin-top: 5px;
+  color: #a89668;
+  font-size: 10px;
+  font-style: normal;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+
+body[data-era="passion"] .passion-royal-windows {
+  min-width: 0;
+  padding-left: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  align-self: start;
+  text-align: center;
+}
+
+body[data-era="passion"] .passion-window {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+body[data-era="passion"] .passion-icon {
+  width: 210px;
+  height: 255px;
+  margin: 0 auto 12px;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  border: 1px solid rgba(214,181,107,.62);
+  outline: 1px solid rgba(65,50,17,.92);
+  box-shadow: 0 0 0 4px rgba(0,0,0,.2), inset 0 0 28px rgba(0,0,0,.25);
+}
+
+body[data-era="passion"] .passion-nicholas-icon {
+  background-image:
+    linear-gradient(rgba(7,10,8,.08), rgba(7,10,8,.28)),
+    url("https://www.studiolum.com/wang/russian/apocryph/010.jpg");
+}
+
+body[data-era="passion"] .passion-alexandra-icon {
+  background-image:
+    linear-gradient(rgba(7,10,8,.06), rgba(7,10,8,.18)),
+    url("https://www.orthodoxchristiansupply.com/cdn/shop/products/st-tsarina-alexandra-the-royal-martyr-icons-orthodox-christian-supply_620_403x.jpg?v=1571714875");
+}
+
+body[data-era="passion"] .passion-window-label {
+  margin: 0 0 5px;
+  color: #a99159;
+  font-size: 10px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+}
+
+body[data-era="passion"] .passion-window h3 {
+  margin: 0 0 7px;
+  color: #e0d4b4;
+  font-size: 18px;
+  line-height: 1.05;
+  letter-spacing: .08em;
+}
+
+body[data-era="passion"] .passion-window h3 span {
+  font-size: .9em;
+}
+
+body[data-era="passion"] .passion-identity {
+  margin: 0;
+  color: #bfae83;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+body[data-era="passion"] .passion-identity strong {
+  color: #d6c9a8;
+  font-weight: 400;
+}
+
+body[data-era="passion"] .passion-identity em {
+  color: #a99770;
+}
+
+body[data-era="passion"] .passion-window .hand {
+  margin: -3px 0 3px;
+}
+
+body[data-era="passion"] .passion-window .stamp {
+  margin: 14px auto 10px;
+}
+
+body[data-era="passion"] .passion-window small {
+  display: block;
+  max-width: 245px;
+  margin-top: 7px;
+  color: #aa9a76;
+  font-size: 12px;
+  font-style: italic;
+  line-height: 1.5;
+}
+
+body[data-era="passion"] .passion-family-rule {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #8d7440;
+  font-size: 10px;
+}
+
+body[data-era="passion"] .passion-family-rule::before,
+body[data-era="passion"] .passion-family-rule::after {
+  content: "";
+  height: 1px;
+  flex: 1;
+  background: linear-gradient(90deg, transparent, rgba(180,145,65,.48), transparent);
+}
+
+@media (max-width: 1100px) {
+  body[data-era="passion"] .passion-revamp-shell main {
+    grid-template-columns: 90px minmax(0, 1fr);
+  }
+  body[data-era="passion"] .passion-royal-windows {
+    grid-column: 2;
+    padding: 24px 0 0;
+    border-left: 0;
+    border-top: 1px solid rgba(214,181,107,.28);
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+  }
+  body[data-era="passion"] .passion-family-rule { display: none; }
+}
+
+@media (max-width: 700px) {
+  body[data-era="passion"] .passion-revamp-shell main { display: block; }
+  body[data-era="passion"] .passion-revamp-shell .folio { display: none; }
+  body[data-era="passion"] .passion-royal-windows {
+    display: flex;
+    margin-top: 30px;
+  }
+  body[data-era="passion"] .passion-family-rule { display: flex; }
+  body[data-era="passion"] .passion-icon {
+    width: min(240px, 82vw);
+    height: 290px;
+  }
+}
+
 </style>
   </head>
   <body>
@@ -4144,6 +4319,89 @@ renderCanonPassion = function() {
 };
 
 /* canon-passion.js and canon-passion-voice.js may already have rendered during initial load. */
+if (state.index >= OATR_SKELETONS.length && (state.canonPassion || oatrCanonEligible())) renderCanonPassion();
+
+
+/* Passion UI revamp: restore the original event composition, move both family icons to the right,
+   and replace the imperial motto with Zechariah 12:10. Loaded after canon-passion-voice.js. */
+
+renderCanonPassion = function() {
+  if (!state.canonPassion) state.canonPassion = { index:0, history:[], complete:false, pending:null };
+  const cp = state.canonPassion;
+  if (cp.complete || cp.index >= OATR_CANON_PASSION.length) return renderCanonFinalEnding();
+
+  const e = OATR_CANON_PASSION[cp.index];
+  const year = yearFromDate(e.date);
+  const progress = Math.round(cp.index / OATR_CANON_PASSION.length * 100);
+  const [phase, chapter] = oatrPassionPhase(cp.index);
+  const alexandraNote = OATR_PASSION_ALEXANDRA_NOTES[cp.index] || OATR_PASSION_ALEXANDRA_NOTES.at(-1);
+  const choices = e.choices.map(([label], i) => `<li><button data-canon-choice="${i}"><span>${String.fromCharCode(65+i)}</span><p>${label}</p><b>→</b></button></li>`).join('');
+
+  document.body.dataset.era = 'passion';
+  document.body.dataset.year = year;
+  document.body.dataset.veil = cp.index >= 7 ? 'high' : 'rising';
+
+  document.querySelector('#app').innerHTML = `
+    <div class="page-shell passion-revamp-shell">
+      <header>
+        <div class="seal" aria-hidden="true"></div>
+        <div class="masthead passion-masthead">
+          <p class="russian-title">1917–1918 · THE PASSION</p>
+          <h1>OF ALL THE RUSSIAS</h1>
+          <p class="motto passion-scripture"><em>They will look on him they pierced, and mourn for him as for an only son, and grieve bitterly for him</em><span>— Zechariah 12:10</span></p>
+        </div>
+        <div class="year"><b>${year}</b><span>—</span><small>1918</small><button class="restart-campaign" data-restart-campaign title="Restart the campaign from January 1905">↺ RESTART</button></div>
+      </header>
+      <nav class="chronology" aria-label="Passion progress">
+        <span class="${cp.index <= 3 ? 'active' : ''}">FEBRUARY</span><i></i>
+        <span class="${cp.index >= 4 && cp.index <= 6 ? 'active' : ''}">CAPTIVITY</span><i></i>
+        <span class="${cp.index >= 7 ? 'active' : ''}">EKATERINBURG</span>
+      </nav>
+      <div class="campaign-progress"><span style="width:${progress}%"></span></div>
+      <main>
+        <aside class="folio">
+          <p>PASSION</p><strong>${String(cp.index+1).padStart(2,'0')}</strong><span>OF ${OATR_CANON_PASSION.length}</span>
+          <div class="vertical-rule"></div>
+          <p class="nine-years">THE CROWN<br>IS GONE</p>
+        </aside>
+        <article>
+          <div class="dateline"><span>${e.date}</span><span class="cross">✣</span><span>${e.place}</span></div>
+          <p class="kicker">${phase} · ${chapter}</p>
+          <h2>${e.title}</h2>
+          <section class="dispatch">${e.body.map(p => `<p>${p}</p>`).join('')}</section>
+          <blockquote><p>${e.quote}</p><cite>${e.speaker}</cite></blockquote>
+          <div class="question"><span>WHAT REMAINS TO YOU?</span></div>
+          <ol class="choices">${choices}</ol>
+        </article>
+        <aside class="dossier passion-royal-windows">
+          <section class="passion-window passion-window-nicholas">
+            <div class="passion-icon passion-nicholas-icon" role="img" aria-label="Icon of Nicholas Romanov"></div>
+            <p class="passion-window-label">THE PRISONER</p>
+            <h3>НИКОЛАЙ<br><span>РОМАНОВ</span></h3>
+            <p class="passion-identity"><strong>Nicholas Romanov</strong><br><em>A Poor Sinner</em></p>
+          </section>
+          <div class="passion-family-rule"><span>☦</span></div>
+          <section class="passion-window passion-window-alexandra">
+            <div class="passion-icon passion-alexandra-icon" role="img" aria-label="Icon of Alexandra Feodorovna"></div>
+            <p class="hand">Nicky</p>
+            <h3>АЛЕКСАНДРА<br><span>ФЕОДОРОВНА</span></h3>
+            <p class="passion-identity"><strong>Your Wife</strong><br><em>Alexandra, Daughter of Eve</em></p>
+            <div class="stamp">ЛИЧНОЕ<br><b>PRIVATE</b></div>
+            <small>${alexandraNote}</small>
+          </section>
+        </aside>
+      </main>
+      <footer><span>☦</span><p>ORTHODOXY</p><i>◆</i><p>PASSION</p><i>◆</i><p>RUSSIA</p><span>☦</span></footer>
+      ${cp.pending ? renderPassionRussiaAdvisor(e, cp.index, cp.pending) : ''}
+    </div>`;
+
+  document.querySelectorAll('[data-canon-choice]').forEach(btn => btn.onclick = () => applyCanonPassion(Number(btn.dataset.canonChoice)));
+  const continueButton = document.querySelector('[data-canon-continue]');
+  if (continueButton) continueButton.onclick = continueCanonPassion;
+  const restartButton = document.querySelector('[data-restart-campaign]');
+  if (restartButton) restartButton.onclick = resetCampaign;
+};
+
 if (state.index >= OATR_SKELETONS.length && (state.canonPassion || oatrCanonEligible())) renderCanonPassion();
 
 
