@@ -1,33 +1,44 @@
-/* Legibility pass: no faux-handwriting fonts anywhere in the dossier UI. */
+/* Handwriting pass: keep handwritten elements, but use a restrained, legible period-note vibe. */
 .hand,
 .handwritten,
-body[data-era="passion"] .passion-window .hand {
-  font-family: 'Old Standard TT', Georgia, 'Times New Roman', serif !important;
-  font-style: italic !important;
+body[data-era="passion"] .passion-window .hand,
+.marginalia-copy strong {
+  font-family: 'Bad Script', 'Segoe Print', 'Bradley Hand', cursive !important;
+  font-style: normal !important;
   font-weight: 400 !important;
-  letter-spacing: .025em !important;
-  transform: none !important;
   text-rendering: optimizeLegibility;
 }
 
 .hand {
-  font-size: 18px !important;
-  line-height: 1.15 !important;
-  margin: 7px 0 3px !important;
+  color: #d9b762 !important;
+  font-size: 22px !important;
+  line-height: 1.08 !important;
+  letter-spacing: .01em !important;
+  margin: 2px 0 2px !important;
+  transform: rotate(-1.2deg) !important;
+  text-shadow: 0 1px 0 #000 !important;
 }
 
 .handwritten {
-  font-size: 18px !important;
-  line-height: 1.35 !important;
+  color: #d7b35e !important;
+  font-size: 21px !important;
+  line-height: 1.25 !important;
+  letter-spacing: .005em !important;
   margin: 0 !important;
+  transform: rotate(-.7deg) !important;
 }
 
-/* Tooltip notes should read like private archival annotations, not novelty handwriting. */
+body[data-era="passion"] .passion-window .hand {
+  font-size: 21px !important;
+  line-height: 1.08 !important;
+  transform: rotate(-1deg) !important;
+}
+
+/* Tooltip marginalia should look like a quick private notation, not UI copy. */
 .marginalia-copy strong {
-  font-family: 'Old Standard TT', Georgia, 'Times New Roman', serif !important;
-  font-style: italic !important;
-  font-size: 19px !important;
-  font-weight: 400 !important;
-  line-height: 1.22 !important;
-  letter-spacing: .015em !important;
+  color: #e2cf9d !important;
+  font-size: 21px !important;
+  line-height: 1.18 !important;
+  letter-spacing: 0 !important;
+  transform: rotate(-.35deg);
 }
