@@ -10,6 +10,7 @@ const assetPlaceholderCss = await readFile(new URL('src/asset-placeholders.css',
 const eventArtCss = await readFile(new URL('src/event-art.css', root), 'utf8');
 const failRoutesCss = await readFile(new URL('src/fail-routes.css', root), 'utf8');
 const passionPortraitsCss = await readFile(new URL('src/passion-portraits.css', root), 'utf8');
+const passionUiRevampCss = await readFile(new URL('src/passion-ui-revamp.css', root), 'utf8');
 const gameData = await readFile(new URL('src/game-data.js', root), 'utf8');
 const branching = await readFile(new URL('src/branching.js', root), 'utf8');
 const detailedEvents = await readFile(new URL('src/detailed-events.js', root), 'utf8');
@@ -23,6 +24,7 @@ const failRoutes = await readFile(new URL('src/fail-routes.js', root), 'utf8');
 const canonPassion = await readFile(new URL('src/canon-passion.js', root), 'utf8');
 const canonPassionVoice = await readFile(new URL('src/canon-passion-voice.js', root), 'utf8');
 const passionUi = await readFile(new URL('src/passion-ui.js', root), 'utf8');
+const passionUiRevamp = await readFile(new URL('src/passion-ui-revamp.js', root), 'utf8');
 const endingEpilogues = await readFile(new URL('src/ending-epilogues.js', root), 'utf8');
 const endingEpiloguesExtra = await readFile(new URL('src/ending-epilogues-extra.js', root), 'utf8');
 const eventArt = await readFile(new URL('src/event-art.js', root), 'utf8');
@@ -30,8 +32,8 @@ const eventArt = await readFile(new URL('src/event-art.js', root), 'utf8');
 // CSS files normally resolve URLs relative to /src. Once inlined into root index.html,
 // those same URLs resolve relative to the page, so normalize repository-local assets here.
 const inlineCss = css => css.replaceAll('../asset/', './asset/');
-const css = `${inlineCss(baseCss)}\n\n${inlineCss(darkGuiCss)}\n\n${inlineCss(skeletonUiCss)}\n\n${inlineCss(sergeiCss)}\n\n${inlineCss(assetPlaceholderCss)}\n\n${inlineCss(eventArtCss)}\n\n${inlineCss(failRoutesCss)}\n\n${inlineCss(passionPortraitsCss)}`;
-const javascript = `${gameData}\n\n${branching}\n\n${detailedEvents}\n\n${engine}\n\n${endingPaths}\n\n${balancePass}\n\n${detailedAdvisors}\n\n${politicalHorror}\n\n${sergeiHorror}\n\n${failRoutes}\n\n${canonPassion}\n\n${canonPassionVoice}\n\n${passionUi}\n\n${endingEpilogues}\n\n${endingEpiloguesExtra}\n\n${eventArt}`;
+const css = `${inlineCss(baseCss)}\n\n${inlineCss(darkGuiCss)}\n\n${inlineCss(skeletonUiCss)}\n\n${inlineCss(sergeiCss)}\n\n${inlineCss(assetPlaceholderCss)}\n\n${inlineCss(eventArtCss)}\n\n${inlineCss(failRoutesCss)}\n\n${inlineCss(passionPortraitsCss)}\n\n${inlineCss(passionUiRevampCss)}`;
+const javascript = `${gameData}\n\n${branching}\n\n${detailedEvents}\n\n${engine}\n\n${endingPaths}\n\n${balancePass}\n\n${detailedAdvisors}\n\n${politicalHorror}\n\n${sergeiHorror}\n\n${failRoutes}\n\n${canonPassion}\n\n${canonPassionVoice}\n\n${passionUi}\n\n${passionUiRevamp}\n\n${endingEpilogues}\n\n${endingEpiloguesExtra}\n\n${eventArt}`;
 
 if (css.includes('</style>') || javascript.includes('</script>')) {
   throw new Error('Inline assets may not contain closing style or script tags.');
