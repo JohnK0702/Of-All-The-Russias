@@ -47,7 +47,8 @@ Runtime still uses Wikimedia Commons `Special:Redirect/file/...` URLs so individ
 - **Austria-Hungary** — `File:Le Petit Journal Balkan Crisis (1908).jpg` — contemporary color cartoon of the Bosnian Crisis: Franz Joseph annexes Bosnia while Ferdinand and Abdul Hamid feature alongside him.
 - **Germany / Wilhelm II** — `File:Wilhelm II of Germany - 1907.jpg`.
 - **France / Franco-Russian alliance** — `File:Nicholas II and Émile Loubet meeting (1901).jpg`.
-- **Britain** — `File:John Bull and his Friends 1900.jpg` — contemporary political cartoon.
+- **Britain, pre-Entente** — `File:Puck magazine, 1900 June 6.jpg` — *Reckless Defiance*: France stands beside the Russian Bear confronting John Bull during the Boer War. This is now used for the early campaign, when Britain still reads primarily as the maritime/Asian rival.
+- **Britain, post-1907** — `File:As Between Friends (Punch magazine, 13 December 1911).jpg` — the British Lion watches the Russian Bear sit on the Persian Cat's tail. This is the stronger image for the Anglo-Russian Entente because the joke is literally that the two empires have become friends by agreeing how to divide someone else's space. The Britain tooltip switches to it contextually later in the campaign.
 - **Japan** — `File:Crowds lining the street as the procession of carriages carrying Admiral Togo, naval officers, and government officials passes through a triumphial arch during Togo's official visit, Oct., LCCN2005678641.jpg` — Tōgō triumphal imagery.
 - **Ottoman Empire** — `File:Russian view on the Balkan problem 1908.jpg` — Russian cartoon of the Balkan problem, with Turkey watching while European powers trap the Balkan states.
 - **Balkans** — same 1908 Russian cartoon rather than the old sterile map.
@@ -58,7 +59,7 @@ Runtime still uses Wikimedia Commons `Special:Redirect/file/...` URLs so individ
 - **Peasantry** — `File:Крестьянская-семья Беломорье.jpg`.
 - **Orthodox Church** — `File:Hopewood, Sam - Eine religiöse Prozession auf dem Roten Platz, Moskau (Zeno Fotografie).jpg` — religious procession on Red Square, 1905.
 - **Bureaucracy / ministries** — `File:Ilya Repin - Ceremonial Sitting of the State Council on 7 May 1901 Marking the Centenary of its Foundation - Google Art Project.jpg` — the painting itself, not a photograph of the work hanging in the museum.
-- **St Petersburg / Petrograd** — `File:Nevskii prospect and Gostinii dvor.jpg` — an affirmative mid-19th-century painted/lithographed view of Nevsky Prospekt and Gostiny Dvor, presenting Petersburg as the imperial capital imagined at its best rather than as a gloomy documentary photograph.
+- **St Petersburg / Petrograd** — direct supplied artwork: `https://mf.b37mrtl.ru/rbthmedia/images/web/in-rbth/images/2014-02/big/18/UR00-0539_468.jpg`.
 - **Moscow** — `File:Barricades.jpg` — construction of barricades during the 1905 uprising, replacing the old postcard-pretty Red Square shot.
 - **Constitution** — `File:Opening of Duma.jpg` — the constitutional settlement represented as Nicholas physically facing the parliamentary institution he created and distrusted.
 - **Army** — `File:Grand Duke Nicholas Nikolaevich the Younger (portrait).jpg`.
@@ -68,6 +69,8 @@ Runtime still uses Wikimedia Commons `Special:Redirect/file/...` URLs so individ
 
 These are worth using later for branch-specific tooltip variants or event art:
 
+- `File:Great Game cartoon from 1878.jpg` — the Afghan emir between the Russian Bear and British Lion asking to be saved from his friends. Excellent reserve art for Afghanistan / Great Game-specific notes.
+- `File:The Russo-British Pact in 1907.jpg` — period map of the Russian and British spheres in Persia; useful when the actual agreement rather than the imperial satire is the point.
 - `File:Kishineff must be paid for - with interest - Keppler. LCCN2011645734.jpg` — 1905 Puck cartoon connecting Nicholas, Kishinev, war finance and antisemitism.
 - `File:Caricatures of Theodore Roosevelt proclaims to Czar Nicholas II of Russia, Stop your cruel oppression of the Jews - Flohri. LCCN2004671428 (cropped).jpg` — 1904 anti-pogrom cartoon.
 - `File:Kapparot, Nicholas II of Russia as chicken.jpg` — 1907–1910 Jewish-American postcard attacking Nicholas over pogroms and persecution.
