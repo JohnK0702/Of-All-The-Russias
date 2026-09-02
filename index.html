@@ -4036,13 +4036,15 @@ pickEnding = function() {
 
 
 /* Advisor feedback layer.
-   Every response is delivered from the political, personal and institutional perspective of the
-   advisor whose portrait is on screen. The advisor is not the author's conscience and is allowed
-   to approve of bad decisions for reasons that reveal his or her own worldview.
+   Advice is spoken by the person whose portrait is on screen. It should sound like a private
+   memorandum, not a game system explaining itself. Advisors may be prejudiced, vain, brutal,
+   sentimental, shortsighted or simply wrong. The player is expected to read through them.
 
-   The reader should learn two things after every click:
-   1. what the decision is doing to the immediate situation;
-   2. what the person advising Nicholas thinks that means.
+   Rules for this file:
+   - never quote or restate the event title;
+   - never narrate score changes;
+   - never say "for this event" or "on this question";
+   - tell Nicholas what his order is causing, then let the advisor judge it in-character.
 */
 
 const oatrDefaultChooseAdvisor = chooseAdvisor;
@@ -4081,30 +4083,25 @@ function oatrChoiceText(label='') {
   return label.toLowerCase().replace(/[’‘]/g, "'");
 }
 
-function oatrEventSubject(q) {
-  const title = (q?.title || '').replace(/[—–:]/g, ' ').trim();
-  return title || `the matter before us on ${q?.date || 'this date'}`;
-}
-
 function oatrDecisionType(label, effects={}) {
   const t = oatrChoiceText(label);
   if (/general mobil|send general mobil|authorize general mobil/.test(t)) return 'generalMobilization';
-  if (/partial mobil|precaution|readiness|hold.*army|administrative precaution/.test(t)) return 'partialMobilization';
   if (/reverse|countermand|cancel|scale back/.test(t) && /mobil/.test(t)) return 'reverseMobilization';
-  if (/peace|mediat|negot|conference|settlement|diplomatic exit/.test(t) && !/reject|refuse/.test(t)) return 'diplomacy';
+  if (/partial mobil|readiness|administrative precaution|hold .*mobil|hold .*army/.test(t)) return 'partialMobilization';
   if (/serbia|belgrade/.test(t) && /guarantee|stand behind|back|support|patron/.test(t)) return 'serbiaGuarantee';
   if (/serbia|belgrade/.test(t) && /accept|comply|no military|will not fight|abandon/.test(t)) return 'serbiaRestraint';
   if (/berlin|german|germany|willy|continental/.test(t)) return 'germany';
+  if (/peace|mediat|negot|conference|settlement|diplomatic exit/.test(t) && !/reject|refuse/.test(t)) return 'diplomacy';
   if (/receive|hear them|delegation|petition/.test(t)) return 'hearPetition';
   if (/publish|open the records|findings|procurement records/.test(t)) return 'transparency';
+  if (/legislative|constitutional settlement|binding law|responsible government|form a ministry|duma leaders|make the duma/.test(t)) return 'constitutional';
   if (/dissolve|refuse|withdraw|no manifesto|change as little|preserve the commune|restore government/.test(t)) return 'reaction';
-  if (/legislative|constitutional settlement|binding law|responsible government|form a ministry|make the duma|duma leaders/.test(t)) return 'constitutional';
   if (/land|commune|peasant|proprietor|holdings/.test(t) && (effects.land || 0) > 0) return 'landReform';
   if (/rasputin|pilgrim|holy man|grigori/.test(t)) return (effects.veil || 0) > 1 ? 'rasputinEmpower' : 'rasputinLimit';
   if (/okhrana|political police|infiltrat|security service/.test(t)) return (effects.reform || 0) > 0 ? 'policeReform' : 'policePower';
   if (/professional|procurement|gunnery|staff work|moderniz|promotion/.test(t)) return 'militaryReform';
-  if (/crush|storm|artillery|destroy|shoot|clear the streets|make .* example|troops|emergency rule|arrest|repress/.test(t) || (effects.blood || 0) >= 3) return 'force';
   if (/amnesty|surrender|deadline|separate .* murder/.test(t)) return 'limitedMercy';
+  if (/crush|storm|artillery|destroy|shoot|clear the streets|make .* example|troops|emergency rule|arrest|repress/.test(t) || (effects.blood || 0) >= 3) return 'force';
   if (/postpone|wait|later|committee|commission|clarify|decide later|do nothing|leave .* ministry|leave .* governor|say nothing/.test(t) || (effects.door || 0) >= 2) return 'delay';
   if ((effects.reform || 0) >= 2 && (effects.legitimacy || 0) >= 1) return 'reform';
   if ((effects.autocracy || 0) >= 2) return 'authority';
@@ -4113,209 +4110,226 @@ function oatrDecisionType(label, effects={}) {
   return 'pragmatic';
 }
 
-/* Exact moments where the advisor's personality is itself part of the scene. */
+/* Major decisions get wholly bespoke reactions. These are deliberately written as speech,
+   not as miniature encyclopedia entries. */
 const OATR_EXACT_ADVISOR_FEEDBACK = {
   1: {
     sergei: [
-      'I would not have gone to them, Nicky. A sovereign who receives a crowd teaches crowds that pressure opens palace doors. Still, if you insist upon playing Little Father, do it completely: hear the petition yourself, answer it yourself, and make certain the police do not turn your act of condescension into a spectacle of weakness.',
-      'Better. You separate the petition from the mob and preserve the principle that subjects approach the Throne by permission, not by massing in the streets. If they disperse, receive the delegates exactly as promised. Authority is strongest when even mercy occurs on our terms.',
-      'Good. The street has learned that icons and portraits do not confer immunity from an order to disperse. Do not apologize for restoring the capital. Arrest the organizers, clear the bridges, reopen the factories, and let the empire see that the sovereign does not bargain with a procession simply because it has learned to sing hymns.',
-      'No, Nicky. If force is necessary, order it. If mercy is necessary, grant it. Leaving the Interior Ministry to guess which one you wanted gives you all the blood of repression and none of the authority of command. A Tsar must not hide from his own firmness.'
+      `I would not have received them, Nicky. Still, now that you have opened the door, make the audience yours: hear them, grant what is just, dismiss them, and let nobody imagine a crowd has discovered a new organ of government.`,
+      `Better. They disperse first; then you hear the petition. Mercy after obedience looks like sovereignty. Mercy before obedience looks like bargaining.`,
+      `Good. The bridges will clear, the factories will reopen, and the next procession will remember what happened to this one. Do not disgrace a necessary act by apologizing for it afterward.`,
+      `No. If men are to be shot, you must own the order. If they are to be spared, you must own that too. Leaving the police to guess gives you blood without command.`
+    ]
+  },
+  4: {
+    nicholas: [
+      `Then end it. The fleet is gone and there is no military sense in asking the army to recover naval honor with infantry casualties. Bring the men home and rebuild what failed.`,
+      `Very well. But understand what you are asking of the army: not victory for a political objective, but victory to erase humiliation. Soldiers can be ordered to do that. They cannot make it sensible.`,
+      `Good. Put the contracts, promotions and gunnery reports on the table. We have had enough brave men ruined by admirals whose chief qualification was knowing the right dining room.`,
+      `Britain has coaling stations because Britain planned for a navy. We lost because ours arrived exhausted, badly handled and badly shot. I would rather fix that than flatter ourselves.`
     ]
   },
   9: {
     witte: [
-      'Then we must behave tomorrow as though the signature is law. That is the part the court has not understood. A real Duma will irritate you, obstruct ministers and make bad speeches; nevertheless it gives political anger somewhere to go besides the railway yards. If you sign and then cheat it, we shall have purchased contempt at constitutional prices.',
-      'You may get quiet in the streets, Majesty, but not trust. Every deputy will study the reserve clauses instead of the liberties, and every minister will learn to govern through the exceptions. We can live with an imperfect constitution. We cannot live indefinitely with a constitution everyone knows is a trick.',
-      'Then there is no political settlement. There is only a contest of endurance between the state and society, and the state is more brittle than it looks from Tsarskoye Selo. The army may restore communications; it cannot make merchants lend, workers cooperate, or educated men forget what they have seen.',
-      'The English constitution is mostly accumulated habit, which is precisely why copying its wording will not save us. Russia needs rules our own officials expect to obey. If the purpose of the exercise is to discover a document proving autocracy already constitutional, save the stationery.'
+      `Then mean it. Tomorrow the deputies must discover that the signature changed the way ministers govern, not merely the paper on which they govern. If we cheat them now, we shall make constitutionalism look like fraud and revolution look honest.`,
+      `This may calm the streets, but every deputy will spend his time studying the exceptions. A constitution built around escape hatches teaches both sides to prepare for the moment one of them uses one.`,
+      `Then there is no settlement. We will have troops, arrests and perhaps quiet, but not cooperation. A modern state cannot be run indefinitely by compelling every railwayman, clerk, merchant and professor to obey at rifle point.`,
+      `There is no English paragraph that will save us from deciding who governs. We can waste a week pretending the answer is hidden in comparative law, or we can write rules our own ministers intend to obey.`
     ]
   },
   10: {
     trepov: [
-      'Correct. Loyalists who assault Jews, students or liberals without orders are not defending authority; they are competing with it. Hang a few policemen who assisted them and the patriotic societies will suddenly rediscover discipline. The Crown needs obedient streets, not friendly mobs.',
-      'Acceptable, provided the prohibition is enforced. Let them carry icons, sing the anthem and curse the revolution to their hearts’ content. The moment they begin choosing whom the law applies to, put Cossacks between patriotism and its victim.',
-      'Useful men, Majesty, but dangerous instruments. If you arm them, make certain they understand they are auxiliaries, not a second government. A mob that learns it may spill blood in the Tsar’s name will eventually decide it understands the Tsar’s interests better than his ministers do.',
-      'Governors will hear this as permission to do whatever keeps their desks quiet. Some will suppress the mobs, some will employ them, and every atrocity will arrive in Petersburg wrapped in a memorandum explaining local conditions. Central authority should not outsource its conscience to provincial cowards.'
+      `Correct. A loyal mob is still a mob. Arrest the men who attacked civilians, dismiss policemen who assisted them, and the patriotic societies will remember that the Tsar has one government, not several.`,
+      `That is workable. Let them march, sing and shout themselves hoarse. The instant they begin deciding who is entitled to protection of the law, put troops between them and their victim.`,
+      `They can be useful, but only on a leash. Arm them and they will soon decide that enthusiasm gives them authority the state itself denied them. I want auxiliaries, not freelance sovereignty.`,
+      `Then every governor will do whatever keeps his province quiet and call it local judgment. Petersburg will receive the corpses later, attached to excellent paperwork.`
     ]
   },
   22: {
     stolypin: [
-      'That is what I require, Majesty. Not praise, not another rescript: protection when the landlords, courtiers and officials discover reform applies to them. Give me that and I can make property, credit and local government stronger than the commune’s habit of dependence. Withdraw it halfway and every enemy of reform will simply wait for you to tire of me.',
-      'I can work with it, but understand what we are buying. Every exception for a loyal landlord becomes evidence in the village that reform is another favor distributed from above. We may still create proprietors; we shall create fewer of them, more slowly, and with greater bitterness around each boundary stone.',
-      'Then dismiss me, Majesty. A Prime Minister permitted to reform only where reform offends nobody is a clerk with a better uniform. The court will celebrate that you have checked my ambition; the bureaucracy will understand that obstruction has been vindicated.',
-      'Twenty years is a long time only to men who assume Russia will wait politely while they waste it. The village changes whether we legislate or not. My question is whether it changes into owners who have something to defend or into men who have learned the state has nothing left to offer them.'
+      `That is what I need. Not another speech in my favor—your protection when the men around you discover that reform applies to their property, their offices and their friends. Give me that, and I can work.`,
+      `I can proceed, but every protected interest slows the thing down. We will still make proprietors; we will simply make fewer of them, later, while teaching the village that reform bends when the right landlord complains.`,
+      `Then dismiss me. A Prime Minister allowed to reform only where nobody important objects is not a Prime Minister. He is an unusually well-dressed clerk.`,
+      `Twenty years is a long time only if you think the village is standing still while we talk. It is changing now. I am asking whether we shape that change or wait to be surprised by it.`
+    ]
+  },
+  35: {
+    stolypin: [
+      `Then use me while they are still ashamed to oppose me. Sympathy will fade before the wounds do. If we are going to finish the work, now is the moment to force the remaining doors open.`,
+      `I can leave with honors. The question is whether the program leaves with me. A safer successor will discover very quickly that every obstacle I fought has survived intact.`,
+      `Do it. If the service cannot explain how a man reached me, then the service needs less self-confidence and more scrutiny. I would rather have competent police than loyal assurances.`,
+      `Russia always continues. That is our most dangerous consolation. The unfinished work continues too.`
     ]
   },
   41: {
     alexandra: [
-      'You ask me to accept that the man who gives our son peace must become a stranger whenever a minister enters the room. I will obey you, Nicky, but I do not believe Petersburg’s gossip is cleaner than Grigori’s prayers. If you draw this line, do not let courtiers move it merely because they dislike him.',
-      'That is all I have ever asked: let him come when Baby is ill and leave the ministries to their papers. But you know how this palace works. Men will call even his presence influence because they cannot imagine love that is not political.',
-      'Yes. You have seen it yourself. The doctors whisper, the bleeding stops, and then men who were not in the room explain that we are fools. If preserving our son costs the approval of society, let society disapprove. God did not give them Alexei to carry.',
-      'You may send him away, but do not ask me to call it prudence. When the next hemorrhage comes, it will be you and I at the bedside while the people who demanded this sleep comfortably in Petersburg.'
+      `I will accept the line because you ask it, Nicky. But do not pretend the drawing rooms are protecting the monarchy from Grigori. Most of them are offended that a peasant may enter a door they thought belonged to them.`,
+      `Yes. Let him come to Baby and nowhere else. If that satisfies them, good. If they call even compassion political influence, then they were never asking for a boundary in the first place.`,
+      `You have seen what happens when he comes. The bleeding slows; our boy sleeps. Let Petersburg laugh. They do not sit beside the bed with us.`,
+      `Then send him away. But when Alexei is ill again, the people who demanded this will not be here. You and I will.`
     ]
   },
   47: {
     witte: [
-      'At last we have discovered the absurdity plainly enough to name it. A police service that pays revolutionaries, permits crimes to preserve sources and then reports the resulting conspiracies as proof of its necessity is no longer gathering intelligence; it is manufacturing the political weather. Reform it before nobody in government can tell an agent from an enemy.',
-      'That answer will be very popular inside the Okhrana. Every institutional failure becomes evidence that the institution requires greater protection from scrutiny. If we accept that logic, there is no scandal large enough to count against them.',
-      'Ten Azefs will give you ten times the reports and perhaps ten times the terrorism. Penetration is useful until the service becomes invested in keeping the underground alive. A policeman whose promotion depends on conspiracies eventually develops a professional objection to peace and quiet.',
-      'Yes, though you have the direction reversed. The scandal is that the state penetrated the revolution so deeply that it ceased to know where its own hands were. Once the police finance the man who organizes the bomb, “penetration” is no longer a reassuring word.'
+      `Good. A police service that pays conspirators, protects them as sources and then reports their plots as proof of its usefulness has ceased to know what success means. Clean it out before the government itself loses track of who works for whom.`,
+      `The Okhrana will adore that conclusion. Every failure becomes proof that it must be protected from scrutiny. If we accept that, there is literally no scandal capable of counting against it.`,
+      `More agents will give you more reports and more conspiracies in which our own men helped with the introductions. Intelligence becomes useless when the service needs the disease in order to justify the doctor.`,
+      `Yes—except it is worse than infiltration. We have reached the point where the police and the underground share personnel. That is not mastery. That is administrative confusion with explosives.`
     ]
   },
   56: {
     sazonov: [
-      'That buys us room, Majesty, and I will use it. Vienna must be made to state what it actually wants before Russia decides what Serbia is worth. The danger is domestic: every newspaper that has spent ten years describing Belgrade as our little brother will call patience cowardice the moment Austria raises its voice.',
-      'Good. A private warning gives Berchtold a fact to calculate without forcing him to answer a public challenge. I can work with facts. What I cannot work with is Slav honor shouted from both capitals until neither government is permitted to compromise.',
-      'Then tell the General Staff to prepare, because Belgrade will negotiate differently the moment it believes our army stands behind every comma of its reply. A guarantee may deter Vienna; it may also remove Serbia’s strongest reason to accept anything unpleasant.',
-      'I will ask London whatever Your Majesty wishes. But unless Sir Edward Grey personally handed Princip the pistol, Britain is not the immediate problem. Austria is preparing a demand, Serbia is deciding how far to yield, and we are deciding whether a Balkan quarrel is a Russian vital interest.'
+      `Good. Make Vienna tell us what it actually wants before we decide how much Serbia is worth. The newspapers will scream that hesitation is cowardice. Let them. Newspapers do not have to mobilize armies.`,
+      `That is useful. A private warning gives Austria something to calculate without forcing it to answer a public insult. Keep the language precise and I can still negotiate.`,
+      `Then Belgrade will bargain knowing our army stands behind it. That may frighten Vienna. It will certainly make Serbia less inclined to swallow anything unpleasant.`,
+      `I will ask London. But unless Grey handed Princip the pistol himself, Britain is not the decision in front of us. Austria has demands, Serbia has choices, and we must decide what we are actually prepared to fight for.`
     ]
   }
 };
 
-function oatrPerspectiveAdvice(advisorKey, type, q, label, effects) {
-  const subject = oatrEventSubject(q);
-  const e = effects || {};
+/* The general voice bank. No event titles are interpolated here. Each line begins with the real-world
+   consequence of the order and then filters it through the advisor's prejudices. */
+const OATR_ADVISOR_VOICES = {
+  sergei: {
+    force: `The streets will quiet once people believe the order will actually be enforced. Good. Fear is not affection, but a government can survive being hated more easily than it can survive being tested and found harmless.`,
+    hearPetition: `You have given petitioners access to the sovereign because they arrived together. I dislike that lesson. Since it is done, keep the exchange paternal: hear them, answer them, dismiss them, and concede nothing to the principle of pressure.`,
+    constitutional: `Another institution now has a claim against your discretion. I think that a mistake. If you keep it, keep the boundaries unmistakable, or every concession will become the starting point for the next demand.`,
+    reaction: `Good. Not every demand becomes respectable because enough people repeat it. Hold the line, restore routine, and let the opposition learn that agitation does not automatically rewrite the state.`,
+    limitedMercy: `Mercy is useful after submission. Separate the frightened and foolish from the men who meant to overthrow authority, punish the latter, and let the former go home knowing exactly why they were spared.`,
+    diplomacy: `End the foreign trouble, bring the army back within reach, and recover freedom of action. Peace is valuable because it lets the state become dangerous again where it matters.`,
+    delay: `You have left a vacuum and called it patience. Governors and ministers will fill it with their own instincts, then explain afterward that they were carrying out your will.`,
+    reform: `You are giving away more than I would. If the concession must be made, make it narrow, administrative and obviously yours to grant. Do not turn disturbance into a recognized method of legislation.`,
+    authority: `At least everyone now knows where the order came from. Clarity is half of government. Enforce it once and the second order will require less effort.`,
+    pragmatic: `Make certain the bureaucracy understands this as a decision, not an invitation to reinterpret you. A sovereign loses more authority through ambiguity than through an unpopular command.`
+  },
 
-  const voices = {
-    sergei: {
-      force: `Good. ${subject} required the state to demonstrate that commands are not invitations to debate. Restore order completely; half-measures merely produce martyrs without producing fear. If this creates hatred, hatred is preferable to the discovery that the government can be pushed backward by a crowd.`,
-      hearPetition: `I dislike the precedent, Nicky. On ${subject}, you have rewarded collective pressure with access to the sovereign. Since you have done it, make the audience paternal rather than political: hear grievances, grant what is just, and make it unmistakable that the Throne concedes from strength.`,
-      constitutional: `This gives another institution a claim against your own authority. I think that dangerous. If you proceed, bind it tightly enough that Russia still knows where sovereignty lives; a Crown that begins asking permission will soon be told when it may speak.`,
-      delay: `Indecision is the worst answer to ${subject}. Subordinates will improvise, enemies will test the gap, and afterward everyone will insist they acted in your name. Choose severity or mercy, but choose it yourself.`,
-      diplomacy: `Peace is useful only if it restores freedom of action. Do not let foreign relief become an excuse for domestic softness. End the crisis, bring the army home, and let everyone inside Russia notice that the state has recovered its hands.`,
-      reaction: `Quite right. Not every demand becomes legitimate because it arrives during a disturbance. Hold the line now and the opposition may learn that agitation does not automatically rewrite the structure of the state.`,
-      reform: `I think you are giving away more than the situation requires. If you insist, make the concession administrative and revocable; do not teach subjects that disorder is a legislative procedure.`,
-      authority: `At least the chain of command is clear. ${subject} will now be administered rather than argued over. Keep it that way.`,
-      pragmatic: `The essential thing in ${subject} is that the state must appear to possess a will. Whatever inconvenience follows, do not allow ministers to explain your decision as hesitation.`
-    },
-    witte: {
-      force: `Majesty, you can clear ${subject} with force and still lose the argument that produced it. The operation may succeed perfectly; that is what worries me. Successful repression has a way of convincing governments that administration, wages, law and representation were never the problem after all.`,
-      hearPetition: `Good. This gives grievance a legal address. The important thing is not sentiment but administration: record what they ask, answer what can be answered, and prove that petition is more effective than conspiracy.`,
-      constitutional: `This is expensive in personal discretion and cheap in comparison with another revolution. You are creating a place where conflict can become procedure. The institution will annoy you precisely because it is becoming real.`,
-      reaction: `The palace will enjoy this answer for several months. Then the same pressures will return with fewer moderates attached to them. Refusing reform is sometimes necessary; convincing ourselves refusal solved the underlying problem is how necessity becomes habit.`,
-      transparency: `Excellent. Let names, contracts and failures become visible. The state cannot modernize while incompetence remains a private embarrassment protected by rank. Several important people will hate you for this, which is often the first evidence that an administrative reform has reached the correct office.`,
-      militaryReform: `Yes. Russia does not lack courage; it lacks systems that reward competence before catastrophe exposes the absence of it. Professional standards will offend the court because standards are impolite enough to compare men who were never meant to be compared.`,
-      diplomacy: `Take the exit. ${subject} is consuming money, confidence and attention that Russia needs elsewhere. Prestige lost in a settlement can be recovered; treasury reserves, trained officers and political time are harder to resurrect.`,
-      delay: `A commission postpones the quarrel and preserves every interest currently blocking a solution. Sometimes that is useful. Do not mistake usefulness for resolution: the file will return thicker, and the people inside it angrier.`,
-      landReform: `This is where reform becomes material. A peasant who owns, borrows, improves and inherits has a different relationship to the state than a peasant who merely waits for repartition. Expect lawsuits, resentment and disorder during the transition; that is not proof the old arrangement was healthy.`,
-      policeReform: `Good. Intelligence must tell the government what exists, not create the evidence that justifies its own budget. If reform costs us some omniscience, I suspect much of that omniscience was imaginary anyway.`,
-      policePower: `The service will promise certainty. What it can actually deliver is more files, more agents and greater dependence on men whose careers require conspiracies to exist. Be careful what sort of knowledge you reward.`,
-      pragmatic: `On ${subject}, ask the vulgar question first: does this make the state more capable six months from now? Court satisfaction is not a metric. If the answer survives that test, I can defend it.`
-    },
-    trepov: {
-      force: `Correct. ${subject} has reached the point where ambiguity invites another test. Use enough force to finish the operation quickly and under orders. I want arrests, cordons and names—not drunken auxiliaries, stray shooting and three days of men improvising patriotism.`,
-      limitedMercy: `Reasonable, if surrender comes first. Mercy after obedience demonstrates confidence. Mercy offered while men remain armed looks like negotiation with mutiny. Make the sequence unmistakable.`,
-      policeReform: `Reform the service if it has become sloppy, but do not emasculate it to please people who will demand protection from revolution the moment the next bomb explodes. I want better police, not apologetic police.`,
-      reaction: `Good. The state is under no obligation to legalize every pressure tactic used against it. Once order is restored we may discuss defects quietly, with men who are not standing on barricades.`,
-      constitutional: `I do not like it, Majesty. You are making public argument part of government. If that is now unavoidable, then define the limits clearly and enforce them the first time the chamber mistakes debate for command.`,
-      delay: `No. A security problem does not improve while ministries exchange memoranda. Give one man authority, give him an objective and require a report when it is finished.`,
-      authority: `That is a state answer. The public may complain, but officials will know who is responsible and what is permitted. Confusion is more dangerous than severity.`,
-      pragmatic: `The question on ${subject} is whether the government looks more governable after your order. If every governor interprets it differently, we have failed regardless of the words used.`
-    },
-    stolypin: {
-      force: `Order first, yes—but only if order creates room to govern. If ${subject} ends with troops in the street and no policy afterward, we have merely purchased silence at an absurd price. Repression is a tool; reactionaries keep trying to make it a constitution.`,
-      landReform: `Good. This changes the village instead of lecturing it. Property will create enemies, inequalities and movement; it will also create millions of men with a personal stake in law. Give me time and do not let frightened landlords sabotage the machinery once it begins to work.`,
-      constitutional: `Use the institution. Make deputies responsible for the consequences of what they demand. I do not need parliamentary romance; I need a political class forced to choose between governing and merely denouncing the government.`,
-      reaction: `You are strengthening the people who tell you Russia is safest when nothing important changes. They will use the temporary calm as evidence they were right, then act surprised when the same question returns larger.`,
-      reform: `Yes, provided this is implemented rather than announced. Russia has no shortage of excellent decrees. Our shortage is ministers willing to survive the enemies created by carrying them out.`,
-      delay: `Every month of delay is a vote for the existing arrangement and for everyone who profits from its defects. If you mean to refuse, refuse. If you mean to reform, give me the authority to begin.`,
-      policeReform: `Necessary. A strong state does not require stupid police. I want revolutionaries found before they throw bombs, not encouraged to throw bombs so an agent can write a better report afterward.`,
-      authority: `Personal authority is useful when it forces blocked reforms through. If it is used merely to preserve the blockage, then autocracy has become the mechanism by which nobody can make the state move.`,
-      pragmatic: `On ${subject}, measure this by whether it leaves Russia harder to overthrow and easier to govern. Those are not opposites, whatever the court may think.`
-    },
-    alexandra: {
-      force: `If order must be restored, then restore it and do not torment yourself because people who despise you will call firmness cruelty. But do not let officials become savage simply because they can invoke your name. You answer before God for the authority He placed upon you.`,
-      reaction: `Yes, Nicky. You are not free to give away what was entrusted to you merely because frightened ministers say surrender is practical. The Crown is a duty before it is a convenience.`,
-      constitutional: `I fear this. They will call each surrender the last one, then return asking for another because you have taught them pressure works. If you must concede, promise me you will remember that a parliament is not the source of your duty.`,
-      rasputinEmpower: `You have seen what Grigori does for Baby. Let the clever people laugh. They do not sit beside the bed when the bleeding will not stop. If his prayers bring peace to our son, I will not apologize for opening the door to him.`,
-      rasputinLimit: `I will accept the boundary because you ask it, not because I believe Petersburg has earned the right to set it. Keep him from politics if you must; do not keep him from us when Alexei needs him.`,
-      delay: `Do not let them exhaust you into surrender by paperwork. Decide what you believe is right, Nicky, and make the ministers carry it out.`,
-      diplomacy: `Peace, yes. There is no glory in sending Russian boys to die because diplomats are afraid of looking weak. Preserve the empire and come home to your family.`,
-      authority: `Stand firm. The men around you become brave when they sense you are uncertain and obedient when they know you are not.`,
-      pragmatic: `On ${subject}, remember that ministers see departments and factions. You must see the whole burden. Do not let their fear become your conscience.`
-    },
-    lamsdorff: {
-      diplomacy: `Good. ${subject} remains negotiable, which is the first requirement of useful diplomacy. Give the other capital a way to retreat without admitting defeat; states are often most dangerous when prestige leaves them only one door.`,
-      germany: `Berlin can be dealt with, but never sentimentally. Wilhelm’s friendship is genuine at breakfast and strategic by luncheon. Put every understanding into concrete obligations and assume the General Staff is reading a different document.`,
-      serbiaGuarantee: `A guarantee is a splendid way to lose control of a client. Belgrade will now know that any concession it makes is partly a concession of Russian power. If you issue this promise, be prepared to have Serbian ministers spend it for us.`,
-      serbiaRestraint: `This gives us leverage precisely because Belgrade dislikes it. A client who knows support has conditions is more useful than one who believes geography has signed a blank cheque on our behalf.`,
-      force: `Force abroad is diplomacy with most of the useful ambiguity removed. If we cross that threshold, define the objective now; otherwise every battlefield success will invent a larger one.`,
-      delay: `Delay can be diplomatic policy if the clock works for us. If the other side is mobilizing while we merely request more reports, then delay is simply surrender with better manners.`,
-      reaction: `A firm position is useful only if the other capital knows what would satisfy us. “No” without an exit produces pride on both sides and policy on neither.`,
-      pragmatic: `In ${subject}, I care less about who appears offended than about who retains options tomorrow morning. Preserve options and we can repair the speeches later.`
-    },
-    kokovtsov: {
-      diplomacy: `Thank God. Every week of peace keeps trains carrying grain and machinery instead of reservists and shells. The treasury can finance preparedness; it cannot finance every minister’s theory of prestige indefinitely.`,
-      force: `The Interior Ministry will present the operation as a security expense. It is also a revenue problem, a credit problem and eventually a labor problem. Rifle fire has an irritating tendency to appear later in bond yields and factory output.`,
-      landReform: `This costs money now and may save the state money later. Credit, surveying, migration and local administration are tedious investments; that is precisely why they are preferable to emergency appropriations after another rural crisis.`,
-      constitutional: `Predictable law is good for credit even when the law irritates the palace. Investors, municipalities and ministries all become cheaper to manage when tomorrow’s rules are not dependent on who last entered the Emperor’s study.`,
-      militaryReform: `Spend on competence before spending on quantity. Russia can always buy another regiment on paper. Training officers, rationalizing procurement and making rail capacity honest are less glorious and considerably more valuable.`,
-      delay: `Postponement is not free. The current arrangement continues charging us while the committee deliberates, and the eventual emergency will arrive with interest.`,
-      generalMobilization: `Once this order goes out, the budget ceases to be a budget and becomes a war ledger. Railways, credit and industry will reorganize around military demand within days. Do not sign unless diplomacy is genuinely finished.`,
-      partialMobilization: `This is cheaper than general mobilization and more expensive than it looks. Civil traffic will already feel it, markets will already interpret it, and other states will price the risk before our own ministers finish defining what “partial” means.`,
-      pragmatic: `For ${subject}, I ask only that we count the second-order cost. Russia is rich enough to survive many bad decisions; that has unfortunately encouraged us to make them.`
-    },
-    rasputin: {
-      force: `No. I can smell the blood in this answer, Papa. They will tell you it is only enough blood to restore order, only enough blood to defend honor, only enough blood to make the next man afraid. Blood never stays the amount men write in memoranda.`,
-      diplomacy: `Yes. Let them call it weakness while their sons remain alive. A ruler who walks away from a war has lost a headline. A mother whose boy comes home has lost nothing.`,
-      generalMobilization: `Do not send it. The paper looks clean because the mud and torn bodies are still weeks away. Once the trains begin, every man will tell you stopping them is more dangerous than continuing. That is how the dead acquire timetables.`,
-      reverseMobilization: `Turn the trains around, Papa. Let the generals curse. Better a thousand officers embarrassed in stations than a million mothers learning which field swallowed their sons.`,
-      rasputinEmpower: `I do not want ministries. I want the boy to sleep and his mother not to hear him cry. But men will put politics in my mouth because they cannot imagine anyone near a throne wanting something smaller than power.`,
-      rasputinLimit: `Send me away if it gives you peace. I will pray from Siberia. Just do not send the boys west because men in clean rooms are ashamed to look frightened.`,
-      delay: `Silence can be holy. This silence is not. You are waiting for other men to make the sin unavoidable so you can tell yourself it was never yours.`,
-      pragmatic: `I do not understand all the papers about ${subject}. I understand that every paper has faces hidden behind it. Ask whose mother will weep if the clever men are wrong.`
-    },
-    sazonov: {
-      diplomacy: `Good. Diplomacy still has material to work with. On ${subject}, the objective is not universal affection; it is a settlement Russia can live with without making every other capital believe we are either helpless or insane.`,
-      serbiaGuarantee: `Then we must be prepared to fight. Belgrade will treat this as permission to bargain harder, Vienna will treat it as Russian intervention, and Paris will assume the alliance machinery has begun to move. A guarantee is not rhetoric once everyone believes it.`,
-      serbiaRestraint: `This will cause fury in Belgrade and among our own Slav committees. It also forces Serbia to distinguish between survival and pride. If Vienna moderates in response, we may preserve Serbian independence by refusing to promise Serbian impunity.`,
-      germany: `A Berlin understanding changes the geometry of the crisis. It gives us leverage over Austria at the cost of making France wonder whether Russian strategy still points west in the same direction. Use Germany, Majesty; do not become dependent on Wilhelm’s moods.`,
-      generalMobilization: `This is no longer signaling. Germany will read the order through its own war plans, not through our explanatory telegrams. If we send it, assume diplomacy has hours rather than days.`,
-      partialMobilization: `It puts pressure on Vienna without formally aiming the whole empire at Germany. The trouble is that our railway scheme was not designed by philosophers: partial measures can become general ones simply because the timetables fit better.`,
-      reverseMobilization: `Politically humiliating, strategically useful. If Berlin reciprocates, we have turned a military fact back into a diplomatic one. If it does not, then we shall know restraint was one-sided before paying for that knowledge with an army.`,
-      force: `If we are going to use force, define the political end before the first army crosses a frontier. Otherwise every success will create a new “vital interest” and every setback will create a new demand for prestige.`,
-      pragmatic: `On ${subject}, I need a Russian interest I can explain in one sentence to Vienna, Berlin, Paris and Belgrade. If each hears a different policy, one of them will eventually test which version is real.`
-    },
-    nicholas: {
-      militaryReform: `Yes. Promotions, procurement, gunnery, staffs—these are the things that decide whether courage becomes victory or casualty lists. Court favorites will complain that professional standards are unfair. War is less considerate than any examination board.`,
-      force: `If you order troops in, give them a military objective and rules clear enough to survive panic. I do not object to force; I object to politicians using soldiers to compensate for decisions they refused to make earlier.`,
-      generalMobilization: `Then understand what you have done. The rail plan is built for speed because delay in war kills armies. Once activated it will resist every diplomatic impulse to slow it. If you want war, mobilize completely. If you do not, keep your hand off the lever.`,
-      partialMobilization: `Possible, but ugly. Our plans assume Germany and Austria are connected problems. Pulling one half of the machine may jam the other. Give me a clear political limit and I will tell you what military precautions fit inside it.`,
-      reverseMobilization: `Painful, but not impossible if the order comes now. Every hour adds trains, depots and formations that must be unscrambled. Do not let staff inconvenience become an argument for continental war.`,
-      diplomacy: `If diplomacy can accomplish the objective, use it. Armies exist so states possess choices, not so generals may complain whenever a choice avoids battle.`,
-      delay: `I need a decision. A bad plan can be corrected; no plan leaves every district commander inventing his own war. Tell us what Russia is trying to accomplish and we can prepare for it.`,
-      pragmatic: `For ${subject}, separate prestige from the military requirement. Tell me the objective, the enemy and the limit. Everything else is salon conversation.`
-    }
-  };
+  witte: {
+    force: `The operation may succeed by nightfall and leave the actual grievance untouched. That is precisely the danger: competent repression makes bad administration look vindicated.`,
+    hearPetition: `Good. Grievance has been given an address other than the underground. Record what they ask, answer what can be answered, and make lawful petition more productive than conspiracy.`,
+    constitutional: `You have traded some personal discretion for rules that can absorb conflict. That is not surrender. It is the difference between a state and a household with several million difficult tenants.`,
+    reaction: `The palace will feel stronger tomorrow. The same pressure will return later with fewer moderates attached to it. Refusal can buy time; it cannot make causes disappear.`,
+    transparency: `Excellent. Names, contracts and failures belong in daylight. If a reform never embarrasses an important man, it probably has not reached the part of the system that failed.`,
+    militaryReform: `Good. Courage is not our shortage. Procurement, staff work and promotion by competence are. Fix those before we buy more expensive evidence of the same defects.`,
+    diplomacy: `Take the settlement. Prestige can be rebuilt; money, trained men and political time are more stubborn losses. Relief now gives us room to correct what the crisis exposed.`,
+    delay: `The current arrangement wins another month because nobody signed against it. That may be convenient, but the file will return thicker and the people inside it less patient.`,
+    landReform: `This is real reform because it changes what a peasant owns, borrows and leaves to his children. Expect litigation and resentment. Movement is not the same thing as failure.`,
+    policeReform: `Good. Intelligence should describe conspiracies, not cultivate them. We may learn less for a while; I suspect much of what we thought we knew was produced by our own agents anyway.`,
+    policePower: `The service will give you more reports and call that certainty. Remember that its careers depend on discovering danger, and institutions rarely become indifferent to the thing that justifies them.`,
+    reform: `Now carry it out. Russia is full of splendid decrees whose only defect is that nobody expected them to survive contact with an office corridor.`,
+    pragmatic: `Ask whether the state will be more capable six months from now. If the answer is yes, I can defend almost any amount of court grumbling in the meantime.`
+  },
 
-  const persona = voices[advisorKey] || voices.witte;
-  return persona[type] || persona.pragmatic || voices.witte.pragmatic;
+  trepov: {
+    force: `Good. Use enough force to finish quickly and keep it under orders. I want cordons, arrests and reports—not stray shooting, drunken patriots and three days of improvisation.`,
+    limitedMercy: `Surrender first, mercy second. That sequence matters. Leniency after obedience demonstrates confidence; leniency while men remain armed teaches them to negotiate with rifles.`,
+    policeReform: `Clean the service up, certainly. But do not turn reform into an apology for having police. I want fewer fools and provocateurs, not a weaker state.`,
+    policePower: `Give them room, but make them report upward. A secret service that cannot be supervised eventually becomes secret from its own government.`,
+    reaction: `Correct. Restore order first. We can discuss defects afterward with people who are not standing on barricades.`,
+    constitutional: `I do not like making public argument part of government. If it is unavoidable, define the limits now and enforce them before the chamber mistakes debate for command.`,
+    delay: `No. Security deteriorates while committees compare memoranda. Put one man in charge, give him an objective, and require him to answer for the result.`,
+    authority: `That is a usable order. Officials know what is permitted, governors know who is responsible, and nobody needs to guess whether firmness will be punished from above.`,
+    pragmatic: `I care whether the state looks more governable after this. If every governor reads the order differently, we have failed no matter how elegant the wording was.`
+  },
+
+  stolypin: {
+    force: `Order may be necessary. But when the streets are empty, I want a policy waiting for the morning. Troops can create room to govern; reactionaries always want to mistake the empty street for government itself.`,
+    landReform: `Good. Give the peasant something he can own, improve and lose. Property will create quarrels, but it also creates men with a stake in law stronger than any sermon about loyalty.`,
+    constitutional: `Make the deputies responsible for choices, not merely speeches. I do not need parliamentary romance; I need politicians who can be blamed for what they vote for.`,
+    reaction: `The men resisting change will call the resulting calm proof that they were right. Then they will use that proof to block the next reform until the next crisis frightens them again.`,
+    reform: `Good. Now protect the officials who actually carry it out. Every serious reform creates enemies; announcing one and abandoning its servants merely trains those enemies to wait.`,
+    delay: `Delay is a decision for the present arrangement and for everyone who benefits from it. If you mean no, say no. If you mean yes, give somebody the authority to begin.`,
+    policeReform: `Necessary. A strong state requires police clever enough to stop bombs before they are thrown, not police who help arrange the conspiracy so they can report on it.`,
+    authority: `Personal authority is useful when it breaks a blockage. Used only to preserve the blockage, autocracy becomes a machine for preventing the state from moving.`,
+    pragmatic: `The test is simple: are we harder to overthrow and easier to govern afterward? Those goals belong together, however much the court likes pretending otherwise.`
+  },
+
+  alexandra: {
+    force: `If order must be restored, restore it and do not let people who hate you define firmness as sin. But make certain officials do not use your name as permission to become cruel for sport.`,
+    reaction: `Yes. You were not given the Crown so frightened ministers could surrender it piece by piece whenever a crowd becomes loud enough. Hold what was entrusted to you.`,
+    constitutional: `I fear this, Nicky. They will call each concession final and then return for another because you have taught them pressure works. If you must yield, do not forget where your duty comes from.`,
+    rasputinEmpower: `You have seen what Grigori does for Baby. Let them sneer. The people mocking us are not there when the bleeding begins.`,
+    rasputinLimit: `I will accept the boundary because you ask it. Keep him from papers and appointments if you must; do not keep him from Alexei when our son needs him.`,
+    diplomacy: `Good. Bring the boys home. There is no glory in widows simply because diplomats were frightened of looking weak.`,
+    delay: `Do not let paperwork exhaust you into surrender. Decide what you believe is right and make the ministers carry it out.`,
+    authority: `Stand firm. The men around you become bold when they smell uncertainty and obedient when they know the decision is settled.`,
+    pragmatic: `The ministers see departments and factions. You carry the whole burden. Listen to them, but do not let their fear become your conscience.`
+  },
+
+  lamsdorff: {
+    diplomacy: `Good. There is still room for the other capital to retreat without announcing that it has been defeated. Leave men that door and they often take it.`,
+    germany: `Treat Berlin seriously and Wilhelm sentimentally at your peril. Put obligations in writing, keep the language narrow, and assume the German General Staff is reading the same agreement for different reasons.`,
+    serbiaGuarantee: `Belgrade will now spend our promise as though it were Serbian property. That is the trouble with guarantees: the client gains leverage over the patron the moment everyone believes them.`,
+    serbiaRestraint: `Good. Conditional support is more useful than affection without limits. Serbia will hate hearing it, which is exactly why it may finally calculate what it can afford to refuse.`,
+    generalMobilization: `Once the order goes out, every chancery will read our railway movements more carefully than our telegrams. We will have exchanged ambiguity for speed.`,
+    partialMobilization: `This preserves more room than a general order, but not as much as the phrase suggests. Foreign ministries will assume the precautions can widen faster than our explanations can reassure them.`,
+    force: `If we use force, define the object before the first shot. Otherwise every success will enlarge the appetite and every setback will become a new claim of honor.`,
+    delay: `Delay is useful only when the clock favors us. If the other side is moving troops while we request another memorandum, then we are not buying time; we are giving it away.`,
+    reaction: `A firm refusal is useful only if the other side knows what would satisfy us. Pride without an exit is how governments manufacture inevitability.`,
+    pragmatic: `Preserve options. Speeches can be repaired tomorrow; a mobilization order, treaty clause or public guarantee is much harder to retrieve once spent.`
+  },
+
+  kokovtsov: {
+    diplomacy: `Thank God. Every quiet week keeps trains carrying grain and machinery instead of reservists and shells. Peace is not sentimental; it is economically productive.`,
+    force: `The Interior Ministry will call this a security expense. It will also become a labor problem, a credit problem and eventually a revenue problem. Rifle fire travels remarkably well through balance sheets.`,
+    landReform: `This is expensive now and cheaper than another rural emergency later. Surveyors, credit and migration are tedious things to fund, which is one reason governments neglect them until the countryside burns.`,
+    constitutional: `Predictable rules are good for credit even when they annoy the palace. Everyone borrows more cheaply when tomorrow's law does not depend on who last entered the Emperor's study.`,
+    militaryReform: `Spend on competence before numbers. Russia can always create another regiment on paper. Honest rail capacity, trained officers and sane procurement take longer and matter more.`,
+    delay: `Postponement is not free. The present arrangement keeps charging us while the committee deliberates, and the emergency will arrive with interest.`,
+    generalMobilization: `Once that goes out, the budget becomes a war ledger. Railways, markets and industry will reorganize themselves within days. Do not sign unless you are prepared to live inside that economy.`,
+    partialMobilization: `Cheaper than a general order, yes. Cheap, no. Civil traffic will feel it immediately, markets will price the risk, and the ministries will discover that “partial” is not an accounting category.`,
+    reverseMobilization: `There will be waste, confusion and angry generals. Pay it. A few ruined timetables are cheaper than financing a continental war because the staff dislikes erasers.`,
+    pragmatic: `Count the second-order cost before congratulating ourselves on the first-order effect. Russia is rich enough to survive many bad decisions, which has unfortunately encouraged us to make them.`
+  },
+
+  rasputin: {
+    force: `No, Papa. They will tell you it is only enough blood to restore order, only enough to frighten the next man. Blood never stays the amount written on the paper.`,
+    diplomacy: `Yes. Let them call you weak while their sons remain alive. A ruler loses a headline by walking away; a mother keeps her child.`,
+    generalMobilization: `Do not send it. The paper is clean because the mud and torn bodies are still weeks away. Once the trains move, every clever man will tell you stopping them is more dangerous than continuing.`,
+    partialMobilization: `They will say this is only half a step. Men do not die in halves. If the trains begin carrying soldiers toward the border, the other rulers will hear what the wheels are saying.`,
+    reverseMobilization: `Turn them around. Let the generals curse you. Better officers embarrassed at stations than mothers learning which field swallowed their boys.`,
+    rasputinEmpower: `I do not want ministries. I want the boy to sleep and his mother not to hear him cry. Men will put politics in my mouth because they cannot imagine anyone near a throne wanting something smaller than power.`,
+    rasputinLimit: `Send me away if it gives you peace. I can pray from Siberia. Just do not let the men in clean rooms turn their embarrassment into graves.`,
+    delay: `This is not patience. You are waiting for someone else to make the sin unavoidable so you can tell yourself the choice was never yours.`,
+    pragmatic: `I do not understand every memorandum. I understand there are faces hidden behind every one of them. Ask whose mother weeps if the clever men are wrong.`
+  },
+
+  sazonov: {
+    diplomacy: `Good. We still have room to trade words instead of armies. I do not need everyone pleased; I need a settlement Russia can live with and the other capitals can survive accepting.`,
+    serbiaGuarantee: `Then be ready to fight. Belgrade will bargain harder, Vienna will assume Russian intervention, and Paris will expect the alliance machinery to move. Once believed, a guarantee stops being rhetoric.`,
+    serbiaRestraint: `Belgrade will curse us and the Slav committees will howl. Good. Serbia now has to distinguish between humiliation and extinction instead of assuming Russia will make the distinction for her.`,
+    germany: `This gives us leverage over Vienna and makes Paris nervous. Use Berlin while the interests overlap; do not build Russian strategy around Wilhelm waking in the same mood two mornings in succession.`,
+    generalMobilization: `This is no longer a signal. Germany will read the railway order through its war plan, not through our explanatory telegrams. From here diplomacy has hours, not days.`,
+    partialMobilization: `It pressures Vienna without openly aiming the whole empire at Germany. Unfortunately the rail plan was written by soldiers, not metaphysicians; partial measures have a habit of becoming general because the timetable works better that way.`,
+    reverseMobilization: `Humiliating, yes. Useful, also yes. If Berlin reciprocates, we have turned a military fact back into a diplomatic one. If it does not, we learn something important before paying for it with an army.`,
+    force: `Define what political result we want before the guns begin. Otherwise every success will create a larger demand and every setback a louder appeal to prestige.`,
+    delay: `I can use time if I know what I am trying to obtain with it. Delay without an objective merely lets every other capital write the next move for us.`,
+    pragmatic: `Give me a Russian interest I can explain in one sentence to Vienna, Berlin, Paris and Belgrade. If each hears a different policy, one of them will test which version is real.`
+  },
+
+  nicholas: {
+    militaryReform: `Good. Promotions, procurement, gunnery and staffs decide whether courage becomes victory or a casualty list. Court favorites may complain that standards are unfair. War is less considerate.`,
+    force: `If troops go in, give them a military objective and rules clear enough to survive panic. I do not object to force. I object to politicians using soldiers to repair decisions they refused to make earlier.`,
+    generalMobilization: `Then understand the machine you are starting. The rail plan is designed to move faster than diplomacy can reconsider. If you want war, mobilize completely. If you do not, keep your hand off the lever.`,
+    partialMobilization: `Possible, but ugly. Our plans treat Germany and Austria as one connected problem. Pulling only half the machine can jam the rest. Give me the political limit and I will tell you what military precautions fit inside it.`,
+    reverseMobilization: `Do it now. Every hour adds trains, depots and formations that must be unscrambled. Staff inconvenience is not a reason to fight a continental war.`,
+    diplomacy: `If diplomacy gets the result, use it. Armies exist so the state has choices, not so generals can complain whenever one of those choices avoids battle.`,
+    delay: `I need a decision. A bad plan can be corrected; no plan leaves every district commander inventing his own interpretation of what Russia intends.`,
+    authority: `The chain of command is clear now. Good. Make sure the order reaches the districts in language that cannot become four different policies by breakfast.`,
+    military: `Give the officers time, transport and a definite objective. Numbers alone are not preparedness; a million men without a coherent plan are simply a very large administrative problem.`,
+    pragmatic: `Tell me what outcome you want, what force may be used to obtain it, and where the limit is. Everything else belongs in the salon.`
+  }
+};
+
+function oatrPerspectiveAdvice(advisorKey, type) {
+  const persona = OATR_ADVISOR_VOICES[advisorKey] || OATR_ADVISOR_VOICES.witte;
+  return persona[type] || persona.pragmatic || OATR_ADVISOR_VOICES.witte.pragmatic;
 }
 
 function oatrDecisionAdvice(q, choiceIndex, label, effects, advisor) {
   const key = oatrAdvisorKey(advisor);
   const exact = OATR_EXACT_ADVISOR_FEEDBACK[q.id]?.[key]?.[choiceIndex];
   if (exact) return exact;
-
-  const type = oatrDecisionType(label, effects);
-  let text = oatrPerspectiveAdvice(key, type, q, label, effects);
-
-  /* One concrete immediate consequence, phrased as something the advisor cares about.
-     This is subordinate to personality rather than a generic score readout. */
-  const e = effects || {};
-  if (key === 'witte' && (e.economy || 0) <= -2) text += ' And I will need money for this; the political argument does not exempt us from arithmetic.';
-  else if (key === 'kokovtsov' && (e.economy || 0) >= 2) text += ' The treasury will feel the relief quickly, which gives us room to do something useful before another ministry spends it.';
-  else if (key === 'stolypin' && (e.leverage || 0) <= -2) text += ' The men resisting reform will read the resulting calm as proof that they need never yield again.';
-  else if (key === 'trepov' && (e.blood || 0) >= 3) text += ' I want the arrests and casualty reports on my desk tonight; uncontrolled violence is not strength.';
-  else if (key === 'sergei' && (e.blood || 0) >= 3) text += ' Do not spoil firmness afterward by apologizing for having been firm.';
-  else if (key === 'rasputin' && (e.blood || 0) >= 2) text += ' The dead do not care whether the order was technically limited.';
-  else if (key === 'sazonov' && (e.pressure || 0) >= 3) text += ' From this point every capital will begin planning around what we might do next rather than what we say we want.';
-  else if (key === 'nicholas' && (e.military || 0) >= 2) text += ' Give the officers enough time to turn the political decision into an actual plan rather than another ceremonial directive.';
-  else if (key === 'alexandra' && (e.autocracy || 0) <= -2) text += ' I know why the ministers call this practical. I am asking you to remember what cannot be recovered once surrendered.';
-  else if (key === 'lamsdorff' && (e.britain || 0) >= 2) text += ' London may indeed be involved; that fact will not relieve us of the burden of having a policy of our own.';
-
-  return text;
+  return oatrPerspectiveAdvice(key, oatrDecisionType(label, effects));
 }
 
 consequenceText = function(effects, advisor) {
