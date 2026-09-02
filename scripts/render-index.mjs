@@ -19,6 +19,7 @@ const detailedEvents = await readFile(new URL('src/detailed-events.js', root), '
 const engine = await readFile(new URL('src/main.js', root), 'utf8');
 const endingPaths = await readFile(new URL('src/ending-paths.js', root), 'utf8');
 const julyCrisisBranches = await readFile(new URL('src/july-crisis-branches.js', root), 'utf8');
+const julyCrisisDeepBranches = await readFile(new URL('src/july-crisis-deep-branches.js', root), 'utf8');
 const balancePass = await readFile(new URL('src/balance-pass.js', root), 'utf8');
 const detailedAdvisors = await readFile(new URL('src/detailed-advisors.js', root), 'utf8');
 const politicalHorror = await readFile(new URL('src/political-horror.js', root), 'utf8');
@@ -38,7 +39,7 @@ const marginaliaAssets = await readFile(new URL('src/marginalia-assets.js', root
 // those same URLs resolve relative to the page, so normalize repository-local assets here.
 const inlineCss = css => css.replaceAll('../asset/', './asset/');
 const css = `${inlineCss(baseCss)}\n\n${inlineCss(darkGuiCss)}\n\n${inlineCss(skeletonUiCss)}\n\n${inlineCss(sergeiCss)}\n\n${inlineCss(assetPlaceholderCss)}\n\n${inlineCss(eventArtCss)}\n\n${inlineCss(failRoutesCss)}\n\n${inlineCss(passionPortraitsCss)}\n\n${inlineCss(passionUiRevampCss)}\n\n${inlineCss(marginaliaCss)}\n\n${inlineCss(typographyFixCss)}`;
-const javascript = `${gameData}\n\n${branching}\n\n${detailedEvents}\n\n${engine}\n\n${endingPaths}\n\n${julyCrisisBranches}\n\n${balancePass}\n\n${detailedAdvisors}\n\n${politicalHorror}\n\n${sergeiHorror}\n\n${failRoutes}\n\n${canonPassion}\n\n${canonPassionVoice}\n\n${passionUi}\n\n${passionUiRevamp}\n\n${endingEpilogues}\n\n${endingEpiloguesExtra}\n\n${eventArt}\n\n${marginalia}\n\n${marginaliaAssets}`;
+const javascript = `${gameData}\n\n${branching}\n\n${detailedEvents}\n\n${engine}\n\n${endingPaths}\n\n${julyCrisisBranches}\n\n${julyCrisisDeepBranches}\n\n${balancePass}\n\n${detailedAdvisors}\n\n${politicalHorror}\n\n${sergeiHorror}\n\n${failRoutes}\n\n${canonPassion}\n\n${canonPassionVoice}\n\n${passionUi}\n\n${passionUiRevamp}\n\n${endingEpilogues}\n\n${endingEpiloguesExtra}\n\n${eventArt}\n\n${marginalia}\n\n${marginaliaAssets}`;
 
 if (css.includes('</style>') || javascript.includes('</script>')) {
   throw new Error('Inline assets may not contain closing style or script tags.');
