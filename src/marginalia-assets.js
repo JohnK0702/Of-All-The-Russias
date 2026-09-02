@@ -42,7 +42,6 @@ const OATR_MARGINALIA_ASSETS = {
   austria: 'Le Petit Journal Balkan Crisis (1908).jpg',
   germany: 'Wilhelm II of Germany - 1907.jpg',
   france: 'Nicholas II and Émile Loubet meeting (1901).jpg',
-  britain: 'John Bull and his Friends 1900.jpg',
   japan: "Crowds lining the street as the procession of carriages carrying Admiral Togo, naval officers, and government officials passes through a triumphial arch during Togo's official visit, Oct., LCCN2005678641.jpg",
   ottomans: 'Russian view on the Balkan problem 1908.jpg',
   balkans: 'Russian view on the Balkan problem 1908.jpg',
@@ -62,11 +61,25 @@ const OATR_MARGINALIA_DIRECT_ASSETS = {
   petrograd: 'https://mf.b37mrtl.ru/rbthmedia/images/web/in-rbth/images/2014-02/big/18/UR00-0539_468.jpg'
 };
 
+const OATR_MARGINALIA_CONTEXT_ASSETS = {
+  britain: () => {
+    let qid = 0;
+    try { qid = typeof currentQuestion === 'function' ? (currentQuestion()?.id || 0) : 0; } catch {}
+    // Before the 1907 entente: rivalry. After it: friendship conducted on top of Persia.
+    const file = qid >= 20
+      ? 'As Between Friends (Punch magazine, 13 December 1911).jpg'
+      : 'Puck magazine, 1900 June 6.jpg';
+    return oatrCommonsFile(file);
+  }
+};
+
 function oatrCommonsFile(filename) {
   return `https://commons.wikimedia.org/wiki/Special:Redirect/file/${encodeURIComponent(filename)}`;
 }
 
 function oatrMarginaliaAssetUrl(id) {
+  const contextual = OATR_MARGINALIA_CONTEXT_ASSETS[id];
+  if (typeof contextual === 'function') return contextual();
   if (OATR_MARGINALIA_DIRECT_ASSETS[id]) return OATR_MARGINALIA_DIRECT_ASSETS[id];
   const file = OATR_MARGINALIA_ASSETS[id];
   return file ? oatrCommonsFile(file) : '';
@@ -75,6 +88,11 @@ function oatrMarginaliaAssetUrl(id) {
 function oatrInstallMarginaliaAssets() {
   if (typeof OATR_MARGINALIA === 'undefined') return;
   OATR_MARGINALIA.forEach(entry => {
+    const contextual = OATR_MARGINALIA_CONTEXT_ASSETS[entry.id];
+    if (typeof contextual === 'function') {
+      entry.image = contextual;
+      return;
+    }
     const src = oatrMarginaliaAssetUrl(entry.id);
     if (src) entry.image = src;
   });
