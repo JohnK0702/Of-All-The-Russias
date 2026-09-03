@@ -7,23 +7,23 @@
 const OATR_MARGINALIA = [
   {
     id:'jews', terms:['the Jews','Jews','Jewish'],
-    image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/1905%202fnl%20Velikoe%20v%20malom%20i%20antikhrist.jpg',
-    eyebrow:'PRIVATE PREJUDICE · N.A.R.',
+    image:'https://rare-paper.cdn.bibliopolis.com/pictures/249_3.jpeg?auto=webp&v=1696125193',
+    eyebrow:'Christkillers · N.A.R.',
     note:'The enemy.',
-    caption:'Antisemitic propaganda published in Imperial Russia, 1905. The note reflects Nicholas’s prejudice, not the game’s voice.'
+    caption:'Beyond The Pale.'
   },
   {
     id:'witte', terms:['Sergei Witte','Witte'],
     image:()=>typeof oatrAssetUrl==='function'?oatrAssetUrl('witte'):'',
     eyebrow:'TECHNOCRAT · N.A.R.',
-    note:'Clever. Vain. Useful. He always makes surrender sound like administration.',
+    note:'Globalist, knows what a bond yield is. Vain.',
     caption:'Count Sergei Witte.'
   },
   {
     id:'stolypin', terms:['Pyotr Stolypin','Stolypin'],
     image:()=>typeof oatrAssetUrl==='function'?oatrAssetUrl('stolypinRepin'):'',
     eyebrow:'REFORMER · N.A.R.',
-    note:'Economic liberal. Social conservative. Wants competent institutions. Dangerous extremist.',
+    note:'Economic liberal. Social conservative. Reformist. Dangerous extremist.',
     caption:'Pyotr Stolypin.'
   },
   {
@@ -51,7 +51,7 @@ const OATR_MARGINALIA = [
     id:'tsushima', terms:['Tsushima'],
     image:()=>typeof oatrAssetUrl==='function'?oatrAssetUrl('tsushimaPainting'):'',
     eyebrow:'SPECIAL NAVAL OPERATION · N.A.R.',
-    note:'Going according to plan. Do not ask which plan.',
+    note:'Fuck.',
     caption:'The Battle of Tsushima.'
   },
   {
@@ -72,21 +72,21 @@ const OATR_MARGINALIA = [
     id:'finland', terms:['Finland','Finnish','Helsingfors'],
     image:()=>typeof oatrAssetUrl==='function'?oatrAssetUrl('empireMap'):'',
     eyebrow:'FOREIGN AGENT · N.A.R.',
-    note:'Foreign agent with a constitution.',
+    note:'Liberated from Sweden, never forgave us for it.',
     caption:'The Grand Duchy of Finland within the Empire.'
   },
   {
     id:'poland', terms:['Poland','Polish','Warsaw'],
     image:()=>typeof oatrAssetUrl==='function'?oatrAssetUrl('empireMap'):'',
     eyebrow:'ALWAYS TEMPORARY · N.A.R.',
-    note:'Always a question disguised as a province.',
+    note:'I believe you you meant to say Vistulaland?.',
     caption:'Russian Poland and the western borderlands.'
   },
   {
     id:'serbia', terms:['Serbia','Serbian','Belgrade'],
     image:()=>typeof oatrAssetUrl==='function'?oatrAssetUrl('empireMap'):'',
     eyebrow:'THE SERBIAN QUESTION · N.A.R.',
-    note:'A foreign policy built on regicide, patron saints, and making Austria’s problem everyone else’s.',
+    note:'A civilization built on fellatio.',
     caption:'The Kingdom of Serbia and the Balkan question.'
   },
   {
@@ -98,7 +98,7 @@ const OATR_MARGINALIA = [
   },
   {
     id:'germany', terms:['Kaiser Wilhelm','Wilhelm II','Germany','German','Willy'],
-    image:'https://commons.wikimedia.org/wiki/Special:Redirect/file/Wilhelm%20II%20of%20Germany%20-%201907.jpg',
+    image:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFujs0O1DfIvdYl8-Tx0ahk7Djswwbazrr0fg3BBG0PL8d_aCJzLRuIYo&s=10',
     eyebrow:'DEAR WILLY · N.A.R.',
     note:'Willy. Exhausting. Dear Willy.',
     caption:'Kaiser Wilhelm II.'
@@ -128,7 +128,7 @@ const OATR_MARGINALIA = [
     id:'ottomans', terms:['Ottoman Empire','Ottomans','Ottoman','Turkey','Turkish','Constantinople'],
     image:()=>typeof oatrAssetUrl==='function'?oatrAssetUrl('empireMap'):'',
     eyebrow:'UNFINISHED BUSINESS · N.A.R.',
-    note:'The Straits. Obviously the Straits. Stop asking why.',
+    note:'Asian.',
     caption:'The Ottoman Empire and the Straits question.'
   },
   {
@@ -162,8 +162,8 @@ const OATR_MARGINALIA = [
   {
     id:'peasants', terms:['the peasants','peasants','peasant'],
     image:()=>typeof oatrAssetUrl==='function'?oatrAssetUrl('empireMap'):'',
-    eyebrow:'THE PEASANTS · N.A.R.',
-    note:'They love the Tsar. Their complaints are local.',
+    eyebrow:'THE BASE · N.A.R.',
+    note:'They love me, too dumb not to.',
     caption:'The peasantry: the overwhelming majority of imperial subjects.'
   },
   {
@@ -177,7 +177,7 @@ const OATR_MARGINALIA = [
     id:'liberals', terms:['liberals','liberal opposition','Kadets','Constitutional Democrats'],
     image:()=>typeof oatrAssetUrl==='function'?oatrAssetUrl('dumaMembers'):'',
     eyebrow:'CONSTITUTIONALISTS · N.A.R.',
-    note:'Want England with snow. Have apparently not met England.',
+    note:'Want England with snow.',
     caption:'Liberal constitutional politics in the empire.'
   },
   {
@@ -212,14 +212,14 @@ const OATR_MARGINALIA = [
     id:'moscow', terms:['Moscow'],
     image:()=>typeof oatrAssetUrl==='function'?oatrAssetUrl('empireMap'):'',
     eyebrow:'THE OTHER CAPITAL · N.A.R.',
-    note:'Thinks Petersburg is fake. Petersburg thinks Moscow is furniture.',
+    note:'Here are luxury and penury, abundance and the most extreme deprivation, piety and atheism, … and an unbelievable frivolity—warring elements which, out of their constant conflicts, create this marvelous, outrageous, gigantic whole which we know by its collective name: Moscow..',
     caption:'Moscow, ceremonial and historical heart of Russia.'
   },
   {
     id:'balkans', terms:['Balkans','Balkan'],
     image:()=>typeof oatrAssetUrl==='function'?oatrAssetUrl('empireMap'):'',
     eyebrow:'DO NOT TOUCH · N.A.R.',
-    note:'A collection of local disputes patiently waiting to become our problem.',
+    note:'The inbred cousins.',
     caption:'The Balkans.'
   },
   {
