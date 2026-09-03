@@ -1,0 +1,107 @@
+/* Reactive condition + Imperial General Staff windows. */
+
+.reactive-condition,
+.military-panel ul {
+  list-style:none;
+  padding:0;
+  margin:0;
+  display:grid;
+  gap:7px;
+}
+
+.reactive-condition li,
+.military-panel li {
+  display:grid;
+  gap:3px;
+}
+
+.reactive-condition li > div,
+.military-panel li > div {
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  gap:8px;
+  min-width:0;
+}
+
+.reactive-condition span,
+.military-panel li span {
+  font-size:8px;
+  letter-spacing:.10em;
+  color:#817761;
+  min-width:0;
+}
+
+.reactive-condition b,
+.military-panel li b {
+  font-size:8px;
+  letter-spacing:.08em;
+  color:#d9bd79;
+  white-space:nowrap;
+}
+
+.reactive-condition b small {
+  font:inherit;
+  color:#9d8b64;
+  margin-left:3px;
+}
+
+.reactive-condition li > i,
+.military-panel li > i {
+  display:block;
+  height:2px;
+  background:rgba(161,137,87,.15);
+  overflow:hidden;
+}
+
+.reactive-condition li > i > em,
+.military-panel li > i > em {
+  display:block;
+  height:100%;
+  background:linear-gradient(90deg, rgba(121,97,51,.75), rgba(213,175,90,.95));
+}
+
+.military-panel {
+  margin:14px 0 10px;
+  padding:10px 0 9px;
+  border-top:1px solid rgba(186,144,51,.42);
+  border-bottom:1px solid rgba(186,144,51,.42);
+  text-align:left;
+}
+
+.military-heading {
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  gap:8px;
+  margin-bottom:8px;
+}
+
+.military-heading span {
+  font-size:8px;
+  letter-spacing:.15em;
+  color:#9b8c6f;
+}
+
+.military-heading b {
+  font-size:9px;
+  letter-spacing:.13em;
+  color:#d9bd79;
+}
+
+.military-panel > p {
+  margin:9px 0 0;
+  font-size:8px !important;
+  line-height:1.45;
+  color:#8e846d !important;
+  text-align:left !important;
+}
+
+.military-hollow .military-heading b,
+.military-fragile .military-heading b { color:#a9675f; }
+.military-ready .military-heading b,
+.military-reformed .military-heading b { color:#d9bd79; }
+
+@media (max-width: 900px) {
+  .military-panel { margin-top:12px; }
+}
