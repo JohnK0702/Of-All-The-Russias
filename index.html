@@ -2066,17 +2066,24 @@ function oatrRefreshCore50Ui() {
     const number = folio.querySelector('strong');
     const total = folio.querySelector(':scope > span');
     const q = OATR_SKELETONS[typeof state !== 'undefined' ? state.index : 0];
-    if (number && q) number.textContent = String(q.coreNumber || ((state?.index || 0) + 1)).padStart(2, '0');
-    if (total) total.textContent = `OF ${OATR_CORE_TOTAL}`;
+    const desiredNumber = q ? String(q.coreNumber || ((typeof state !== 'undefined' ? state.index : 0) + 1)).padStart(2, '0') : null;
+    const desiredTotal = `OF ${OATR_CORE_TOTAL}`;
+    if (number && desiredNumber && number.textContent !== desiredNumber) number.textContent = desiredNumber;
+    if (total && total.textContent !== desiredTotal) total.textContent = desiredTotal;
   }
 
   const bar = document.querySelector('.campaign-progress > span');
   if (bar && typeof state !== 'undefined') {
     const denom = Math.max(1, OATR_CORE_TOTAL - 1);
-    bar.style.width = `${Math.max(0, Math.min(100, Math.round(state.index / denom * 100)))}%`;
+    const desiredWidth = `${Math.max(0, Math.min(100, Math.round(state.index / denom * 100)))}%`;
+    if (bar.style.width !== desiredWidth) bar.style.width = desiredWidth;
   }
 }
 
+/* The app renderer still emits the historical question id/70 total.  Keep a tiny observer that
+   corrects those display-only values, but only mutate when the value actually differs.  The old
+   implementation rewrote textContent on every observer callback, which re-triggered the observer
+   indefinitely in real browsers and could lock the live Pages site. */
 if (typeof MutationObserver !== 'undefined' && typeof document !== 'undefined' && document.documentElement) {
   let oatrCoreUiQueued = false;
   new MutationObserver(() => {
