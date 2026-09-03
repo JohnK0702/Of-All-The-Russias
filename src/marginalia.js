@@ -323,7 +323,9 @@ function oatrMarginaliaTermNode(text, entry) {
 
 function oatrApplyMarginalia(root=document) {
   if (!root?.querySelectorAll || !document?.createTreeWalker || !document?.createElement) return;
-  const selectors = '.dispatch p, article > h2, article > blockquote p, .dateline span';
+  // Marginalia belongs in the dispatch prose, not in navigation/header copy. Keep the dateline,
+  // chapter kicker and event title inert even when they contain a term with an available tooltip.
+  const selectors = '.dispatch p, article > blockquote p';
   root.querySelectorAll(selectors).forEach(container => {
     const showText = typeof NodeFilter !== 'undefined' ? NodeFilter.SHOW_TEXT : 4;
     const walker = document.createTreeWalker(container, showText);
