@@ -21,6 +21,12 @@ const scriptMatch = html.match(/<script data-static-bundle>([\s\S]*?)<\/script>/
 if (!scriptMatch) throw new Error('Could not read the inline application script.');
 const main = scriptMatch[1];
 if (/^\s*import\s/m.test(main)) throw new Error('Deployed JavaScript contains an unbundled import.');
+if (main.includes('<!-- INLINE_SCRIPT -->')) {
+  throw new Error('Static bundling corrupted JavaScript replacement tokens; src/marginalia.js is not preserved verbatim.');
+}
+if (!main.includes("const OATR_MARGINALIA = [") || !main.includes("const selectors = '.dispatch p, article > blockquote p';")) {
+  throw new Error('The deployed bundle does not contain the current marginalia runtime.');
+}
 
 const app = { innerHTML: '' };
 const body = { dataset: {} };
