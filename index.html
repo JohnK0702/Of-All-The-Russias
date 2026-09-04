@@ -7004,7 +7004,7 @@ function oatrApplyMarginalia(root=document) {
           const next = [];
           segments.forEach(seg => {
             if (seg.entry) return next.push(seg);
-            const pattern = new RegExp(`(${term.replace(/[.*+?^${}()|[\\]\\]/g,'\\<!-- INLINE_SCRIPT -->')})`, 'ig');
+            const pattern = new RegExp(`(${term.replace(/[.*+?^${}()|[\\]\\]/g,'\\$&')})`, 'ig');
             let last = 0;
             let match;
             while ((match = pattern.exec(seg.text))) {
