@@ -8,7 +8,6 @@
 
 const OATR_MARGINALIA_ASSETS = {
   // Prejudice / political culture
-  jews: '1905 2fnl Velikoe v malom i antikhrist.jpg',
   pogrom: '1904 Russian Tsar-Stop your cruel oppression of the Jews-LOC hh0145s.jpg',
   'black-hundreds': 'Postcard Medal “honoring” the Black Hundred, ca. 1905.jpg',
   okhrana: 'Okhranka group photo.jpg',
@@ -58,6 +57,8 @@ const OATR_MARGINALIA_ASSETS = {
 };
 
 const OATR_MARGINALIA_DIRECT_ASSETS = {
+  // Explicit user-selected images. Keep these authoritative even though this file loads after marginalia.js.
+  jews: 'https://rare-paper.cdn.bibliopolis.com/pictures/249_3.jpeg?auto=webp&v=1696125193',
   petrograd: 'https://mf.b37mrtl.ru/rbthmedia/images/web/in-rbth/images/2014-02/big/18/UR00-0539_468.jpg'
 };
 
