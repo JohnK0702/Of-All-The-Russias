@@ -50,9 +50,13 @@ if (css.includes('</style>') || javascript.includes('</script>')) {
   throw new Error('Inline assets may not contain closing style or script tags.');
 }
 
+// Use replacement callbacks rather than replacement strings. JavaScript source can legitimately
+// contain String.replace replacement tokens such as "$&" (marginalia.js does); passing the whole
+// bundle as a replacement string makes String.prototype.replace expand those tokens and silently
+// corrupt the bundled source.
 const html = template
-  .replace('<!-- INLINE_STYLE -->', `<style data-static-bundle>\n${css}\n</style>`)
-  .replace('<!-- INLINE_SCRIPT -->', `<script data-static-bundle>\n${javascript}\n</script>`);
+  .replace('<!-- INLINE_STYLE -->', () => `<style data-static-bundle>\n${css}\n</style>`)
+  .replace('<!-- INLINE_SCRIPT -->', () => `<script data-static-bundle>\n${javascript}\n</script>`);
 
 await writeFile(new URL('index.html', root), html);
 console.log('Self-contained index.html generated.');
